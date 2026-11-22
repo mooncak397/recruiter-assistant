@@ -2,7 +2,7 @@
 
 Status: accepted, 2026-11-22. Numbers must be checked in AI Studio at M1, because Google does not guarantee free limits and changes them often.
 
-Context: in November 2026 the free tier gives roughly 20 requests per day on the Flash models, about 500 per day on Flash-Lite, 0 on Pro, and about 14,400 per day on Gemma 4. Limits count per project and per model, not per key.
+Context: in November 2026 the free tier gives roughly 20 requests per day on the Flash models, about 500 per day on Flash-Lite, 0 on Pro, and about 14,400 per day on Gemma 4 (unconfirmed: third-party numbers, see "M1 check" below). Limits count per project and per model, not per key.
 
 Decision:
 - App model: the current free Flash-Lite model, name set in `MODEL_APP` env var.
@@ -21,3 +21,4 @@ Checked in the Google AI Studio docs (pricing and models pages):
 - Gemma 4 has a free tier, "free of charge". The docs page does not list a Gemma model ID. Check the ID in AI Studio at M3, when the judge is built.
 - Requests per day and per minute are not on the public docs pages. The rate-limit page says limits are shown in the AI Studio dashboard and "not guaranteed". The numbers above ("about 500 per day on Flash-Lite", "about 14,400 on Gemma 4") come from third-party sources and are not confirmed. TODO: read the real numbers from the dashboard (login needed) and write them here.
 - `MODEL_APP` has no default in code. `.env.example` suggests `gemini-3.5-flash-lite`.
+- Live test (2026-11-22): `gemini-3.5-flash-lite` answers in English and German through the CLI. The model ignores `temperature` (the library warns that it uses fixed sampling defaults), so "temperature 0" in this plan has no effect on this model.

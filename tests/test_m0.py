@@ -34,12 +34,28 @@ def test_structure():
     assert len(list((ROOT / "docs/adr").glob("00[1-7]-*.md"))) == 7
 
 
+# Shared word list (plan section 7). The "not" section may name these words, the rest may not.
+WORDS = ["notice", "Kündigungsfrist", "relocat", "Umzug", "umziehen", "move to", "prefers to work in",
+         "salary", "Lohn", "Gehalt", "Switzerland", "Schweiz", "looking for", "open to offers",
+         "auf Stellensuche", "offen für", "Geburtsdatum"]
+EMAIL = r"[\w.+-]+@[\w-]+\.[\w.-]+"
+NOT_HEADING = "## What Christopher is not / skills he does not have"
+
+
+def test_profile_outside_not_section_has_no_private_words():
+    rest = (ROOT / "profile/profile.md").read_text().split(NOT_HEADING)[0]
+    for w in WORDS:
+        assert w.lower() not in rest.lower(), w
+    assert not re.search(EMAIL, rest)
+
+
 def test_profile():
     text = (ROOT / "profile/profile.md").read_text()
     assert len(text.split()) < 5000
     assert "## What Christopher is not / skills he does not have" in text
     for pat in PRIVATE:
         assert not re.search(pat, text, re.I), pat
+    assert not re.search(EMAIL, text)
 
 
 def test_rules_has_fixed_sentences():
@@ -72,3 +88,13 @@ def test_golden_set():
     for c in cases:
         if "contains_exact" in c["assert"]:
             assert c["assert"]["contains_exact"] in FIXED
+
+
+def test_golden_assert_keys_are_documented():
+    readme = (ROOT / "evals/golden/README.md").read_text()
+    keys = set()
+    for f in (ROOT / "evals/golden").glob("*.yaml"):
+        for case in yaml.safe_load(f.read_text()):
+            keys |= case["assert"].keys()
+    missing = {k for k in keys if f"`{k}`" not in readme}
+    assert not missing, missing
