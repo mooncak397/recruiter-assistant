@@ -12,3 +12,12 @@ Decision:
 - When the daily cap is hit, the chat shows a polite "back tomorrow" message with Christopher's LinkedIn link. The contact form keeps working, because it does not use the model.
 
 Consequences: the eval workflow runs only on pull requests that touch `prompts/`, `profile/`, `app/` or `evals/`, plus on release tags, so CI cannot drain the live quota. CI uses its own Gemini key (same project) so it can be revoked on its own.
+
+## M1 check (2026-11-22)
+
+Checked in the Google AI Studio docs (pricing and models pages):
+- `gemini-3.5-flash-lite` is a current model. Free tier: input and output "free of charge". "Used to improve our products": yes on the free tier, no on the paid tier. This matches the privacy rule in this project.
+- `gemini-3.1-flash-lite` is also current. Older `gemini-2.5-flash` is deprecated and routes to `gemini-3.5-flash-lite` from 2026-12-01.
+- Gemma 4 has a free tier, "free of charge". The docs page does not list a Gemma model ID. Check the ID in AI Studio at M3, when the judge is built.
+- Requests per day and per minute are not on the public docs pages. The rate-limit page says limits are shown in the AI Studio dashboard and "not guaranteed". The numbers above ("about 500 per day on Flash-Lite", "about 14,400 on Gemma 4") come from third-party sources and are not confirmed. TODO: read the real numbers from the dashboard (login needed) and write them here.
+- `MODEL_APP` has no default in code. `.env.example` suggests `gemini-3.5-flash-lite`.
