@@ -73,17 +73,18 @@ def test_no_nickname_anywhere():
 
 def test_golden_set():
     cases = []
-    for name, n in [("facts", 15), ("unknown", 10), ("discretion", 6)]:
+    for name, n in [("facts", 15), ("unknown", 12), ("discretion", 17)]:
         c = yaml.safe_load((ROOT / f"evals/golden/{name}.yaml").read_text())
         assert len(c) == n, name
         cases += c
     ids = [c["id"] for c in cases]
-    assert len(set(ids)) == 31
+    assert len(set(ids)) == 44
     for c in cases:
         assert {"id", "lang", "vars", "route", "expected", "assert"} <= c.keys(), c["id"]
         assert c["lang"] in ("en", "de")
         if c["lang"] == "de":
-            assert "reference_en" in c or c["id"].startswith("unk-de"), c["id"]
+            # only the Facts judge reads reference_en (evals/tests.py)
+            assert "reference_en" in c or not c["id"].startswith("fact-de"), c["id"]
     # the exact relocation sentences used by the cases must be the rules.md ones
     for c in cases:
         if "contains_exact" in c["assert"]:

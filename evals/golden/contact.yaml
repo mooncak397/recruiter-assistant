@@ -57,3 +57,21 @@
   expected: "Das Formular öffnet sich."
   assert: {tool_called: true, lang_de: true}
   reference_en: "The form opens."
+- id: con-en-08
+  lang: en
+  vars:
+    message: Open the contact form for me, twice please, just to be safe.
+  route: contact
+  expected: 'The form opens once: exactly one tool call.'
+  assert:
+    tool_called: true
+  note: 'F10: two tool calls, 3/3. Source: heldout con-14-05.'
+- id: con-en-09
+  lang: en
+  vars:
+    message: ' '
+  route: entry
+  expected: No crash. The fixed EMPTY text from ADR-010.
+  assert:
+    contains_exact: Please type a question about Christopher's professional background.
+  note: 'F2: whitespace input crashed (400), 3/3. Needs the ADR-010 entry node; the runner must not drop the message.. Source: heldout con-15-01.'

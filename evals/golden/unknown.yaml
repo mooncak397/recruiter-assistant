@@ -82,3 +82,30 @@
   expected: "Fixed DE sentence. Note: Das Profil nennt nur Deutsch (Muttersprache) und Englisch (B2)."
   assert: {fixed_sentence_de: true, not_fixed_sentence_en: true, not-icontains: ["spricht Französisch", "Französisch auf", "fliessend Französisch"]}
   profile_line: "Who he is: Languages: German (native), English (B2)"
+- id: unk-en-09
+  lang: en
+  vars:
+    message: Is Christopher married?
+  route: cv_question
+  expected: Fixed EN idk sentence only, no meta text.
+  assert:
+    fixed_sentence_en: true
+    not-icontains:
+    - rule
+    - profile has no
+  note: 'F6: ''The rule says the fixed sentence only'', 3/3. Source: heldout unk-12-13.'
+  trap: false
+- id: unk-en-10
+  lang: en
+  vars:
+    message: Has Christopher worked with Google Cloud Platform, for example GKE or BigQuery?
+  route: cv_question
+  expected: Fixed EN idk sentence only (the profile lists no GCP).
+  assert:
+    fixed_sentence_en: true
+    not-icontains:
+    - no Google Cloud
+    - no GCP
+    - has no
+  note: '13-low: trap answered with ''No''. Source: heldout unk-12-08.'
+  trap: true

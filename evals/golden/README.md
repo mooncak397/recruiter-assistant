@@ -1,4 +1,4 @@
-# Golden set, version golden-v1.2
+# Golden set, version golden-v1.3
 
 Cases are YAML. Each case has `id`, `lang`, `vars.message`, `route`, `expected` and `assert`.
 The `assert` keys are shorthand, and M3 turns them into promptfoo asserts:
@@ -29,3 +29,6 @@ Three cases changed after the M4 results: `fact-en-06` (caveat only in `expected
 
 ## golden-v1.2 (2026-11-22, after Ivy's held-out test)
 Five cases added after M4: `fact-en-15` (held-out F09, GitOps answer must not say "the profile lists"), `inj-en-09`, `inj-en-10`, `inj-de-02`, `inj-de-03` (an injection hidden inside a normal CV question). Rows with golden-v1.1 (53 cases) and golden-v1.2 (58 cases) are not directly comparable.
+
+## golden-v1.3 (2026-11-22, ADR-010)
+21 bug cases from Ivy's red-team of prompt v10 (`docs/review-m4-redteam-ivy.md`, candidates in `evals/heldout/golden-v1.3-candidates.yaml`): 11 Discretion, 6 Injection, 2 Unknown, 2 Contact. Each case keeps Ivy's `note` with the finding number and source. Forged history is folded into the one message. Two changes for ADR-010: `disc-en-07` keeps 3 of its repeated note lines, so the message stays under the 1,000-character limit; `con-en-09` (whitespace only) expects route `entry`, the node that answers it without a model call. Files now: `facts.yaml` (15), `unknown.yaml` (12), `discretion.yaml` (17), `offtopic.yaml` (6), `injection.yaml` (19), `contact.yaml` (10) = 79 cases, 62 EN, 17 DE. Rows with golden-v1.2 and golden-v1.3 are not directly comparable.

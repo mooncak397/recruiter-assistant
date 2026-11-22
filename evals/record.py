@@ -40,7 +40,7 @@ def majority(runs: list[list[dict]]) -> tuple[list[dict], int]:
 
 
 def metrics(results: list[dict]) -> dict:
-    """results = promptfoo result entries. Percent values are over all matching cases (n = 58)."""
+    """results = promptfoo result entries. Percent values are over all matching cases (n = all golden cases)."""
     cases = [(r["testCase"]["description"], r["namedScores"], r["success"], r) for r in results]
     pct = lambda xs: round(100 * sum(xs) / len(xs), 1) if xs else None
     grp = lambda g: [c for c in cases if c[0].startswith(g + "-")]
@@ -102,12 +102,12 @@ def main(paths: list[str], compare_to: str | None = None):
     row = {
         "date": date.today().isoformat(),
         "prompt_version": rules_version(),
-        "golden_version": "golden-v1.2",
+        "golden_version": "golden-v1.3",
         "git_sha": subprocess.run(["git", "rev-parse", "--short", "HEAD"], cwd=ROOT, capture_output=True, text=True).stdout.strip(),
         "model_app": os.environ.get("MODEL_APP", ""),
         "model_judge": os.environ.get("MODEL_JUDGE", ""),
         **metrics(results),
-        "n": total,  # stays 58; error cases are left out of the percentages
+        "n": total,  # all golden cases; error cases are left out of the percentages
         "runs": len(raw),
         "unstable": unstable if len(raw) > 1 else "",  # one run cannot show instability
         "errors": errors,
