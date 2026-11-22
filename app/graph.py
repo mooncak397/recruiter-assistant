@@ -2,6 +2,7 @@
 entry -> classify -> answer_cv | contact | off_topic -> finalize. entry and finalize make no model call.
 The model is injected, so tests can pass a fake one."""
 import logging
+import re
 from typing import Literal
 
 from langchain_core.messages import AIMessage, SystemMessage
@@ -62,6 +63,17 @@ def _transport(e: Exception) -> bool:
             or "429" in msg or "RESOURCE_EXHAUSTED" in msg)
 
 
+_EN = {"the", "and", "is", "you", "for", "he", "his", "of", "to", "what", "does", "how", "please"}
+_DE = {"der", "die", "und", "ist", "sie", "für", "ein", "eine", "das", "er", "nicht", "wie", "was", "hat", "seine", "bitte"}
+
+
+def _guess_lang(text: str, default: str) -> str:
+    """Function-word count for the fixed entry texts. A tie (also empty text) keeps the default."""
+    words = re.findall(r"[a-zäöüß]+", text.lower())
+    en, de = sum(w in _EN for w in words), sum(w in _DE for w in words)
+    return "de" if de > en else "en" if en > de else default
+
+
 def build_graph(model):
     prompt = system_prompt()
     fixed = fixed_sentences()
@@ -82,9 +94,9 @@ def build_graph(model):
             return None, (BUSY if busy else idk)[lang]
 
     def entry(state: State):
-        lang = state.get("lang") or "en"  # the session's last lang; no model call to detect it
-        out = {"route": "entry", "lang": lang, "show_form": False, "tool_calls": [], "reply": "", "fixed": False}
         text = state["messages"][-1].text.strip()
+        lang = _guess_lang(text, state.get("lang") or "en")  # no model call to detect it
+        out = {"route": "entry", "lang": lang, "show_form": False, "tool_calls": [], "reply": "", "fixed": False}
         if not text:
             return {**out, "reply": EMPTY[lang], "fixed": True}
         if len(text) > MAX_CHARS:

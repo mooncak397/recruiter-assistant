@@ -119,6 +119,12 @@ def test_entry_fixed_texts_cost_no_call(q, lang, text):
     assert m.calls == []
 
 
+def test_too_long_uses_the_language_of_the_text():
+    de = "Bitte sagen Sie mir, was er bei der DATEV macht und wie das Team arbeitet. " * 20
+    assert answer(FakeModel(), de) == TOO_LONG["de"]
+    assert answer(FakeModel(), "Please tell me what he does and how the team works. " * 30, lang="de") == TOO_LONG["en"]
+
+
 def test_1000_chars_still_goes_to_the_model():
     m = FakeModel()
     assert answer(m, " " + "x" * 1000 + " ") == "He works at DATEV."  # the limit counts after strip()
