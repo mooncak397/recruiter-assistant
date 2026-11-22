@@ -18,7 +18,9 @@ def _build(provider: str, name_var: str):
         return init_chat_model(name, model_provider="anthropic", max_tokens=4096)
     if not (os.environ.get("GEMINI_API_KEY") or os.environ.get("GOOGLE_API_KEY")):
         raise SystemExit("GEMINI_API_KEY is not set. Put it in .env (see README).")
-    return init_chat_model(name, model_provider="google_genai", temperature=0)
+    # a hung free-tier call must not block an eval run or a chat turn: 60 s, then the graph answers BUSY
+    return init_chat_model(name, model_provider="google_genai", temperature=0,
+                           timeout=float(os.environ.get("MODEL_TIMEOUT", "60")))
 
 
 def get_model():
