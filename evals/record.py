@@ -1,20 +1,28 @@
 """promptfoo results JSON -> one row in evals/history.csv, and a per-group table on stdout.
-Usage: uv run python evals/record.py run1.json [run2.json run3.json]
+Usage: uv run python evals/record.py run1.json [run2.json run3.json] [--compare previous-official.json]
 (The README chart block is M10.)"""
 import csv
 import json
 import os
-import re
 import subprocess
 import sys
 from datetime import date
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT))
+
+from app.prompts import rules_version  # noqa: E402
 HISTORY = ROOT / "evals/history.csv"
 COLUMNS = ["date", "prompt_version", "golden_version", "git_sha", "model_app", "model_judge", "n", "route", "lang",
            "facts", "no_invention", "injection", "tool_precision", "tool_recall", "tone", "overall",
-           "discretion", "de_pass", "app_calls", "length", "runs", "unstable"]
+           "discretion", "de_pass", "app_calls", "length", "runs", "unstable", "errors"]
+
+
+def is_error(r: dict) -> bool:
+    """A judge outage on a non-safety rubric: the case is left out of the scores (ADR-008, amendment 1)."""
+    comps = (r.get("gradingResult") or {}).get("componentResults") or []
+    return any(str(c.get("reason", "")).startswith("JUDGE_ERROR:") for c in comps)
 
 
 def majority(runs: list[list[dict]]) -> tuple[list[dict], int]:
@@ -68,20 +76,41 @@ def group_table(results: list[dict]) -> str:
     return "\n".join(lines)
 
 
-def main(paths: list[str]):
-    runs = [json.load(open(p))["results"]["results"] for p in paths]
-    results, unstable = majority(runs)
-    rules = (ROOT / "prompts/rules.md").read_text()
+def unstable_ids() -> set[str]:
+    """Case ids in evals/unstable.txt (the first word of each line that is not a # comment)."""
+    f = ROOT / "evals/unstable.txt"
+    return {l.split()[0] for l in f.read_text().splitlines() if l.strip() and not l.startswith("#")} if f.exists() else set()
+
+
+def compare(prev: list[dict], cur: list[dict], unstable: set[str]) -> dict:
+    """Newly passed and newly failed cases against the previous official run (ADR-009)."""
+    p = {r["testCase"]["description"]: r["success"] for r in prev}
+    c = {r["testCase"]["description"]: r["success"] for r in cur}
+    up = sorted(i for i in c if i in p and c[i] and not p[i])
+    down = sorted(i for i in c if i in p and p[i] and not c[i])
+    net = len([i for i in up if i not in unstable]) - len([i for i in down if i not in unstable])
+    verdict = "clearly better" if net >= 6 else "better (1 run)" if net >= 3 else "no claim"
+    return {"newly_passed": up, "newly_failed": down, "net": net, "verdict": verdict,
+            "warnings": sorted(i for i in up + down if i in unstable)}
+
+
+def main(paths: list[str], compare_to: str | None = None):
+    raw = [json.load(open(p))["results"]["results"] for p in paths]
+    total = len({r["testCase"]["description"] for run in raw for r in run})
+    results, unstable = majority([[r for r in run if not is_error(r)] for run in raw])
+    errors = total - len(results)
     row = {
         "date": date.today().isoformat(),
-        "prompt_version": re.match(r"version: (v\d+)", rules).group(1),
+        "prompt_version": rules_version(),
         "golden_version": "golden-v1",
         "git_sha": subprocess.run(["git", "rev-parse", "--short", "HEAD"], cwd=ROOT, capture_output=True, text=True).stdout.strip(),
         "model_app": os.environ.get("MODEL_APP", ""),
         "model_judge": os.environ.get("MODEL_JUDGE", ""),
         **metrics(results),
-        "runs": len(runs),
-        "unstable": unstable,
+        "n": total,  # stays 53; error cases are left out of the percentages
+        "runs": len(raw),
+        "unstable": unstable if len(raw) > 1 else "",  # one run cannot show instability
+        "errors": errors,
     }
     old = list(csv.DictReader(open(HISTORY))) if HISTORY.exists() else []  # keep old rows, new columns stay empty
     with open(HISTORY, "w", newline="") as f:
@@ -90,10 +119,24 @@ def main(paths: list[str]):
         w.writerows(old + [row])
     print(group_table(results))
     print(row)
+    if errors > 2:
+        print(f"INCOMPLETE: {errors} judge errors (more than 2). No claim. Judge unavailable, run again.")
+    if compare_to:
+        prev = [r for r in json.load(open(compare_to))["results"]["results"] if not is_error(r)]
+        c = compare(prev, results, unstable_ids())
+        print(f"vs previous: newly passed {c['newly_passed']}, newly failed {c['newly_failed']}")
+        print(f"net gain outside unstable.txt: {c['net']} -> {c['verdict']} (a 1-run gain of 3 to 5 can be noise)")
+        for i in c["warnings"]:
+            print(f"WARNING: {i} is in evals/unstable.txt and changed; it does not count")
+        if len(raw) > 1 and unstable > 10:
+            print("NOISY: more than 10 unstable cases, no claim")
 
 
 if __name__ == "__main__":
     from dotenv import load_dotenv
 
     load_dotenv(ROOT / ".env")
-    main(sys.argv[1:])  # one file per run; three files = a release (majority)
+    args = sys.argv[1:]
+    prev = args[args.index("--compare") + 1] if "--compare" in args else None
+    files = [a for a in args if not a.startswith("--") and a != prev]
+    main(files, prev)  # one file per run; three files = a release (majority)

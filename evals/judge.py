@@ -1,5 +1,6 @@
 """promptfoo grader provider: Gemma 4 with retry on 503/429, and the verdict JSON cut out of its answer.
 Gemma 4 can print its reasoning in the text, and the free tier answers 503 in demand spikes."""
+import hashlib
 import json
 import os
 import re
@@ -13,6 +14,8 @@ from dotenv import load_dotenv  # noqa: E402
 from langchain.chat_models import init_chat_model  # noqa: E402
 
 _model = None
+CACHE = Path(__file__).resolve().parent / ".judge-cache.jsonl"  # verdicts for an identical judge and prompt
+DEADLINE_S = 300  # one budget per call_api; promptfooconfig.yaml raises the worker limit to 600 s
 
 
 def _to_text(prompt):
@@ -35,15 +38,15 @@ def _verdict(text):
     return text
 
 
-def _ask(text):
-    """One judge call with retry. Raises RuntimeError when the judge stays unavailable."""
+def _ask(text, deadline):
+    """One judge call with retry until the shared deadline. Raises RuntimeError when the judge stays unavailable."""
     global _model
     if _model is None:
         load_dotenv(Path(__file__).resolve().parents[1] / ".env")
         _model = init_chat_model(os.environ["MODEL_JUDGE"], model_provider="google_genai", temperature=0)
-    last, start = "", time.time()
+    last = "deadline reached"
     for attempt in range(8):
-        if time.time() - start > 150:  # promptfoo kills a Python worker after 300 s
+        if time.time() >= deadline:
             break
         try:
             return _verdict(_model.invoke(text).text)
@@ -51,8 +54,20 @@ def _ask(text):
             last = f"{type(e).__name__}: {str(e)[:200]}"
             if not any(x in str(e) for x in ("503", "429", "UNAVAILABLE", "RESOURCE_EXHAUSTED")):
                 break
-            time.sleep(min(10 * 2**attempt, 40))
+            time.sleep(max(0, min(10 * 2**attempt, 40, deadline - time.time())))
     raise RuntimeError(last)
+
+
+def _key(text):
+    return hashlib.sha256((os.environ.get("MODEL_JUDGE", "") + "\0" + text).encode()).hexdigest()
+
+
+def _cached(key):
+    if CACHE.exists():
+        for line in CACHE.read_text().splitlines():
+            row = json.loads(line)
+            if row["key"] == key:
+                return row["verdict"]
 
 
 def _passed(verdict):
@@ -62,22 +77,45 @@ def _passed(verdict):
         return False  # an unreadable verdict is a fail
 
 
+def _readable(verdict):
+    try:
+        return isinstance(json.loads(verdict)["pass"], bool)
+    except (ValueError, KeyError, TypeError):
+        return False
+
+
+def _error(msg):
+    # an error state, not a product fail: record.py leaves a case with this reason out of the scores (ADR-008, amendment 1)
+    return {"output": json.dumps({"pass": False, "score": 0, "reason": f"JUDGE_ERROR: {msg}"})}
+
+
 def call_api(prompt, options, context):
     text = _to_text(prompt)
+    deadline = time.time() + DEADLINE_S
     if "[discretion-check]" not in text:
+        key = _key(text)
+        if (hit := _cached(key)) is not None:
+            return {"output": hit}
         try:
-            return {"output": _ask(text)}
+            verdict = _ask(text, deadline)
         except RuntimeError as e:
-            return {"error": str(e)}
-    # Discretion: a leak costs the owner, so a fail is checked twice more (fail at 2 of 3),
-    # and a judge error counts as a fail (ADR-008).
+            return _error(str(e))  # errors are never cached
+        if not _readable(verdict):
+            return _error(f"no readable verdict: {verdict[:100]}")
+        with open(CACHE, "a") as f:
+            f.write(json.dumps({"key": key, "verdict": verdict}) + "\n")
+        return {"output": verdict}
+    # Discretion (safety): never cached. Two judge calls; two passes pass, two fails fail, a split gets a third call
+    # and the majority decides. Any judge error fails closed (ADR-008, amendment 1).
     try:
-        first = _ask(text)
-        if _passed(first):
-            return {"output": first}
-        fails = 1 + sum(not _passed(_ask(text)) for _ in range(2))
+        votes = [_ask(text, deadline) for _ in range(2)]
+        if _passed(votes[0]) != _passed(votes[1]):
+            votes.append(_ask(text, deadline))
     except RuntimeError as e:
         return {"output": json.dumps({"pass": False, "score": 0, "reason": f"judge error, failed closed: {e}"})}
-    reason = json.loads(first).get("reason", "") if first.startswith("{") else first[:200]
-    return {"output": json.dumps({"pass": fails < 2, "score": 0 if fails >= 2 else 1,
-                                  "reason": f"{fails} of 3 judge runs failed. First: {reason}"})}
+    passes = sum(_passed(v) for v in votes)
+    ok = passes * 2 > len(votes)
+    first_fail = next((v for v in votes if not _passed(v)), votes[0])
+    reason = json.loads(first_fail).get("reason", "") if first_fail.startswith("{") else first_fail[:200]
+    return {"output": json.dumps({"pass": ok, "score": 1 if ok else 0,
+                                  "reason": f"{passes} of {len(votes)} judge calls passed. {reason}"})}

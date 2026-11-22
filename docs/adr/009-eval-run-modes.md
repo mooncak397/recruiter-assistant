@@ -1,0 +1,29 @@
+# ADR-009: Eval run modes: fast loop, one judged run per version, 3 runs only at the end
+
+Status: accepted, 2026-11-22. Replaces the "Noise" part of ADR-008 (3 runs per release, 3-run v1 re-baseline). The length metric and the Discretion checks of ADR-008 stay as they are.
+
+Context: one full run takes about 51 minutes, and a 3-run release about 3 hours. The time goes to the judge, not to the app. The saved v1 run spent about 5 minutes in app calls; the judge-only re-grade of the same answers (32 Gemma calls, no app calls) took 41 minutes, about 77 seconds per call, because Gemma 4 often answers 503 and the retry waits. Only 16 of 53 cases have judge rubrics (14 Facts cases with `factual` and `invention`, `disc-en-03` and `disc-de-03` with `tone_judge` and `discretion_judge`). The other 37 cases are fully decided by code checks.
+
+Decision:
+- Three run modes, one entry point (`evals/run.py`):
+  - `fast`: code checks only, no judge, for the edit loop. Selection by group, by case ids, by the failing cases of an earlier result file, or by the golden cases changed since a git ref. Without a selection it runs all 53 cases. The result is not written to `history.csv`. Target: under 5 minutes for a selection, about 10 minutes for all 53.
+  - Every judged mode (`version`, `release`) re-grades judge-error cases on the saved answers, after a 5-minute pause, at most 2 rounds (ADR-008 amendment 1).
+  - `version`: 1 full run of all 53 cases with the judge. This run is the official score of a prompt version and the only run that adds a row to `history.csv` (`runs` = 1, `unstable` empty). Its result file is kept as `evals/results/<version>.json`, because the next version compares against it case by case.
+  - `release`: 3 full runs with the judge, majority 2 of 3, as in ADR-008. Only for the final prompt version and for v5 (the length gate `>= 90 %` is decided on the majority). The row has `runs` = 3 and the count of unstable cases.
+- Safety stays at full strength in every mode, `fast` included. The groups `disc` (6), `inj` (9) and `con` (8) always run, whatever the selection. The code checks for canary, tool call and the Discretion word list run on every selected case. `discretion_judge` on the 2 summary cases always runs, with re-judge 2 of 3 and fail closed. `fast` drops only `factual`, `invention` and `tone_judge`.
+- The v1 baseline is the re-grade of the saved v1 answers with the fixed rubrics (`evals/results/v1-regrade.json`, `runs` = 1). Its `fact-en-11` judge error is re-graded under the error rule (ADR-008 amendment 1), and the corrected result is appended as a new v1 row. The latest v1 row is the baseline. No 3-run re-baseline.
+- The "better version" rule with 1 run. Compare the new version's run with the previous version's official run, case by case. Net gain = newly passed minus newly failed, counted only on cases that are not in `evals/unstable.txt`. A net gain of 3 or more counts as "better (1 run)". A net gain of 6 or more counts as "clearly better". Below 3 there is no claim. Gains and losses on listed cases are printed as a warning and do not count. The README states the limit: n = 53, one case is about 1.9 points, and with 1 run a gain of 3 to 5 cases can still be noise.
+- `evals/unstable.txt` starts with the 4 cases that flip pass/fail on the current code checks between the two saved v1 runs (`v1-prelim-code-only.json`, `v1-baseline.json`): `disc-de-02`, `fact-en-10`, `inj-en-06`, `unk-en-01`. The 20 cases whose answer text differed between those runs are listed as a comment, as a weaker warning. Every `release` run adds its unstable cases to the list. Cases are added, never removed by a script.
+- The PR regression gate (ADR-008) compares with the last official run (1 run) instead of a 3-run majority. "More than 4 cases below" and the re-run of only the regressed cases 2 more times stay.
+- Fewer judge calls, only where the result stays the same:
+  - A judge cache: key = sha256 of the judge model id plus the full grader prompt (rubric and answer). A cached verdict is used when the same answer meets the same rubric again (re-grades, a re-start after a crash, identical answers in release runs and PR re-runs). Errors are never cached. `[discretion-check]` prompts are never cached, so the re-judge stays a real second opinion.
+  - No new rubric merges. Merging `factual` and `invention` into one call would halve the Facts calls, but it changes the scores and needs new calibration. Not now.
+- 503 handling: the judge gets one time budget per grader call, not per attempt. Today a Discretion check can make 3 judge attempts of up to 150 seconds each, which can go past the 300-second Python worker limit. Fix: one shared deadline per `call_api`. If promptfoo 0.126 lets us raise the Python worker timeout by setting, raise it to 600 seconds and the judge budget to 300 seconds; if not, keep a shared 270-second deadline. No other 503 work.
+
+Why: the judge is the slow and unreliable part, so the edit loop must not wait for it. One judged run per version keeps a clear score line in `history.csv` at a sixth of the cost. The 3-run majority only matters where a claim or a gate depends on it: the final version and the v5 length gate. Safety cases are cheap (code checks and 2 judge calls), and a leak harms the owner, so they never get a reduced mode.
+
+Consequences:
+- A version costs about 1 hour instead of 3. The fast loop gives feedback in minutes, but its numbers are not official and do not cover `factual` and `invention`.
+- Claims between versions are weaker. A 1-run gain of 3 cases is reported as "better (1 run)", with the noise note. Only the final version gets a majority result.
+- The fast loop can still wait on Gemma for the 2 `discretion_judge` cases when Gemma answers 503. That is accepted.
+- `evals/results/<version>.json` files are kept in git (about 1 MB each).

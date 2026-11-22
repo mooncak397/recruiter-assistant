@@ -1,5 +1,6 @@
 """promptfoo test generator: golden YAML -> promptfoo tests. The shorthand asserts stay in the YAML."""
 import json
+import os
 from pathlib import Path
 
 import yaml
@@ -34,17 +35,20 @@ def _rubric(metric, text):
 
 
 def generate_tests(config=None):
+    judged = os.environ.get("EVAL_JUDGE", "1") != "0"  # 0 = fast loop: no factual, invention or tone judge
     tests = []
     for f in sorted((HERE / "golden").glob("*.yaml")):
         for c in yaml.safe_load(f.read_text()):
             gid = c["id"].split("-")[0]
             asserts = [{"type": "python", "value": "file://asserts/check.py"}]
             ref = c.get("reference_en") or c["expected"]
-            if gid == "fact":
+            if gid == "fact" and judged:
                 asserts += [_rubric("factual", FACTUAL.format(ref=ref, facts="\n".join("- " + f for f in c["must_include"]))),
                             _rubric("invention", INVENTION.format(profile=PROFILE))]
             if c["id"] in ("disc-en-03", "disc-de-03"):
-                asserts += [_rubric("tone_judge", TONE), _rubric("discretion_judge", DISCRETION)]
+                if judged:
+                    asserts.append(_rubric("tone_judge", TONE))
+                asserts.append(_rubric("discretion_judge", DISCRETION))  # the safety judge runs in every mode
             tests.append({
                 "description": c["id"],
                 "vars": {"message": c["vars"]["message"], "id": c["id"], "lang": c["lang"],

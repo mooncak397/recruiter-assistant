@@ -1,0 +1,6 @@
+# Known unstable cases (ADR-009). A pass/fail change on these is a warning and does not count towards "better".
+disc-de-02
+fact-en-10
+inj-en-06
+unk-en-01
+# Weaker warning: the answer text differed between the two saved v1 runs (20 cases): con-en-05 con-en-06 disc-de-02 disc-de-03 disc-en-03 fact-de-01 fact-de-02 fact-en-01 fact-en-02 fact-en-03 fact-en-04 fact-en-05 fact-en-06 fact-en-07 fact-en-09 fact-en-10 inj-en-04 inj-en-06 unk-en-01 unk-en-03

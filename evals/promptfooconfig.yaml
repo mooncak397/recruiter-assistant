@@ -6,10 +6,13 @@ prompts:
 providers:
   - id: file://provider.py
     label: graph
+    config: {timeout: 600000} # the default 300 s is too short for retries
 tests: file://tests.py:generate_tests
 defaultTest:
   options:
-    provider: file://judge.py # judge: Gemma 4 (MODEL_JUDGE), a different model family than the app model
+    provider: # judge: Gemma 4 (MODEL_JUDGE), a different model family than the app model
+      id: file://judge.py
+      config: {timeout: 600000} # judge.py has one 300 s deadline per call
 evaluateOptions:
   maxConcurrency: 1 # free-tier limits are unconfirmed: one case at a time, with a pause
   delay: 6000

@@ -1,0 +1,137 @@
+"""Eval entry point (ADR-009).
+  uv run python evals/run.py fast [--groups fact,unk] [--ids fact-en-01] [--failing old.json] [--changed <git-ref>] [--delay 3000]
+      Code checks only, nothing recorded. With no selection: all 53 cases. With a selection: the safety groups disc, inj, con plus the selection.
+  uv run python evals/run.py version [--compare previous-official.json]   one full judged run and the official row
+  uv run python evals/run.py release [--compare ...]                      3 judged runs, majority, one row (resumes: an existing run file is kept)"""
+import argparse
+import json
+import os
+import subprocess
+import sys
+import time
+from pathlib import Path
+
+import yaml
+
+ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT))
+
+GROUPS = {"fact": "fact", "facts": "fact", "unk": "unk", "unknown": "unk", "disc": "disc", "discretion": "disc",
+          "off": "off", "offtopic": "off", "inj": "inj", "injection": "inj", "con": "con", "contact": "con"}
+SAFETY = ["disc", "inj", "con"]
+OUT = ROOT / "evals/results"
+
+
+def golden() -> dict[str, dict]:
+    return {c["id"]: c for f in sorted((ROOT / "evals/golden").glob("*.yaml")) for c in yaml.safe_load(f.read_text())}
+
+
+def changed_ids(ref: str) -> set[str]:
+    """Golden cases that are new or different since a git ref."""
+    now, old = golden(), {}
+    for f in (ROOT / "evals/golden").glob("*.yaml"):
+        shown = subprocess.run(["git", "show", f"{ref}:evals/golden/{f.name}"], cwd=ROOT, capture_output=True, text=True)
+        if shown.returncode == 0:
+            old.update({c["id"]: c for c in yaml.safe_load(shown.stdout)})
+    return {i for i, c in now.items() if old.get(i) != c}
+
+
+def run_eval(out: Path, ids=None, judge=True, delay=None, replay_from=None):
+    env = {**os.environ, "EVAL_JUDGE": "1" if judge else "0"}  # read by evals/tests.py
+    cmd = ["npx", "promptfoo@0.126.0", "eval", "-c", "evals/promptfooconfig.yaml", "--env-file", ".env",
+           "--no-cache", "-o", str(out)]
+    if ids is not None:
+        cmd += ["--filter-pattern", "^(" + "|".join(sorted(ids)) + ")$"]
+    if delay:
+        cmd += ["--delay", str(delay)]
+    if replay_from:  # grade saved answers again, no app call
+        env["REPLAY_FROM"] = str(replay_from)
+        cmd += ["-r", "file://replay.py"]
+    out.parent.mkdir(exist_ok=True)
+    out.unlink(missing_ok=True)
+    subprocess.run(cmd, cwd=ROOT, env=env)  # promptfoo exits non-zero when a case fails: not an error here
+    if not out.exists():
+        sys.exit(f"promptfoo wrote no result file: {out}")
+
+
+def regrade_errors(out: Path, rounds: int = 2, pause: int = 300):
+    """Judge-error cases are graded again on the saved answer, after a pause, at most twice (ADR-008, amendment 1)."""
+    from evals.record import is_error
+
+    for _ in range(rounds):
+        data = json.load(open(out))
+        ids = [r["testCase"]["description"] for r in data["results"]["results"] if is_error(r)]
+        if not ids:
+            return
+        print(f"{len(ids)} judge errors, waiting {pause} s: {' '.join(ids)}")
+        time.sleep(pause)
+        tmp = out.with_suffix(".regrade.json")
+        run_eval(tmp, ids, judge=True, replay_from=out)
+        new = {r["testCase"]["description"]: r for r in json.load(open(tmp))["results"]["results"]}
+        data["results"]["results"] = [new.get(r["testCase"]["description"], r) for r in data["results"]["results"]]
+        json.dump(data, open(out, "w"))
+        tmp.unlink()
+
+
+def summary(out: Path, seconds: float):
+    rs = json.load(open(out))["results"]["results"]
+    meta = [r["response"].get("metadata") or {} for r in rs]
+    bad = [r["testCase"]["description"] for r in rs if not r["success"]]
+    print(f"{len(rs)} cases, {len(rs) - len(bad)} pass, {seconds:.0f} s, app calls {sum(m.get('llm_calls', 0) for m in meta)}, "
+          f"rate_limited {sum(m.get('rate_limited', 0) for m in meta)}")
+    print("failing:", " ".join(bad) or "none")
+
+
+def main(argv=None):
+    ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
+    sub = ap.add_subparsers(dest="mode", required=True)
+    f = sub.add_parser("fast")
+    f.add_argument("--groups", default="")
+    f.add_argument("--ids", default="")
+    f.add_argument("--failing")
+    f.add_argument("--changed")
+    f.add_argument("--delay", type=int, default=3000)
+    for m in ("version", "release"):
+        sub.add_parser(m).add_argument("--compare")
+    a = ap.parse_args(argv)
+
+    from dotenv import load_dotenv
+
+    load_dotenv(ROOT / ".env")  # MODEL_APP and MODEL_JUDGE for the row
+    cases = golden()
+    if a.mode == "fast":
+        wanted = {GROUPS[g] for g in a.groups.split(",") if g}
+        ids = {i for i in cases if i.split("-")[0] in wanted} | {i for i in a.ids.split(",") if i}
+        if a.failing:
+            ids |= {r["testCase"]["description"] for r in json.load(open(a.failing))["results"]["results"] if not r["success"]}
+        if a.changed:
+            ids |= changed_ids(a.changed)
+        # no selection = all 53 cases; a selection always carries the safety groups (ADR-009)
+        selected = bool(a.groups or a.ids or a.failing or a.changed)
+        ids = ids | {i for i in cases if i.split("-")[0] in SAFETY} if selected else set(cases)
+        unknown = ids - set(cases)
+        if unknown:
+            sys.exit(f"unknown case ids: {sorted(unknown)}")
+        out, t0 = OUT / "fast-latest.json", time.time()
+        run_eval(out, ids, judge=False, delay=a.delay)
+        summary(out, time.time() - t0)
+        return
+    from evals import record
+
+    from app.prompts import rules_version
+
+    ver = rules_version()
+    outs = [OUT / (f"{ver}.json" if a.mode == "version" else f"{ver}-run{i}.json") for i in ([1] if a.mode == "version" else [1, 2, 3])]
+    for out in outs:
+        if a.mode == "release" and out.exists():
+            print(f"keeping {out.name} (resume)")
+            continue
+        t0 = time.time()
+        run_eval(out)
+        regrade_errors(out)
+        summary(out, time.time() - t0)
+    record.main([str(o) for o in outs], a.compare)
+
+
+if __name__ == "__main__":
+    main()

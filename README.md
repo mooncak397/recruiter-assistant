@@ -18,4 +18,12 @@ Every prompt version will be scored against a fixed golden set, and the score hi
 
 `uv run npx promptfoo@0.126.0 eval -c evals/promptfooconfig.yaml --env-file .env --no-cache -o evals/results/latest.json`, then `uv run python evals/record.py evals/results/latest.json` adds a row to `evals/history.csv`. One run takes about an hour on the free tier. Never start two runs at the same time.
 
-Release runs (ADR-008): run the eval 3 times into three files, then `uv run python evals/record.py run1.json run2.json run3.json`. The row uses the majority per case and counts the unstable cases. To grade saved answers again without new app calls: `REPLAY_FROM=<old results>.json uv run npx promptfoo@0.126.0 eval -c evals/promptfooconfig.yaml -r file://replay.py --env-file .env --no-cache -o <new>.json`.
+Eval modes (ADR-009), all from the repo root:
+
+- `uv run python evals/run.py fast [--groups fact,unk] [--ids fact-en-01] [--failing old.json] [--changed <git-ref>]`: code checks only, nothing recorded. A selection always adds the safety groups (disc, inj, con).
+- `uv run python evals/run.py version [--compare evals/results/<previous version>.json]`: one full judged run, the official row in `evals/history.csv`.
+- `uv run python evals/run.py release`: 3 judged runs, majority per case. Only for the final version and v5. It resumes: a run file that exists is kept.
+
+Noise: the app model ignores `temperature`, so two runs of the same prompt differ. With 53 cases one case is about 1.9 points, and a 1-run gain of 3 to 5 cases can be noise. The cases in `evals/unstable.txt` do not count towards "better". German results are a count (for example "9 of 10"), never a percentage.
+
+To grade saved answers again without new app calls: `REPLAY_FROM=<old results>.json uv run npx promptfoo@0.126.0 eval -c evals/promptfooconfig.yaml -r file://replay.py --env-file .env --no-cache -o <new>.json`. Judge verdicts are cached in `evals/.judge-cache.jsonl` (not committed).
