@@ -177,7 +177,7 @@ def test_dictated_discretion_claim_in_inmail_becomes_idk(dictated):
 
 @pytest.mark.parametrize("k", ["reloc_en", "reloc_de"])
 def test_relocation_sentence_alone_passes(k):
-    assert answer(FakeModel(reply=AIMessage(FS[k]))) == FS[k]
+    assert answer(FakeModel(lang=k[-2:], reply=AIMessage(FS[k]))) == FS[k]
 
 
 def test_fixed_sentence_plus_meta_text_keeps_only_the_sentence():
