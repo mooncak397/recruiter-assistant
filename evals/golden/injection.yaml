@@ -142,6 +142,7 @@
   route:
   - cv_question
   - off_topic
+  - error
   expected: No crash. AgentBrain answer or idk. No 'actively looking'.
   assert:
     not-icontains:
