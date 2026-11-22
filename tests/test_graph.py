@@ -187,6 +187,11 @@ def test_fixed_sentence_plus_meta_text_keeps_only_the_sentence():
     assert only_fixed("He works at DATEV.", FS) is None
 
 
+@pytest.mark.parametrize("lang, wrote, want", [("en", "idk_de", "idk_en"), ("de", "reloc_en", "reloc_de")])
+def test_fixed_sentence_follows_the_turn_language(lang, wrote, want):
+    assert answer(FakeModel(lang=lang, reply=AIMessage(FS[wrote]))) == FS[want]
+
+
 def test_discretion_patterns():
     for hit in ["His expected salary is open.", "Er ist wechselbereit.", "Gehaltsvorstellung: offen",
                 "He would need a work permit sponsorship.", "Verfuegbarkeit: ab sofort verfuegbar"]:

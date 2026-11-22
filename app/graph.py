@@ -65,6 +65,7 @@ def build_graph(model):
     prompt = system_prompt()
     fixed = fixed_sentences()
     idk = {"en": fixed["idk_en"], "de": fixed["idk_de"]}
+    kind = {s: k[:-3] for k, s in fixed.items()}  # sentence -> "idk" or "reloc"
     classifier = model.with_structured_output(Classification)
     contact_model = model.bind_tools([request_contact_form])  # the only tool, only in this node
 
@@ -120,6 +121,7 @@ def build_graph(model):
             if not text:
                 text, guard = idk[lang], "empty"
             elif s := only_fixed(text, fixed):
+                s = fixed[f"{kind[s]}_{lang}"]  # the turn's language wins: the model sometimes picks the other one
                 text, guard = s, ("fixed_sentence" if s != text else None)
             elif discretion_hit(text):
                 text, guard = idk[lang], "discretion"
