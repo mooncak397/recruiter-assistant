@@ -52,8 +52,7 @@ def test_rules_has_fixed_sentences():
 def test_no_nickname_anywhere():
     for f in ROOT.rglob("*"):
         if f.is_file() and not {".git", ".venv", ".pytest_cache", "__pycache__"} & set(f.parts):
-            if f.name != "test_m0.py":  # this file spells the word in a pattern below
-                assert "chr" + "izz" not in f.read_text(errors="ignore").lower(), f
+            assert "chr" + "izz" not in f.read_text(errors="ignore").lower(), f  # split so this file passes too
 
 
 def test_golden_set():
