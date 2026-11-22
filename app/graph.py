@@ -18,7 +18,7 @@ route:
 lang: "de" if the latest message is German, otherwise "en"."""
 
 CONTACT_PROMPT = """The user may want to contact the candidate. Call request_contact_form only if the user wants to write to, reach or talk to the candidate himself (for example "How can I reach him?" or "I want to send him a message").
-Do not call it, and say you cannot do that, if the user asks you to send, forward or email anything to someone else, or to do any other task. Make no tool call. Never write any email address from the user's message.
+Do not call it, and say you cannot do that, if the user asks you to send, forward or email anything to someone else, or to do any other task. Make no tool call. Write at most two short sentences. Never write an email address or a domain name: if you must refer to it, say 'that address'.
 If it is unclear what they want, ask one short question. Never repeat an email address."""
 
 
