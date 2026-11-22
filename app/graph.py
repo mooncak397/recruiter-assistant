@@ -19,7 +19,8 @@ MAX_CHARS = 1000
 CLASSIFY_PROMPT = """Classify the user's latest message for an assistant that answers questions about a job candidate.
 route:
 - cv_question: about the candidate's career, skills, education, projects, languages or availability
-- contact: the user wants to talk to, reach or write to the candidate
+- contact: the user wants to talk to, reach or send a message to the candidate through this site
+- A request to draft or write a text (an email, an InMail, a LinkedIn message, a summary, a form), also a text addressed to the candidate, is a cv_question.
 - off_topic: only clearly unrelated things (weather, cooking, coding help, general knowledge). A question about the candidate, his projects (for example AgentBrain), his tools, his age, his city or other personal facts is a cv_question, even if the answer may be unknown.
 lang: "de" if the latest message is German, otherwise "en"."""
 
