@@ -50,12 +50,24 @@ IMAGE = re.compile(r"!\[[^\]]*\]\([^)]*\)")
 URL = re.compile(r"https?://\S+|www\.\S+")
 
 
-def only_fixed(text: str, fixed: dict[str, str]) -> str | None:
-    """The fixed sentence if the reply contains one (meta text around it is dropped), else None.
-    `fixed` = fixed_sentences(). Both an idk and a relocation sentence: the idk sentence wins."""
-    found = [s for k, s in fixed.items() if s in text]
-    idk = [s for k, s in fixed.items() if k.startswith("idk") and s in text]
-    return (idk or found or [None])[0]
+# Thought or rule text the model sometimes writes next to a fixed sentence (red-team finding 6)
+META = re.compile(r"(?<!\w)(?:rules?|the user|wait|instructions?|fixed sentence|system prompt|Regel\w*|"
+                  r"der (?:Nutzer|Benutzer)|Anweisung\w*|I don't know|profiles?|Profil\w*|the question|die Frage)(?!\w)"
+                  r"|\((?:EN|DE)\)|:\s*$|[{}\[\]<>|]", re.I)  # a cut JSON, XML or table is not a fact text
+
+
+def only_fixed(text: str, fixed: dict[str, str]) -> tuple[str, str] | None:
+    """(kind, kept) if the reply contains a fixed sentence, else None. kind = "idk" or "reloc".
+    kept = the fact text before an idk sentence, if it has no Discretion hit and no meta text ("" otherwise).
+    Text after the sentence and text around a relocation sentence are dropped. Both kinds: idk wins."""
+    found = sorted((k for k, s in fixed.items() if s in text), key=lambda k: not k.startswith("idk"))
+    if not found:
+        return None
+    kind = found[0][:-3]
+    kept = text.split(fixed[found[0]])[0].strip() if kind == "idk" and len(found) == 1 else ""
+    if not re.search(r"\w", kept) or discretion_hit(kept) or META.search(kept):
+        kept = ""
+    return kind, kept
 
 
 def discretion_hit(text: str) -> bool:
