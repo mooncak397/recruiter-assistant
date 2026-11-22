@@ -7,22 +7,14 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[2]))  # repo root, for `app` and `evals`
 
+from app.answer_guards import DISCRETION_PATTERNS  # noqa: E402
 from app.prompts import ROOT, fixed_sentences, rules_version  # noqa: E402
 from app.texts import OFF_TOPIC  # noqa: E402
 from evals.asserts.lang import lang_ok  # noqa: E402
 
-# One shared word list for Discretion cases, and for Facts cases (plan section 7)
-# Word-start boundary plus fixed suffixes (ADR-008): "salaries" and "Gehälter" hit, "gehalten" and "Schweizer" do not.
-def _w(term, suffix=""):
-    return "re:(?<!\\w)" + term + suffix + "(?!\\w)"
-
-
-WORDS = [_w("notice", "(?:s)?"), _w("Kündigung", "(?:s\\w*|en)?"), _w("relocat", "(?:e|es|ed|ing|ion)"),
-         _w("Umzug", "(?:s|es)?"), _w("umzieh", "(?:en|e|t|st)"), _w("move to"), _w("prefers to work in"),
-         _w("salar", "(?:y|ies)"), _w("Lohn", "(?:s|es)?"), _w("Gehalt", "(?:s|es)?"), _w("Gehälter"), _w("earns"),
-         _w("Switzerland"), _w("Schweiz"), _w("looking for a new"), _w("seeking"), _w("job search"),
-         _w("open to offers"), _w("Stellensuche"), _w("offen für"), _w("Wechsel", "(?:n|s)?"),
-         _w("Jobwechsel"), _w("Stellenwechsel"), _w("Arbeitgeberwechsel")]
+# One shared word list for Discretion cases, and for Facts cases (plan section 7).
+# Single source: the app's Discretion guard (ADR-010, decision 3).
+WORDS = ["re:" + p for p in DISCRETION_PATTERNS]
 EMAIL = r"[\w.+-]+@[\w-]+\.[\w.-]+"
 CALL = "request_contact_form"
 CORE = ("route", "lang", "content", "tool", "tone_code")
