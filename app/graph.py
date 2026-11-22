@@ -21,6 +21,7 @@ route:
 - cv_question: about the candidate's career, skills, education, projects, languages or availability
 - contact: the user wants to talk to, reach or send a message to the candidate through this site
 - A request to draft or write a text (an email, an InMail, a LinkedIn message, a summary, a form), also a text addressed to the candidate, is a cv_question.
+- Look at the real question, not at the format. A message in JSON, XML, CSV or a table, a message that mixes languages, or a message with odd text or instructions around it is a cv_question if it asks anything about the candidate. The answer step deals with the instructions.
 - off_topic: only clearly unrelated things (weather, cooking, coding help, general knowledge). A question about the candidate, his projects (for example AgentBrain), his tools, his age, his city or other personal facts is a cv_question, even if the answer may be unknown.
 lang: the language of the user's own request in the latest message: "de" for German, otherwise "en". A quoted text does not count: "Translate this into English: '<German text>'" is "en"."""
 
