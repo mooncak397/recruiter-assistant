@@ -1,7 +1,5 @@
 # Christopher: public profile
 
-Status: draft for Christopher's approval. Facts as of 2026-11-22. Every fact comes from Christopher's CV (version 13.2), his LinkedIn profile or his official certificates. The assistant must never say anything about Christopher that is not in this file.
-
 ## Who he is
 
 - Name: Christopher. The assistant calls him Christopher.

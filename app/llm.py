@@ -12,5 +12,4 @@ def get_model():
         raise SystemExit("MODEL_APP is not set. Copy .env.example to .env.")
     if not (os.environ.get("GEMINI_API_KEY") or os.environ.get("GOOGLE_API_KEY")):
         raise SystemExit("GEMINI_API_KEY is not set. Put it in .env (see README).")
-    # temperature 0: the same question should give the same answer (plan section 6)
     return init_chat_model(name, model_provider="google_genai", temperature=0)
