@@ -11,6 +11,7 @@ from langchain_core.callbacks import BaseCallbackHandler  # noqa: E402
 
 from app.graph import build_graph  # noqa: E402
 from app.llm import get_model  # noqa: E402
+from app.texts import BUSY  # noqa: E402
 from evals import usage  # noqa: E402
 
 _graph = None
@@ -38,7 +39,10 @@ def call_api(prompt, options, context):
         counter = CountCalls()
         try:
             s = _graph.invoke({"messages": [("user", prompt)]}, config={"callbacks": [counter]})
-            break
+            if s["messages"][-1].text not in BUSY.values():
+                break
+            # the graph turns 429/5xx into the BUSY text (ADR-010); for the eval that is an error, not an answer
+            raise RuntimeError("429 busy reply from the graph")
         except Exception as e:  # shortcut: any 429-like error is retried, others returned as errors
             # Gemini free tier: wait and retry. Claude: the SDK retries a little by itself, no wait code here.
             if os.environ.get("PROVIDER_APP", "google") == "google" and ("429" in str(e) or "RESOURCE_EXHAUSTED" in str(e)):
