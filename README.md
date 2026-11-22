@@ -27,3 +27,5 @@ Eval modes (ADR-009), all from the repo root:
 Noise: the app model ignores `temperature`, so two runs of the same prompt differ. With 53 cases one case is about 1.9 points, and a 1-run gain of 3 to 5 cases can be noise. The cases in `evals/unstable.txt` do not count towards "better". German results are a count (for example "9 of 10"), never a percentage.
 
 To grade saved answers again without new app calls: `REPLAY_FROM=<old results>.json uv run npx promptfoo@0.126.0 eval -c evals/promptfooconfig.yaml -r file://replay.py --env-file .env --no-cache -o <new>.json`. Judge verdicts are cached in `evals/.judge-cache.jsonl` (not committed).
+
+Claude rows in `evals/history.csv` (model_app `claude-haiku-5-5`, judge `claude-sonnet-5-5`) are NOT comparable with the Gemini baseline (rows 418f1ce): other app model, other judge. Run with `PROVIDER_APP=anthropic PROVIDER_JUDGE=anthropic MODEL_APP=... MODEL_JUDGE=...`. A full Claude run costs about 0.25 USD.

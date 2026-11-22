@@ -1,0 +1,471 @@
+npm notice run npx
+npm notice run 'pf' eval -c evals/promptfooconfig.yaml --no-cache -o /home/chris/Projects/recruiter-assistant/evals/results/v1.json --delay 0 -j 8
+Cache is disabled.
+Starting evaluation eval-qGk-2026-11-22T18:02:13
+Running 53 test cases (up to 8 at a time)...
+
+┌────────────────────┬────────────────────┬────────────────────┬────────────────────┬────────────────────┬────────────────────┐
+│ message            │ id                 │ lang               │ route              │ checks             │ [graph]            │
+│                    │                    │                    │                    │                    │ {{message}}        │
+├────────────────────┼────────────────────┼────────────────────┼────────────────────┼────────────────────┼────────────────────┤
+│ I'd like to talk   │ con-en-01          │ en                 │ "contact"          │ {                  │ [PASS] {"route":   │
+│ to Christopher     │                    │                    │                    │   "tool_called":   │ "contact", "lang": │
+│ about a role.      │                    │                    │                    │ true               │ "en", "answer":    │
+│                    │                    │                    │                    │ }                  │ "Happy to help.    │
+│                    │                    │                    │                    │                    │ Please use the     │
+│                    │                    │                    │                    │                    │ contact form below │
+│                    │                    │                    │                    │                    │ to send            │
+│                    │                    │                    │                    │                    │ Christopher a      │
+│                    │                    │                    │                    │                    │ message.",         │
+│                    │                    │                    │                    │                    │ "tool_calls":      │
+│                    │                    │                    │                    │                    │ ["request_contact… │
+│                    │                    │                    │                    │                    │ "show_form": true} │
+├────────────────────┼────────────────────┼────────────────────┼────────────────────┼────────────────────┼────────────────────┤
+│ How can I reach    │ con-en-02          │ en                 │ "contact"          │ {                  │ [PASS] {"route":   │
+│ him?               │                    │                    │                    │   "tool_called":   │ "contact", "lang": │
+│                    │                    │                    │                    │ true               │ "en", "answer":    │
+│                    │                    │                    │                    │ }                  │ "Happy to help.    │
+│                    │                    │                    │                    │                    │ Please use the     │
+│                    │                    │                    │                    │                    │ contact form below │
+│                    │                    │                    │                    │                    │ to send            │
+│                    │                    │                    │                    │                    │ Christopher a      │
+│                    │                    │                    │                    │                    │ message.",         │
+│                    │                    │                    │                    │                    │ "tool_calls":      │
+│                    │                    │                    │                    │                    │ ["request_contact… │
+│                    │                    │                    │                    │                    │ "show_form": true} │
+├────────────────────┼────────────────────┼────────────────────┼────────────────────┼────────────────────┼────────────────────┤
+│ Can I send him a   │ con-en-03          │ en                 │ "contact"          │ {                  │ [PASS] {"route":   │
+│ message about a    │                    │                    │                    │   "tool_called":   │ "contact", "lang": │
+│ position at our    │                    │                    │                    │ true               │ "en", "answer":    │
+│ company?           │                    │                    │                    │ }                  │ "Happy to help.    │
+│                    │                    │                    │                    │                    │ Please use the     │
+│                    │                    │                    │                    │                    │ contact form below │
+│                    │                    │                    │                    │                    │ to send            │
+│                    │                    │                    │                    │                    │ Christopher a      │
+│                    │                    │                    │                    │                    │ message.",         │
+│                    │                    │                    │                    │                    │ "tool_calls":      │
+│                    │                    │                    │                    │                    │ ["request_contact… │
+│                    │                    │                    │                    │                    │ "show_form": true} │
+├────────────────────┼────────────────────┼────────────────────┼────────────────────┼────────────────────┼────────────────────┤
+│ I want to get in   │ con-en-04          │ en                 │ "contact"          │ {                  │ [PASS] {"route":   │
+│ touch with         │                    │                    │                    │   "tool_called":   │ "contact", "lang": │
+│ Christopher about  │                    │                    │                    │ true               │ "en", "answer":    │
+│ a job opportunity. │                    │                    │                    │ }                  │ "Happy to help.    │
+│                    │                    │                    │                    │                    │ Please use the     │
+│                    │                    │                    │                    │                    │ contact form below │
+│                    │                    │                    │                    │                    │ to send            │
+│                    │                    │                    │                    │                    │ Christopher a      │
+│                    │                    │                    │                    │                    │ message.",         │
+│                    │                    │                    │                    │                    │ "tool_calls":      │
+│                    │                    │                    │                    │                    │ ["request_contact… │
+│                    │                    │                    │                    │                    │ "show_form": true} │
+├────────────────────┼────────────────────┼────────────────────┼────────────────────┼────────────────────┼────────────────────┤
+│ What are his main  │ con-en-05          │ en                 │ "cv_question"      │ {                  │ [PASS] {"route":   │
+│ skills?            │                    │                    │                    │   "icontains-any"… │ "cv_question",     │
+│                    │                    │                    │                    │     "Kafka",       │ "lang": "en",      │
+│                    │                    │                    │                    │     "Kubernetes",  │ "answer":          │
+│                    │                    │                    │                    │     "Terraform"    │ "Christopher's     │
+│                    │                    │                    │                    │   ]                │ main skills, based │
+│                    │                    │                    │                    │ }                  │ on his             │
+│                    │                    │                    │                    │                    │ profile:\n\n-      │
+│                    │                    │                    │                    │                    │ **Messaging and    │
+│                    │                    │                    │                    │                    │ streaming:** He    │
+│                    │                    │                    │                    │                    │ works on a managed │
+│                    │                    │                    │                    │                    │ Apache Kafka and   │
+│                    │                    │                    │                    │                    │ RabbitMQ platform  │
+│                    │                    │                    │                    │                    │ used by more than  │
+│                    │                    │                    │                    │                    │ 100 development    │
+│                    │                    │                    │                    │                    │ teams. The Kafka   │
+│                    │                    │                    │                    │                    │ cluste...          │
+├────────────────────┼────────────────────┼────────────────────┼────────────────────┼────────────────────┼────────────────────┤
+│ What is his        │ con-en-06          │ en                 │ "cv_question"      │ {                  │ [PASS] {"route":   │
+│ current role?      │                    │                    │                    │   "icontains-any"… │ "cv_question",     │
+│                    │                    │                    │                    │     "DATEV"        │ "lang": "en",      │
+│                    │                    │                    │                    │   ]                │ "answer":          │
+│                    │                    │                    │                    │ }                  │ "Christopher is a  │
+│                    │                    │                    │                    │                    │ DevOps/Platform    │
+│                    │                    │                    │                    │                    │ Engineer at DATEV  │
+│                    │                    │                    │                    │                    │ eG in Nürnberg,    │
+│                    │                    │                    │                    │                    │ Germany. He has    │
+│                    │                    │                    │                    │                    │ held this role     │
+│                    │                    │                    │                    │                    │ since 07/2022. He  │
+│                    │                    │                    │                    │                    │ works in a team    │
+│                    │                    │                    │                    │                    │ for messaging and  │
+│                    │                    │                    │                    │                    │ streaming, which   │
+│                    │                    │                    │                    │                    │ runs Apache Kafka  │
+│                    │                    │                    │                    │                    │ and RabbitMQ...    │
+├────────────────────┼────────────────────┼────────────────────┼────────────────────┼────────────────────┼────────────────────┤
+│ Please have him    │ con-en-07          │ en                 │ "contact"          │ {                  │ [PASS] {"route":   │
+│ contact me about a │                    │                    │                    │   "tool_called":   │ "contact", "lang": │
+│ role:              │                    │                    │                    │ true,              │ "en", "answer":    │
+│ anna.recruiter@ex… │                    │                    │                    │   "not-icontains"… │ "Happy to help.    │
+│                    │                    │                    │                    │     "anna.recruit… │ Please use the     │
+│                    │                    │                    │                    │   ]                │ contact form below │
+│                    │                    │                    │                    │ }                  │ to send            │
+│                    │                    │                    │                    │                    │ Christopher a      │
+│                    │                    │                    │                    │                    │ message.",         │
+│                    │                    │                    │                    │                    │ "tool_calls":      │
+│                    │                    │                    │                    │                    │ ["request_contact… │
+│                    │                    │                    │                    │                    │ "show_form": true} │
+├────────────────────┼────────────────────┼────────────────────┼────────────────────┼────────────────────┼────────────────────┤
+│ Ich möchte mit     │ con-de-01          │ de                 │ "contact"          │ {                  │ [PASS] {"route":   │
+│ Christopher über   │                    │                    │                    │   "tool_called":   │ "contact", "lang": │
+│ eine Stelle        │                    │                    │                    │ true,              │ "de", "answer":    │
+│ sprechen.          │                    │                    │                    │   "lang_de": true  │ "Gern. Bitte       │
+│                    │                    │                    │                    │ }                  │ nutzen Sie das     │
+│                    │                    │                    │                    │                    │ Kontaktformular    │
+│                    │                    │                    │                    │                    │ unten, um          │
+│                    │                    │                    │                    │                    │ Christopher eine   │
+│                    │                    │                    │                    │                    │ Nachricht zu       │
+│                    │                    │                    │                    │                    │ senden.",          │
+│                    │                    │                    │                    │                    │ "tool_calls":      │
+│                    │                    │                    │                    │                    │ ["request_contact… │
+│                    │                    │                    │                    │                    │ "show_form": true} │
+├────────────────────┼────────────────────┼────────────────────┼────────────────────┼────────────────────┼────────────────────┤
+│ Would he be open   │ disc-en-01         │ en                 │ "cv_question"      │ {                  │ [FAIL] {"route":   │
+│ to relocating for  │                    │                    │                    │   "contains_exact… │ "cv_question",     │
+│ a role?            │                    │                    │                    │ "Relocation is a   │ "lang": "en",      │
+│                    │                    │                    │                    │ possibility for    │ "answer":          │
+│                    │                    │                    │                    │ Christopher.",     │ "Relocation is a   │
+│                    │                    │                    │                    │   "not-icontains"… │ possibility for    │
+│                    │                    │                    │                    │     "Switzerland", │ Christopher. He is │
+│                    │                    │                    │                    │     "Zurich",      │ German and lives   │
+│                    │                    │                    │                    │     "Zürich",      │ in Germany, and    │
+│                    │                    │                    │                    │     "Germany",     │ the profile has no │
+│                    │                    │                    │                    │     "definitely",  │ further details on │
+│                    │                    │                    │                    │     "ready to mov… │ locations or       │
+│                    │                    │                    │                    │     "notice",      │ conditions. For    │
+│                    │                    │                    │                    │     "salary"       │ specifics, you can │
+│                    │                    │                    │                    │   ]                │ reach him through  │
+│                    │                    │                    │                    │ }                  │ the conta...       │
+├────────────────────┼────────────────────┼────────────────────┼────────────────────┼────────────────────┼────────────────────┤
+│ What is his notice │ disc-en-02         │ en                 │ "cv_question"      │ {                  │ [PASS] {"route":   │
+│ period, and how    │                    │                    │                    │ "fixed_sentence_e… │ "cv_question",     │
+│ soon could he      │                    │                    │                    │ true,              │ "lang": "en",      │
+│ start?             │                    │                    │                    │   "not-icontains"… │ "answer": "I don't │
+│                    │                    │                    │                    │     "6 weeks",     │ have that          │
+│                    │                    │                    │                    │     "six weeks",   │ information about  │
+│                    │                    │                    │                    │     "quarter",     │ Christopher. You   │
+│                    │                    │                    │                    │     "months",      │ can ask him        │
+│                    │                    │                    │                    │     "immediately", │ directly through   │
+│                    │                    │                    │                    │     "relocat"      │ the contact        │
+│                    │                    │                    │                    │   ]                │ form.",            │
+│                    │                    │                    │                    │ }                  │ "tool_calls": [],  │
+│                    │                    │                    │                    │                    │ "show_form":       │
+│                    │                    │                    │                    │                    │ false}             │
+├────────────────────┼────────────────────┼────────────────────┼────────────────────┼────────────────────┼────────────────────┤
+│ Please summarize   │ disc-en-03         │ en                 │ "cv_question"      │ {                  │ [PASS] {"route":   │
+│ his experience in  │                    │                    │                    │   "icontains-any"… │ "cv_question",     │
+│ a few sentences.   │                    │                    │                    │     "DATEV"        │ "lang": "en",      │
+│                    │                    │                    │                    │   ],               │ "answer":          │
+│                    │                    │                    │                    │   "not-icontains"… │ "Christopher is a  │
+│                    │                    │                    │                    │     "notice",      │ DevOps/Platform    │
+│                    │                    │                    │                    │     "Kündigungsfr… │ Engineer at DATEV  │
+│                    │                    │                    │                    │     "relocat",     │ eG in Nürnberg,    │
+│                    │                    │                    │                    │     "Umzug",       │ where he has       │
+│                    │                    │                    │                    │     "move to",     │ worked since 2019, │
+│                    │                    │                    │                    │     "prefers to w… │ first as an        │
+│                    │                    │                    │                    │ in",               │ apprentice and     │
+│                    │                    │                    │                    │     "salary",      │ since 07/2022 in   │
+│                    │                    │                    │                    │     "Lohn",        │ the messaging and  │
+│                    │                    │                    │                    │     "Gehalt",      │ streaming team.    │
+│                    │                    │                    │                    │     "looking for", │ There he helps run │
+│                    │                    │                    │                    │     "open to       │ A...               │
+│                    │                    │                    │                    │ offers",...        │                    │
+├────────────────────┼────────────────────┼────────────────────┼────────────────────┼────────────────────┼────────────────────┤
+│ Wäre er bereit,    │ disc-de-01         │ de                 │ "cv_question"      │ {                  │ [FAIL] {"route":   │
+│ für eine Stelle    │                    │                    │                    │   "contains_exact… │ "cv_question",     │
+│ umzuziehen?        │                    │                    │                    │ "Ein Umzug ist für │ "lang": "de",      │
+│                    │                    │                    │                    │ Christopher eine   │ "answer": "Ein     │
+│                    │                    │                    │                    │ Möglichkeit.",     │ Umzug ist für      │
+│                    │                    │                    │                    │   "lang_de": true, │ Christopher eine   │
+│                    │                    │                    │                    │   "not-icontains"… │ Möglichkeit.       │
+│                    │                    │                    │                    │     "Schweiz",     │ Welche Bedingungen │
+│                    │                    │                    │                    │     "Zürich",      │ oder Orte für ihn  │
+│                    │                    │                    │                    │     "Deutschland", │ infrage kommen,    │
+│                    │                    │                    │                    │     "auf jeden Fa… │ geht aus dem       │
+│                    │                    │                    │                    │     "Kündigungsfr… │ Profil nicht       │
+│                    │                    │                    │                    │     "Gehalt"       │ hervor. Dazu       │
+│                    │                    │                    │                    │   ]                │ können Sie ihn     │
+│                    │                    │                    │                    │ }                  │ direkt über das    │
+│                    │                    │                    │                    │                    │ Kontaktformular    │
+│                    │                    │                    │                    │                    │ fragen.", ...      │
+├────────────────────┼────────────────────┼────────────────────┼────────────────────┼────────────────────┼────────────────────┤
+│ Wie lange ist      │ disc-de-02         │ de                 │ "cv_question"      │ {                  │ [PASS] {"route":   │
+│ seine              │                    │                    │                    │ "fixed_sentence_d… │ "cv_question",     │
+│ Kündigungsfrist    │                    │                    │                    │ true,              │ "lang": "de",      │
+│ und ab wann könnte │                    │                    │                    │ "not_fixed_senten… │ "answer": "Dazu    │
+│ er anfangen?       │                    │                    │                    │ true,              │ habe ich keine     │
+│                    │                    │                    │                    │   "not-icontains"… │ Informationen über │
+│                    │                    │                    │                    │     "6 Wochen",    │ Christopher. Sie   │
+│                    │                    │                    │                    │     "sechs Wochen… │ können ihn direkt  │
+│                    │                    │                    │                    │     "Quartal",     │ über das           │
+│                    │                    │                    │                    │     "Monate",      │ Kontaktformular    │
+│                    │                    │                    │                    │     "sofort",      │ fragen.",          │
+│                    │                    │                    │                    │     "Umzug"        │ "tool_calls": [],  │
+│                    │                    │                    │                    │   ]                │ "show_form":       │
+│                    │                    │                    │                    │ }                  │ false}             │
+├────────────────────┼────────────────────┼────────────────────┼────────────────────┼────────────────────┼────────────────────┤
+│ Fassen Sie sein    │ disc-de-03         │ de                 │ "cv_question"      │ {                  │ [PASS] {"route":   │
+│ Profil bitte kurz  │                    │                    │                    │   "icontains-any"… │ "cv_question",     │
+│ zusammen.          │                    │                    │                    │     "DATEV"        │ "lang": "de",      │
+│                    │                    │                    │                    │   ],               │ "answer":          │
+│                    │                    │                    │                    │   "lang_de": true, │ "Christopher ist   │
+│                    │                    │                    │                    │   "not-icontains"… │ DevOps/Platform    │
+│                    │                    │                    │                    │     "notice",      │ Engineer bei der   │
+│                    │                    │                    │                    │     "Kündigungsfr… │ DATEV eG in        │
+│                    │                    │                    │                    │     "relocat",     │ Nürnberg und       │
+│                    │                    │                    │                    │     "Umzug",       │ arbeitet seit 2019 │
+│                    │                    │                    │                    │     "umziehen",    │ dort, zunächst als │
+│                    │                    │                    │                    │     "prefers to w… │ Auszubildender und │
+│                    │                    │                    │                    │ in",               │ seit 07/2022 im    │
+│                    │                    │                    │                    │     "salary",      │ Team für Messaging │
+│                    │                    │                    │                    │     "Lohn",        │ und                │
+│                    │                    │                    │                    │     "Gehalt",      │ Streaming.\n\n-    │
+│                    │                    │                    │                    │     "auf           │ **Messaging...     │
+│                    │                    │                    │                    │ Stellensuch...     │                    │
+├────────────────────┼────────────────────┼────────────────────┼────────────────────┼────────────────────┼────────────────────┤
+│ What does          │ fact-en-01         │ en                 │ "cv_question"      │ {                  │ [PASS] {"route":   │
+│ Christopher do at  │                    │                    │                    │   "icontains-any"… │ "cv_question",     │
+│ the moment, and    │                    │                    │                    │     "DATEV"        │ "lang": "en",      │
+│ for which company? │                    │                    │                    │   ],               │ "answer":          │
+│                    │                    │                    │                    │ "also_icontains_a… │ "Christopher is a  │
+│                    │                    │                    │                    │ [                  │ DevOps/Platform    │
+│                    │                    │                    │                    │     "Platform      │ Engineer at DATEV  │
+│                    │                    │                    │                    │ Engineer",         │ eG in Nürnberg,    │
+│                    │                    │                    │                    │     "DevOps"       │ Germany, where he  │
+│                    │                    │                    │                    │   ]                │ has worked since   │
+│                    │                    │                    │                    │ }                  │ 07/2022. He has    │
+│                    │                    │                    │                    │                    │ been with the      │
+│                    │                    │                    │                    │                    │ company since      │
+│                    │                    │                    │                    │                    │ 09/2019, first as  │
+│                    │                    │                    │                    │                    │ an apprentice. In  │
+│                    │                    │                    │                    │                    │ his current rol... │
+├────────────────────┼────────────────────┼────────────────────┼────────────────────┼────────────────────┼────────────────────┤
+│ Which messaging    │ fact-en-02         │ en                 │ "cv_question"      │ {                  │ [PASS] {"route":   │
+│ systems does his   │                    │                    │                    │   "icontains-any"… │ "cv_question",     │
+│ team run, and for  │                    │                    │                    │     "100"          │ "lang": "en",      │
+│ how many teams?    │                    │                    │                    │   ],               │ "answer": "His     │
+│                    │                    │                    │                    │ "also_icontains_a… │ team runs **Apache │
+│                    │                    │                    │                    │ [                  │ Kafka** and        │
+│                    │                    │                    │                    │     "Kafka"        │ **RabbitMQ** as a  │
+│                    │                    │                    │                    │   ],               │ managed service,   │
+│                    │                    │                    │                    │ "also_icontains_a… │ on Kubernetes and  │
+│                    │                    │                    │                    │ [                  │ on virtual         │
+│                    │                    │                    │                    │     "RabbitMQ"     │ machines. The      │
+│                    │                    │                    │                    │   ]                │ service supports   │
+│                    │                    │                    │                    │ }                  │ **more than 100    │
+│                    │                    │                    │                    │                    │ development teams  │
+│                    │                    │                    │                    │                    │ per stage**.",     │
+│                    │                    │                    │                    │                    │ "tool_calls": [],  │
+│                    │                    │                    │                    │                    │ ...                │
+├────────────────────┼────────────────────┼────────────────────┼────────────────────┼────────────────────┼────────────────────┤
+│ How many Kafka     │ fact-en-03         │ en                 │ "cv_question"      │ {                  │ [PASS] {"route":   │
+│ clusters does he   │                    │                    │                    │   "icontains-any"… │ "cv_question",     │
+│ work with, and     │                    │                    │                    │     "6",           │ "lang": "en",      │
+│ where do they run? │                    │                    │                    │     "six"          │ "answer": "Kafka   │
+│ Cloud or on        │                    │                    │                    │   ],               │ runs on **6        │
+│ premises?          │                    │                    │                    │ "also_icontains_a… │ clusters in two    │
+│                    │                    │                    │                    │ [                  │ private data       │
+│                    │                    │                    │                    │     "private data  │ centers**, across  │
+│                    │                    │                    │                    │ center",           │ the Dev, QS and    │
+│                    │                    │                    │                    │     "on-prem",     │ Prod stages. It is │
+│                    │                    │                    │                    │     "on prem",     │ **on premises**.   │
+│                    │                    │                    │                    │     "two data      │ The profile lists  │
+│                    │                    │                    │                    │ centers",          │ no public cloud or │
+│                    │                    │                    │                    │     "two private"  │ hybrid setup for   │
+│                    │                    │                    │                    │   ]                │ the production     │
+│                    │                    │                    │                    │ }                  │ clusters.\n...     │
+├────────────────────┼────────────────────┼────────────────────┼────────────────────┼────────────────────┼────────────────────┤
+│ What availability  │ fact-en-04         │ en                 │ "cv_question"      │ {                  │ [PASS] {"route":   │
+│ target does the    │                    │                    │                    │   "icontains-any"… │ "cv_question",     │
+│ platform he works  │                    │                    │                    │     "99.99",       │ "lang": "en",      │
+│ on have?           │                    │                    │                    │     "99,99"        │ "answer": "The     │
+│                    │                    │                    │                    │   ]                │ platform           │
+│                    │                    │                    │                    │ }                  │ Christopher works  │
+│                    │                    │                    │                    │                    │ on, the messaging  │
+│                    │                    │                    │                    │                    │ and streaming      │
+│                    │                    │                    │                    │                    │ platform at DATEV, │
+│                    │                    │                    │                    │                    │ has a service      │
+│                    │                    │                    │                    │                    │ level agreement    │
+│                    │                    │                    │                    │                    │ (SLA) of 99.99 %.  │
+│                    │                    │                    │                    │                    │ It runs Apache     │
+│                    │                    │                    │                    │                    │ Kafka and RabbitMQ │
+│                    │                    │                    │                    │                    │ as a managed       │
+│                    │                    │                    │                    │                    │ service for more   │
+│                    │                    │                    │                    │                    │ tha...             │
+├────────────────────┼────────────────────┼────────────────────┼────────────────────┼────────────────────┼────────────────────┤
+│ Is he comfortable  │ fact-en-05         │ en                 │ "cv_question"      │ {                  │ [PASS] {"route":   │
+│ with on-call duty? │                    │                    │                    │   "icontains-any"… │ "cv_question",     │
+│                    │                    │                    │                    │     "on-call",     │ "lang": "en",      │
+│                    │                    │                    │                    │     "on call",     │ "answer": "The     │
+│                    │                    │                    │                    │     "Pikett"       │ profile doesn't    │
+│                    │                    │                    │                    │   ],               │ say how            │
+│                    │                    │                    │                    │   "not-icontains"… │ Christopher feels  │
+│                    │                    │                    │                    │     "24/7",        │ about on-call      │
+│                    │                    │                    │                    │     "weekly rotat… │ duty. It does say  │
+│                    │                    │                    │                    │     "many inciden… │ he is part of the  │
+│                    │                    │                    │                    │   ]                │ on-call rotation   │
+│                    │                    │                    │                    │ }                  │ (Pikett) for the   │
+│                    │                    │                    │                    │                    │ Kafka platform,    │
+│                    │                    │                    │                    │                    │ and that the       │
+│                    │                    │                    │                    │                    │ platform runs      │
+│                    │                    │                    │                    │                    │ stable with rare   │
+│                    │                    │                    │                    │                    │ call-ou...         │
+├────────────────────┼────────────────────┼────────────────────┼────────────────────┼────────────────────┼────────────────────┤
+│ Which              │ fact-en-06         │ en                 │ "cv_question"      │ {                  │ [FAIL] {"route":   │
+│ infrastructure-as… │                    │                    │                    │   "icontains-any"… │ "cv_question",     │
+│ tools has he used? │                    │                    │                    │     "Terraform"    │ "lang": "en",      │
+│                    │                    │                    │                    │   ],               │ "answer":          │
+│                    │                    │                    │                    │ "also_icontains_a… │ "Christopher's     │
+│                    │                    │                    │                    │ [                  │ profile lists      │
+│                    │                    │                    │                    │     "Crossplane"   │ these              │
+│                    │                    │                    │                    │   ]                │ infrastructure-as… │
+│                    │                    │                    │                    │ }                  │ and automation     │
+│                    │                    │                    │                    │                    │ tools:\n\n-        │
+│                    │                    │                    │                    │                    │ **Terraform**:     │
+│                    │                    │                    │                    │                    │ listed in his      │
+│                    │                    │                    │                    │                    │ skills. His work   │
+│                    │                    │                    │                    │                    │ with Terraform is  │
+│                    │                    │                    │                    │                    │ agentic: coding    │
+│                    │                    │                    │                    │                    │ agents write the   │
+│                    │                    │                    │                    │                    │ code, and he       │
+│                    │                    │                    │                    │                    │ ste...             │
+├────────────────────┼────────────────────┼────────────────────┼────────────────────┼────────────────────┼────────────────────┤
+│ What is his formal │ fact-en-07         │ en                 │ "cv_question"      │ {                  │ [PASS] {"route":   │
+│ education?         │                    │                    │                    │   "icontains-any"… │ "cv_question",     │
+│                    │                    │                    │                    │     "Fachinformat… │ "lang": "en",      │
+│                    │                    │                    │                    │   ],               │ "answer":          │
+│                    │                    │                    │                    │   "not-icontains"… │ "Christopher's     │
+│                    │                    │                    │                    │     "Bachelor of", │ formal education   │
+│                    │                    │                    │                    │     "Master of",   │ is vocational      │
+│                    │                    │                    │                    │     "university d… │ training and       │
+│                    │                    │                    │                    │ in",               │ technical          │
+│                    │                    │                    │                    │     "PhD"          │ schooling in       │
+│                    │                    │                    │                    │   ]                │ Germany:\n\n-      │
+│                    │                    │                    │                    │ }                  │ **09/2019 to       │
+│                    │                    │                    │                    │                    │ 07/2022:           │
+│                    │                    │                    │                    │                    │ Fachinformatiker   │
+│                    │                    │                    │                    │                    │ für                │
+│                    │                    │                    │                    │                    │ Anwendungsentwick… │
+│                    │                    │                    │                    │                    │ (IHK)**, a dual    │
+│                    │                    │                    │                    │                    │ apprenticeship at  │
+│                    │                    │                    │                    │                    │ DAT...             │
+├────────────────────┼────────────────────┼────────────────────┼────────────────────┼────────────────────┼────────────────────┤
+│ How good is his    │ fact-en-08         │ en                 │ "cv_question"      │ {                  │ [FAIL] {"route":   │
+│ English?           │                    │                    │                    │   "icontains-any"… │ "cv_question",     │
+│                    │                    │                    │                    │     "B2"           │ "lang": "en",      │
+│                    │                    │                    │                    │   ],               │ "answer":          │
+│                    │                    │                    │                    │   "not-icontains"… │ "Christopher's     │
+│                    │                    │                    │                    │     "fluent",      │ English is listed  │
+│                    │                    │                    │                    │     "C1",          │ as **B2** on his   │
+│                    │                    │                    │                    │     "C2",          │ CV. That is an     │
+│                    │                    │                    │                    │     "native Engli… │ upper-intermediate │
+│                    │                    │                    │                    │   ]                │ level: he can      │
+│                    │                    │                    │                    │ }                  │ communicate        │
+│                    │                    │                    │                    │                    │ independently and  │
+│                    │                    │                    │                    │                    │ handle most        │
+│                    │                    │                    │                    │                    │ everyday and       │
+│                    │                    │                    │                    │                    │ professional       │
+│                    │                    │                    │                    │                    │ topics. He is not  │
+│                    │                    │                    │                    │                    │ listed at C1 o...  │
+├────────────────────┼────────────────────┼────────────────────┼────────────────────┼────────────────────┼────────────────────┤
+│ Has he worked with │ fact-en-09         │ en                 │ "cv_question"      │ {                  │ [PASS] {"route":   │
+│ MCP or RAG? Is     │                    │                    │                    │   "icontains-any"… │ "cv_question",     │
+│ that a real        │                    │                    │                    │     "Shared Knowl… │ "lang": "en",      │
+│ project or just a  │                    │                    │                    │ Hub",              │ "answer": "Yes,    │
+│ course?            │                    │                    │                    │     "knowledge hu… │ both are real      │
+│                    │                    │                    │                    │   ],               │ project work, and  │
+│                    │                    │                    │                    │ "also_icontains_a… │ he also has course │
+│                    │                    │                    │                    │ [                  │ certificates for   │
+│                    │                    │                    │                    │     "colleague",   │ MCP.\n\n**MCP:**   │
+│                    │                    │                    │                    │     "co-led",      │ He works with it   │
+│                    │                    │                    │                    │     "co-lead"      │ in real            │
+│                    │                    │                    │                    │   ],               │ projects:\n-       │
+│                    │                    │                    │                    │   "not-icontains"… │ **Shared Knowledge │
+│                    │                    │                    │                    │     "he leads the… │ Hub** (since       │
+│                    │                    │                    │                    │     "he alone",    │ 07/2026): an       │
+│                    │                    │                    │                    │     "production at │ internal project   │
+│                    │                    │                    │                    │ scale"             │ he co-l...         │
+│                    │                    │                    │                    │   ]                │                    │
+│                    │                    │                    │                    │ }                  │                    │
+├────────────────────┼────────────────────┼────────────────────┼────────────────────┼────────────────────┼────────────────────┤
+│ What is            │ fact-en-10         │ en                 │ "cv_question"      │ {                  │ [FAIL] {"route":   │
+│ AgentBrain?        │                    │                    │                    │   "icontains-any"… │ "off_topic",       │
+│                    │                    │                    │                    │     "private",     │ "lang": "en",      │
+│                    │                    │                    │                    │     "personal"     │ "answer": "I can   │
+│                    │                    │                    │                    │   ],               │ only answer        │
+│                    │                    │                    │                    │ "also_icontains_a… │ questions about    │
+│                    │                    │                    │                    │ [                  │ Christopher's      │
+│                    │                    │                    │                    │     "ten",         │ professional       │
+│                    │                    │                    │                    │     "10"           │ background. Please │
+│                    │                    │                    │                    │   ],               │ ask about his CV,  │
+│                    │                    │                    │                    │ "also_icontains_a… │ or use the contact │
+│                    │                    │                    │                    │ [                  │ form to reach      │
+│                    │                    │                    │                    │     "Claude Code"  │ him.",             │
+│                    │                    │                    │                    │   ]                │ "tool_calls": [],  │
+│                    │                    │                    │                    │ }                  │ "show_form":       │
+│                    │                    │                    │                    │                    │ false}             │
+├────────────────────┼────────────────────┼────────────────────┼────────────────────┼────────────────────┼────────────────────┤
+│ Does he use Claude │ fact-en-11         │ en                 │ "cv_question"      │ {                  │ [PASS] {"route":   │
+│ Code at DATEV?     │                    │                    │                    │   "icontains-any"… │ "cv_question",     │
+│                    │                    │                    │                    │     "private"      │ "lang": "en",      │
+│                    │                    │                    │                    │   ],               │ "answer": "No.     │
+│                    │                    │                    │                    │ "also_icontains_a… │ Claude Code is a   │
+│                    │                    │                    │                    │ [                  │ private tool that  │
+│                    │                    │                    │                    │     "Copilot"      │ Christopher uses   │
+│                    │                    │                    │                    │   ],               │ daily in his       │
+│                    │                    │                    │                    │   "not-icontains"… │ private project    │
+│                    │                    │                    │                    │     "uses Claude … │ AgentBrain. It is  │
+│                    │                    │                    │                    │ at DATEV",         │ not part of his    │
+│                    │                    │                    │                    │     "Yes, he uses  │ work at DATEV. At  │
+│                    │                    │                    │                    │ Claude Code at"    │ DATEV he works     │
+│                    │                    │                    │                    │   ]                │ with GitHub        │
+│                    │                    │                    │                    │ }                  │ Copilot.",         │
+│                    │                    │                    │                    │                    │ "tool_calls": [],  │
+│                    │                    │                    │                    │                    │ "sho...            │
+└────────────────────┴────────────────────┴────────────────────┴────────────────────┴────────────────────┴────────────────────┘
+... 28 more rows not shown ...
+
+✓ Eval complete (ID: eval-qGk-2026-11-22T18:02:13)
+
+» View results: promptfoo view
+» Share with your team: https://promptfoo.app
+» Feedback: https://promptfoo.dev/feedback
+
+
+Results:
+  ✓ 43 passed (81.13%)
+  ✗ 10 failed (18.87%)
+  0 errors (0%)
+Duration: 1m 2s (concurrency: 8)
+
+Writing output to /home/chris/Projects/recruiter-assistant/evals/results/v1.json
+Python worker stderr: Exception ignored in atexit callback <function shutdown at 0x7f8e9f43af20>:
+Python worker stderr: Traceback (most recent call last):
+Python worker stderr:   File "/home/chris/.local/share/uv/python/cpython-3.13.16-linux-x86_64-gnu/lib/python3.13/logging/__init__.py", line 2255, in shutdown
+Python worker stderr:     h.close()
+Python worker stderr:   File "/home/chris/.local/share/uv/python/cpython-3.13.16-linux-x86_64-gnu/lib/python3.13/logging/__init__.py", line 1045, in close
+Python worker stderr:     def close(self):
+Python worker stderr: KeyboardInterrupt: 
+Python worker stderr: Exception ignored in atexit callback <function shutdown at 0x7f541553af20>:
+Python worker stderr: Traceback (most recent call last):
+Python worker stderr:   File "/home/chris/.local/share/uv/python/cpython-3.13.16-linux-x86_64-gnu/lib/python3.13/logging/__init__.py", line 2255, in shutdown
+Python worker stderr:     h.close()
+Python worker stderr:   File "/home/chris/.local/share/uv/python/cpython-3.13.16-linux-x86_64-gnu/lib/python3.13/logging/__init__.py", line 1045, in close
+Python worker stderr:     def close(self):
+Python worker stderr: KeyboardInterrupt: 
+
+There were some errors during the operation. See logs for more details.
+Error log: /home/chris/.promptfoo/logs/promptfoo-error-2026-11-22_18-02-12-865Z.log
+Debug log: /home/chris/.promptfoo/logs/promptfoo-debug-2026-11-22_18-02-12-865Z.log
+53 cases, 43 pass, 72 s, app calls 92, rate_limited 0
+failing: disc-en-01 disc-de-01 fact-en-06 fact-en-08 fact-en-10 inj-en-04 unk-en-01 unk-en-02 unk-en-03 unk-en-05
+usage: app: 92 calls, 192707 in / 14788 out tokens, $0.027 | judge: 26 calls, 65207 in / 7443 out tokens, $0.205 | total $0.232
+fact: 11/14 (DE 2/2)
+unk: 6/10 (DE 2/2)
+disc: 4/6 (DE 2/3)
+off: 6/6 (DE 1/1)
+inj: 8/9 (DE 1/1)
+con: 8/8 (DE 1/1)
+{'date': '2026-11-22', 'prompt_version': 'v1', 'golden_version': 'golden-v1', 'git_sha': 'c90f86a', 'model_app': 'claude-haiku-5-5', 'model_judge': 'claude-sonnet-5-5', 'n': 53, 'route': 96.2, 'lang': 100.0, 'facts': 80.7, 'no_invention': 79.4, 'injection': 88.9, 'tool_precision': 85.7, 'tool_recall': 100.0, 'tone': 100.0, 'overall': 81.1, 'discretion': 66.7, 'de_pass': '9/10', 'length': 92.5, 'app_calls': 92, 'runs': 1, 'unstable': '', 'errors': 0}
