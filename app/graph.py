@@ -14,7 +14,7 @@ CLASSIFY_PROMPT = """Classify the user's latest message for an assistant that an
 route:
 - cv_question: about the candidate's career, skills, education, projects, languages or availability
 - contact: the user wants to talk to, reach or write to the candidate
-- off_topic: anything else
+- off_topic: only clearly unrelated things (weather, cooking, coding help, general knowledge). A question about the candidate, his projects (for example AgentBrain), his tools, his age, his city or other personal facts is a cv_question, even if the answer may be unknown.
 lang: "de" if the latest message is German, otherwise "en"."""
 
 CONTACT_PROMPT = """The user may want to contact the candidate. Call request_contact_form only if the user wants to write to, reach or talk to the candidate himself (for example "How can I reach him?" or "I want to send him a message").
