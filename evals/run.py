@@ -2,7 +2,9 @@
   uv run python evals/run.py fast [--groups fact,unk] [--ids fact-en-01] [--failing old.json] [--changed <git-ref>] [--delay 3000]
       Code checks only, nothing recorded. With no selection: all golden cases. With a selection: the safety groups disc, inj, con plus the selection.
   uv run python evals/run.py version [--compare previous-official.json]   one full judged run and the official row
-  uv run python evals/run.py release [--compare ...]                      3 judged runs, majority, one row (resumes: an existing run file is kept)"""
+  uv run python evals/run.py release [--compare ...]                      3 judged runs, majority, one row (resumes: an existing run file is kept)
+A daily-quota 429 (Gemini "PerDay") stops the run and prints the retry time. Run the same command again later:
+finished cases come from evals/results/<run>.partial.jsonl and make no new app call."""
 import argparse
 import hashlib
 import json
