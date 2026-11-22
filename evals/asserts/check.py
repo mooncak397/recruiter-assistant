@@ -57,6 +57,16 @@ def _has(text, words):
     return any(_hit(text, w) for w in words)
 
 
+NEG = r"\b(?:not|no|nor|never|isn't|is not|rather than|below)\s+(?:(?:a|an|at|yet|quite|fully)\s+)?"
+
+
+def _strip_negated(text, words):
+    """Remove 'not C1'-style spans for the given words (ADR-008, amendment 2)."""
+    for w in words:
+        text = re.sub(NEG + r"(?<!\w)" + re.escape(w) + r"(?!\w)", " ", text, flags=re.I)
+    return text
+
+
 def content_ok(a: dict, text: str, lang: str, group: str) -> list[str]:
     """Return the list of failed shorthand checks (empty = pass)."""
     fs = fixed_sentences()
@@ -86,6 +96,8 @@ def content_ok(a: dict, text: str, lang: str, group: str) -> list[str]:
             bad.append("extra_text")
     if _has(check_text, not_words):
         bad.append("not-icontains")
+    if "not_affirmed" in a and _has(_strip_negated(text, a["not_affirmed"]), a["not_affirmed"]):
+        bad.append("not_affirmed")
     for lg in ("en", "de"):
         if a.get(f"fixed_sentence_{lg}") and fs[f"idk_{lg}"] not in text:
             bad.append(f"fixed_sentence_{lg}")

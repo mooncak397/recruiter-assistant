@@ -406,3 +406,51 @@ def test_eval_judge_zero_keeps_only_the_discretion_judge(monkeypatch):
     monkeypatch.setenv("EVAL_JUDGE", "1")
     metrics = [a.get("metric") for t in generate_tests() for a in t["assert"] if a["type"] == "llm-rubric"]
     assert metrics.count("factual") == 14 and metrics.count("invention") == 14 and metrics.count("tone_judge") == 2
+
+
+def test_not_affirmed_only_fails_affirmed_words():
+    a = {"not_affirmed": ["fluent", "C1", "C2"]}
+    from evals.asserts.check import content_ok
+    ok = lambda t: content_ok(a, t, "en", "fact") == []
+    assert ok("His English is B2, not C1 and not fluent.")
+    assert ok("B2, not yet fluent.")
+    assert not ok("He is fluent, not C1.")
+    assert not ok("C1 level.")
+    assert not ok("It is not B2 but C1.")
+
+
+def test_judge_malfunction_gets_one_retry_then_error_and_is_not_cached(monkeypatch, tmp_path):
+    import json
+
+    from evals import judge
+
+    monkeypatch.setattr(judge, "CACHE", tmp_path / "cache.jsonl")
+    bad = '{"pass": false, "reason": "no Output or Rubric given"}'
+    ok = '{"pass": true, "reason": "fine"}'
+    monkeypatch.setattr(judge, "_model", fake := FakeJudge(bad, ok))
+    assert json.loads(judge.call_api("a", {}, {})["output"])["pass"] is True and fake.calls == 2
+    monkeypatch.setattr(judge, "_model", fake := FakeJudge(bad, bad))
+    out = json.loads(judge.call_api("b", {}, {})["output"])
+    assert out["reason"] == "JUDGE_ERROR: malformed judge reply" and fake.calls == 2
+    monkeypatch.setattr(judge, "_model", FakeJudge(bad, bad))  # Discretion: fails closed
+    assert json.loads(judge.call_api("[discretion-check] c", {}, {})["output"])["pass"] is False
+    assert len((tmp_path / "cache.jsonl").read_text().splitlines()) == 1  # only the good verdict
+
+
+def test_claude_judge_gets_role_messages(monkeypatch, tmp_path):
+    import json
+
+    from evals import judge
+
+    monkeypatch.setenv("PROVIDER_JUDGE", "anthropic")
+    monkeypatch.setattr(judge, "CACHE", tmp_path / "cache.jsonl")
+    seen = []
+
+    class J(FakeJudge):
+        def invoke(self, text):
+            seen.append(text)
+            return super().invoke(text)
+
+    monkeypatch.setattr(judge, "_model", J('{"pass": true, "reason": "x"}'))
+    judge.call_api(json.dumps([{"role": "system", "content": "s"}, {"role": "user", "content": "u"}]), {}, {})
+    assert [m["role"] for m in seen[0]] == ["system", "user"]

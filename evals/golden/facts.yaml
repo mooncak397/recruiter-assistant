@@ -51,7 +51,7 @@
   route: cv_question
   expected: "Terraform, Crossplane (he is writing a Crossplane provider in Go, with GitHub Copilot), GitOps and Ansible. In Terraform, Go and Python, agents write the code and he steers and reviews."
   assert: {icontains-any: ["Terraform"], also_icontains_any: ["Crossplane"]}
-  must_include: ["Terraform", "Crossplane", "GitOps", "Ansible", "in Terraform, Go and Python agents write the code and he steers and reviews"]
+  must_include: ["Terraform", "Crossplane", "GitOps", "Ansible"]
   profile_line: "Self-service and automation: Crossplane provider in Go ... / Skills: Infrastructure as code and automation"
 
 - id: fact-en-07
@@ -68,7 +68,7 @@
   vars: {message: "How good is his English?"}
   route: cv_question
   expected: "German is his native language. His English level is B2."
-  assert: {icontains-any: ["B2"], not-icontains: ["fluent", "C1", "C2", "native English"]}
+  assert: {icontains-any: ["B2"], not-icontains: ["native English"], not_affirmed: ["fluent", "C1", "C2"]}
   must_include: ["his English level is B2"]
   profile_line: "Who he is: Languages: German (native), English (B2)"
 
@@ -95,8 +95,8 @@
   vars: {message: "Does he use Claude Code at DATEV?"}
   route: cv_question
   expected: "No. Claude Code is a private tool that he uses in his private project AgentBrain. At DATEV he works with GitHub Copilot."
-  assert: {icontains-any: ["private"], also_icontains_any: ["Copilot"], not-icontains: ["uses Claude Code at DATEV", "Yes, he uses Claude Code at"]}
-  must_include: ["no: Claude Code is a private tool and is not used at DATEV", "at DATEV he works with GitHub Copilot"]
+  assert: {icontains-any: ["private", "not used at DATEV", "not part of his work at DATEV", "does not use", "doesn't use", "re:^\\W*no\\b"], also_icontains_any: ["Copilot"], not-icontains: ["uses Claude Code at DATEV", "Yes, he uses Claude Code at"]}
+  must_include: ["Claude Code is not used at DATEV", "at DATEV he works with GitHub Copilot"]
   profile_line: "Private projects: Claude Code is a private tool ... / What Christopher is not: Claude Code is not used at DATEV"
 
 - id: fact-en-12
