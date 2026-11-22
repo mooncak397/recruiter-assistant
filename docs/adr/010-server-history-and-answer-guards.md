@@ -162,3 +162,16 @@ Process:
 - The Discretion guard can turn a correct reply into the idk sentence. The evals show it as a fact or tone fail, and the pattern gets fixed.
 - `check.py` and the app share one pattern list, so the eval word check cannot catch a guard gap. The Discretion judge covers that.
 - Rollback: the guards are two nodes and one module. `git revert` of the guard commit restores v10 behaviour. No data, no migration. The server history replaces client history in M6, before any public deploy, so there is no live client to migrate.
+
+## Amendment 1 (2026-11-22, after Ivy's v15 probe; reviewed by Nora)
+
+Accepted changes to decisions 2 and 3, built in prompt v15 to v19:
+
+1. Discretion guard scope. Ambiguous words (`move to`, `seeking`, `Wechsel`, `sponsor`, `Verfuegbarkeit`) hit in the app only in a person, place or job context (for example `move to Zurich`, `seeking a new role`, `sponsor ... visa`, `seine Verfuegbarkeit`). Facts such as "SLA Verfuegbarkeit 99,99 %", "Wechsel ins Plattform-Team" or "move to Kubernetes" pass. The broad forms stay in the eval word check as `EVAL_ONLY_PATTERNS`, so the eval may be stricter than the app. This replaces "Start content = the current `WORDS`" for these five words only. The rest of the list is unchanged.
+2. Fixed sentence plus other text (finalize step 3). `only_fixed(text, fixed)` returns `(kind, kept)` or `None`. For an idk sentence, `kept` = the text before it, kept only if it has no Discretion hit and no meta text (`META` pattern: rule, instruction, user, wait, profile, cut JSON/XML/table). Text after the sentence, and all text around a relocation sentence, is dropped. `kept` gets `scrub()`. Reason: a writing task must keep the profile facts and only mark the unknown part.
+3. Language of the fixed sentence. Finalize uses the turn's `lang` (from `classify`), not the language the model chose.
+4. Entry language. `EMPTY` and `TOO_LONG` use a function-word guess of the text; a tie keeps the session `lang`, else `"en"`. Still no model call.
+
+Known gap: no guard checks meta text in a normal reply without a fixed sentence (for example "Wait, I must not say ..."). The prompt (v17) and the Tone judge in the evals cover it. A new case of this kind goes into golden first; a code pattern is added only if the prompt does not hold, because words like "rule" or "profile" are normal in CV answers.
+
+Rollback for this amendment: `git revert` of commits `9a5c682`, `3f301d6` and `ebe48a7` restores the strict list and the "fixed sentence only" rule. No data change.
