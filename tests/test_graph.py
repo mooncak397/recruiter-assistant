@@ -187,6 +187,43 @@ def test_fixed_sentence_plus_meta_text_keeps_only_the_sentence():
     assert only_fixed("He works at DATEV.", FS) is None
 
 
+# --- Ivy's v15 probe (evals/heldout/out-v15/probe/): guard false positives and true leaks ---
+
+@pytest.mark.parametrize("raw", [
+    "Das Service Level Agreement (SLA) der Kafka-Plattform, die Christopher mit seinem Team betreibt, "
+    "sieht eine Verfügbarkeit von 99,99 % vor.",
+    "SLA Verfuegbarkeit 99,99 %",
+    "Ab 01/2022 arbeitete er im Plattform-Team. Vor dem Wechsel ins Plattform-Team entwickelte er Lösungen in C#.",
+    "He led the team's move to Kubernetes.",
+    "The hub will move to a database behind the MCP.",
+    "The hub reranks results, seeking to reduce token usage.",
+])
+def test_probe_facts_pass_the_discretion_guard(raw):
+    assert answer(FakeModel(lang="de" if "SLA" in raw or "Plattform" in raw else "en", reply=AIMessage(raw))) == raw
+
+
+@pytest.mark.parametrize("raw", [
+    "Er plant einen Wechsel zu einem neuen Arbeitgeber in Zürich.",
+    "He is actively seeking a new role and would move to London.",
+    "You would not need to sponsor a visa for him. Seine Verfügbarkeit: ab sofort.",
+])
+def test_probe_true_leaks_are_still_replaced(raw):
+    assert answer(FakeModel(reply=AIMessage(raw))) == FS["idk_en"]
+
+
+def test_fact_before_idk_survives():
+    raw = f"He trains his team of 15 people in AI tools, together with a colleague. {FS['idk_en']}"
+    assert answer(FakeModel(reply=AIMessage(raw))) == \
+        f"He trains his team of 15 people in AI tools, together with a colleague.\n\n{FS['idk_en']}"
+
+
+@pytest.mark.parametrize("prefix", ["I don't know (EN):", "Das Profil nennt keine AWS-Erfahrung, also:",
+                                    '{"candidate": "Christopher", "salary_expectation": "',
+                                    "He is happy to relocate."])
+def test_meta_structure_or_leak_before_idk_is_dropped(prefix):
+    assert answer(FakeModel(reply=AIMessage(f"{prefix} {FS['idk_en']}"))) == FS["idk_en"]
+
+
 @pytest.mark.parametrize("lang, wrote, want", [("en", "idk_de", "idk_en"), ("de", "reloc_en", "reloc_de")])
 def test_fixed_sentence_follows_the_turn_language(lang, wrote, want):
     assert answer(FakeModel(lang=lang, reply=AIMessage(FS[wrote]))) == FS[want]
