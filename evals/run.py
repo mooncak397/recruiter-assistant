@@ -43,7 +43,7 @@ def claude() -> bool:
 
 def run_eval(out: Path, ids=None, judge=True, delay=None, replay_from=None):
     env = {**os.environ, "EVAL_JUDGE": "1" if judge else "0"}  # read by evals/tests.py
-    cmd = ["npx", "promptfoo@0.126.0", "eval", "-c", "evals/promptfooconfig.yaml", "--env-file", ".env",
+    cmd = ["npx", "promptfoo@0.126.0", "eval", "-c", "evals/promptfooconfig.yaml",  # no --env-file: it would override PROVIDER_* and MODEL_* ; the Python code reads .env itself
            "--no-cache", "-o", str(out)]
     if ids is not None:
         cmd += ["--filter-pattern", "^(" + "|".join(sorted(ids)) + ")$"]
