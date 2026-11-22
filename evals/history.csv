@@ -5,3 +5,4 @@ date,prompt_version,golden_version,git_sha,model_app,model_judge,n,route,lang,fa
 2026-11-22,v1,golden-v1,c90f86a,claude-haiku-5-5,claude-sonnet-5-5,53,96.2,100.0,81.4,77.7,88.9,85.7,100.0,100.0,83.0,83.3,10/10,92,92.5,3,6,0
 2026-11-22,v2,golden-v1,24ca4af,claude-haiku-5-5,claude-sonnet-5-5,53,98.1,100.0,78.6,99.4,88.9,85.7,100.0,100.0,90.6,83.3,10/10,93,94.3,1,,0
 2026-11-22,v3,golden-v1,0e1c0fd,claude-haiku-5-5,claude-sonnet-5-5,53,96.2,96.2,71.4,91.9,88.9,85.7,100.0,100.0,83.0,83.3,10/10,92,94.3,1,,0
+2026-11-22,v4,golden-v1,605162c,claude-haiku-5-5,claude-sonnet-5-5,53,96.2,100.0,72.9,87.7,88.9,85.7,100.0,100.0,86.8,100.0,10/10,92,96.2,1,,0
