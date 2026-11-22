@@ -5,18 +5,24 @@ config:
 ---
 graph TD;
 	__start__([<p>__start__</p>]):::first
+	entry(entry)
 	classify(classify)
 	answer_cv(answer_cv)
 	contact(contact)
 	off_topic(off_topic)
+	finalize(finalize)
 	__end__([<p>__end__</p>]):::last
-	__start__ --> classify;
+	__start__ --> entry;
+	answer_cv --> finalize;
 	classify -. &nbsp;cv_question&nbsp; .-> answer_cv;
 	classify -.-> contact;
+	classify -.-> finalize;
 	classify -.-> off_topic;
-	answer_cv --> __end__;
-	contact --> __end__;
-	off_topic --> __end__;
+	contact --> finalize;
+	entry -.-> classify;
+	entry -.-> finalize;
+	off_topic --> finalize;
+	finalize --> __end__;
 	classDef default fill:#f2f0ff,line-height:1.2
 	classDef first fill-opacity:0
 	classDef last fill:#bfb6fc
