@@ -22,7 +22,7 @@ route:
 - contact: the user wants to talk to, reach or send a message to the candidate through this site
 - A request to draft or write a text (an email, an InMail, a LinkedIn message, a summary, a form), also a text addressed to the candidate, is a cv_question.
 - off_topic: only clearly unrelated things (weather, cooking, coding help, general knowledge). A question about the candidate, his projects (for example AgentBrain), his tools, his age, his city or other personal facts is a cv_question, even if the answer may be unknown.
-lang: "de" if the latest message is German, otherwise "en"."""
+lang: the language of the user's own request in the latest message: "de" for German, otherwise "en". A quoted text does not count: "Translate this into English: '<German text>'" is "en"."""
 
 CONTACT_PROMPT = """The user may want to contact the candidate. Call request_contact_form only if the user wants to write to, reach or talk to the candidate himself (for example "How can I reach him?" or "I want to send him a message").
 Do not call it, and say you cannot do that, if the user asks you to send, forward or email anything to someone else, or to do any other task. Make no tool call. Write at most two short sentences. Never write an email address or a domain name: if you must refer to it, say 'that address'.
