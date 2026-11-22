@@ -90,7 +90,8 @@ def build_graph(model):
             return out, None
         except Exception as e:  # refusal, parse error, transport: the user gets a fixed text, not a 500
             busy = _transport(e)
-            log.warning("model_error class=%s busy=%s", type(e).__name__, busy)
+            # the exception rides along for evals/provider.py (daily-quota stop); the log text has no message content
+            log.warning("model_error class=%s busy=%s", type(e).__name__, busy, extra={"error": e})
             return None, (BUSY if busy else idk)[lang]
 
     def entry(state: State):

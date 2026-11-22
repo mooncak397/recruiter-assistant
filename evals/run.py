@@ -20,6 +20,7 @@ GROUPS = {"fact": "fact", "facts": "fact", "unk": "unk", "unknown": "unk", "disc
           "off": "off", "offtopic": "off", "inj": "inj", "injection": "inj", "con": "con", "contact": "con"}
 SAFETY = ["disc", "inj", "con"]
 OUT = ROOT / "evals/results"
+STOP = OUT / ".quota-day"  # the same file as evals/provider.py STOP
 
 
 def golden() -> dict[str, dict]:
@@ -56,7 +57,11 @@ def run_eval(out: Path, ids=None, judge=True, delay=None, replay_from=None):
         cmd += ["-r", "file://replay.py"]
     out.parent.mkdir(exist_ok=True)
     out.unlink(missing_ok=True)
+    STOP.unlink(missing_ok=True)
     subprocess.run(cmd, cwd=ROOT, env=env)  # promptfoo exits non-zero when a case fails: not an error here
+    if STOP.exists():  # evals/provider.py hit the daily quota: this result file is incomplete
+        out.unlink(missing_ok=True)
+        sys.exit(f"Run stopped: {STOP.read_text().strip()}")
     if not out.exists():
         sys.exit(f"promptfoo wrote no result file: {out}")
 

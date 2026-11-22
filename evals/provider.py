@@ -1,9 +1,12 @@
 """promptfoo Python provider: runs the real graph and returns JSON (plan section 7)."""
 import json
+import logging
 import os
 import sys
 import time
+from datetime import datetime, timedelta
 from pathlib import Path
+from zoneinfo import ZoneInfo
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
@@ -15,6 +18,7 @@ from app.texts import BUSY  # noqa: E402
 from evals import usage  # noqa: E402
 
 _graph = None
+STOP = Path(__file__).resolve().parent / "results/.quota-day"  # written on a daily-quota 429; run.py stops the run
 
 
 class CountCalls(BaseCallbackHandler):
@@ -31,14 +35,41 @@ class CountCalls(BaseCallbackHandler):
                 usage.log("app", u)
 
 
+class ModelErrors(logging.Handler):
+    """Collects the exceptions that app/graph.py's _call caught and logged."""
+
+    def __init__(self):
+        super().__init__()
+        self.errors = []
+
+    def emit(self, record):
+        if getattr(record, "error", None) is not None:
+            self.errors.append(record.error)
+
+
+def _quota_reset() -> str:
+    """Gemini daily quotas reset at midnight Pacific time; shown in local time."""
+    pt = datetime.now(ZoneInfo("America/Los_Angeles"))
+    reset = (pt + timedelta(days=1)).replace(hour=0, minute=0, second=0, microsecond=0)
+    return reset.astimezone().strftime("%Y-%m-%d %H:%M %Z")
+
+
 def call_api(prompt, options, context):
     global _graph
+    if STOP.exists():  # the daily quota is gone: no more calls in this run
+        return {"error": "quota-day: run stopped"}
     _graph = _graph or build_graph(get_model())
     waits = 0
+    graph_log = logging.getLogger("app.graph")
     for attempt in range(6):
-        counter = CountCalls()
+        counter, errors = CountCalls(), ModelErrors()
+        graph_log.addHandler(errors)
         try:
             s = _graph.invoke({"messages": [("user", prompt)]}, config={"callbacks": [counter]})
+            if any("PerDay" in str(e) for e in errors.errors):  # retrying a daily quota only burns time
+                STOP.parent.mkdir(exist_ok=True)
+                STOP.write_text(f"quota-day hit at {datetime.now():%Y-%m-%d %H:%M}; retry after {_quota_reset()}\n")
+                return {"error": "quota-day: daily request limit reached", "metadata": {"llm_calls": counter.n}}
             if s["messages"][-1].text not in BUSY.values():
                 break
             # the graph turns 429/5xx into the BUSY text (ADR-010); for the eval that is an error, not an answer
@@ -50,6 +81,8 @@ def call_api(prompt, options, context):
                 time.sleep(min(15 * 2**attempt, 90))
                 continue
             return {"error": f"{type(e).__name__}: {str(e)[:300]}"}
+        finally:
+            graph_log.removeHandler(errors)
     else:
         return {"error": "rate limited after 6 tries"}
     out = {"route": s["route"], "lang": s["lang"], "answer": s["messages"][-1].text,

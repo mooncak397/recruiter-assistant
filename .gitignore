@@ -6,3 +6,5 @@ __pycache__/
 node_modules/
 evals/.judge-cache.jsonl
 evals/.usage.jsonl
+evals/results/.quota-day
+evals/results/*.partial.jsonl
