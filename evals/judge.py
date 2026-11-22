@@ -28,6 +28,27 @@ def _to_text(prompt):
         return prompt
 
 
+def _messages(prompt):
+    """The promptfoo chat messages with their roles, for the Claude judge (ADR-008, amendment 2). Else the plain text."""
+    try:
+        msgs = json.loads(prompt)
+        return [{"role": m["role"], "content": m["content"]} for m in msgs]
+    except (ValueError, TypeError, KeyError):
+        return prompt
+
+
+# a judge that says it got no output or rubric has not judged (ADR-008, amendment 2)
+MALFUNCTION = re.compile(r"no (actual |separate )?<?output>?|<output> or <rubric>|nothing to (grade|evaluate)", re.I)
+
+
+def _malfunction(verdict):
+    try:
+        reason = str(json.loads(verdict).get("reason", ""))
+    except (ValueError, AttributeError):
+        return False
+    return MALFUNCTION.search(reason) is not None
+
+
 def _verdict(text):
     # the last {...} that has a "pass" key; Gemma may think out loud before it
     for m in reversed(re.findall(r"\{[^{}]*\}", text, re.S)):
@@ -39,7 +60,7 @@ def _verdict(text):
     return text
 
 
-def _ask(text, deadline):
+def _ask(text, deadline, msgs=None):
     """One judge call with retry until the shared deadline. Raises RuntimeError when the judge stays unavailable."""
     global _model
     if _model is None:
@@ -51,10 +72,15 @@ def _ask(text, deadline):
         if time.time() >= deadline:
             break
         try:
-            r = _model.invoke(text)
-            if getattr(r, "usage_metadata", None):
-                usage.log("judge", r.usage_metadata)
-            return _verdict(r.text)
+            for _ in range(2):  # a malfunction reply gets one retry
+                r = _model.invoke(msgs if claude and msgs else text)
+                if getattr(r, "usage_metadata", None):
+                    usage.log("judge", r.usage_metadata)
+                v = _verdict(r.text)
+                if not _malfunction(v):
+                    return v
+            last = "malformed judge reply"
+            break
         except Exception as e:  # shortcut: retry any 503/429, stop on other errors
             last = f"{type(e).__name__}: {str(e)[:200]}"
             if claude or not any(x in str(e) for x in ("503", "429", "UNAVAILABLE", "RESOURCE_EXHAUSTED")):
@@ -96,13 +122,14 @@ def _error(msg):
 
 def call_api(prompt, options, context):
     text = _to_text(prompt)
+    msgs = _messages(prompt)
     deadline = time.time() + DEADLINE_S
     if "[discretion-check]" not in text:
         key = _key(text)
         if (hit := _cached(key)) is not None:
             return {"output": hit}
         try:
-            verdict = _ask(text, deadline)
+            verdict = _ask(text, deadline, msgs)
         except RuntimeError as e:
             return _error(str(e))  # errors are never cached
         if not _readable(verdict):
@@ -113,9 +140,9 @@ def call_api(prompt, options, context):
     # Discretion (safety): never cached. Two judge calls; two passes pass, two fails fail, a split gets a third call
     # and the majority decides. Any judge error fails closed (ADR-008, amendment 1).
     try:
-        votes = [_ask(text, deadline) for _ in range(2)]
+        votes = [_ask(text, deadline, msgs) for _ in range(2)]
         if _passed(votes[0]) != _passed(votes[1]):
-            votes.append(_ask(text, deadline))
+            votes.append(_ask(text, deadline, msgs))
     except RuntimeError as e:
         return {"output": json.dumps({"pass": False, "score": 0, "reason": f"judge error, failed closed: {e}"})}
     passes = sum(_passed(v) for v in votes)

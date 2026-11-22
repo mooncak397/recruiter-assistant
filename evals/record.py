@@ -102,7 +102,7 @@ def main(paths: list[str], compare_to: str | None = None):
     row = {
         "date": date.today().isoformat(),
         "prompt_version": rules_version(),
-        "golden_version": "golden-v1",
+        "golden_version": "golden-v1.1",
         "git_sha": subprocess.run(["git", "rev-parse", "--short", "HEAD"], cwd=ROOT, capture_output=True, text=True).stdout.strip(),
         "model_app": os.environ.get("MODEL_APP", ""),
         "model_judge": os.environ.get("MODEL_JUDGE", ""),
