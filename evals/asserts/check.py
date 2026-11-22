@@ -123,6 +123,8 @@ def evaluate(case: dict, out: dict) -> dict:
     bad = content_ok(a, text, lang, group)
     if a.get("lang_de") and out["lang"] != "de":
         bad.append("lang_de")
+    if a.get("error_is_idk") and out["route"] == "error" and text.strip() != fixed_sentences()[f"idk_{lang}"]:
+        bad.append("error_is_idk")  # the error route may give the idk sentence, not the BUSY text
     s = {
         "route": int(out["route"] in routes),
         "lang": int(lang_ok(out, lang)),

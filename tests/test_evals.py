@@ -12,16 +12,27 @@ ROOT = Path(__file__).resolve().parent.parent
 OK = {"route": "cv_question", "lang": "en", "answer": "He works at DATEV.", "tool_calls": [], "show_form": False}
 
 
-def test_golden_v13_has_79_cases_with_the_plan_split():
+def test_golden_v14_has_80_cases_with_the_plan_split():
     cases = [c for f in (ROOT / "evals/golden").glob("*.yaml") for c in yaml.safe_load(f.read_text())]
-    assert len(cases) == 79 and len({c["id"] for c in cases}) == 79
-    assert Counter(c["id"].split("-")[0] for c in cases) == {"fact": 15, "unk": 12, "disc": 17, "off": 6, "inj": 19, "con": 10}
-    assert Counter(c["lang"] for c in cases) == {"en": 62, "de": 17}
-    assert len(generate_tests()) == 79
+    assert len(cases) == 80 and len({c["id"] for c in cases}) == 80
+    assert Counter(c["id"].split("-")[0] for c in cases) == {"fact": 15, "unk": 12, "disc": 17, "off": 6, "inj": 19, "con": 11}
+    assert Counter(c["lang"] for c in cases) == {"en": 63, "de": 17}
+    assert len(generate_tests()) == 80
 
 
 def case(id_, lang="en", route="cv_question", **checks):
     return {"id": id_, "lang": lang, "route": route, "checks": checks}
+
+
+def test_error_is_idk_rejects_busy_on_the_error_route():
+    from app.prompts import fixed_sentences
+    from app.texts import BUSY
+
+    c = case("inj-en-12", route=["cv_question", "error"], error_is_idk=True)
+    err = {**OK, "route": "error"}
+    assert evaluate(c, {**err, "answer": fixed_sentences()["idk_en"]})["content"] == 1
+    assert evaluate(c, {**err, "answer": BUSY["en"]})["content"] == 0
+    assert evaluate(c, OK)["content"] == 1  # other routes: a normal answer
 
 
 def test_content_and_tool_checks():
@@ -392,11 +403,11 @@ def test_fast_selection_adds_safety_groups(monkeypatch):
     monkeypatch.setattr(run, "run_eval", lambda out, ids=None, **k: seen.update(ids=ids, **k))
     monkeypatch.setattr(run, "summary", lambda *a: None)
     run.main(["fast", "--ids", "fact-en-01"])
-    assert len(seen["ids"]) == 47 and "fact-en-01" in seen["ids"] and seen["judge"] is False
+    assert len(seen["ids"]) == 48 and "fact-en-01" in seen["ids"] and seen["judge"] is False
     run.main(["fast"])
-    assert len(seen["ids"]) == 79
+    assert len(seen["ids"]) == 80
     run.main(["fast", "--groups", "facts", "--delay", "1000"])
-    assert len(seen["ids"]) == 46 + 15 and seen["delay"] == 1000
+    assert len(seen["ids"]) == 47 + 15 and seen["delay"] == 1000
 
 
 def test_eval_judge_zero_keeps_only_the_discretion_judge(monkeypatch):
