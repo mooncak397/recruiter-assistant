@@ -135,7 +135,7 @@ def test_1000_chars_still_goes_to_the_model():
 def test_refusal_gives_idk_not_a_crash(kind):
     from langchain_core.exceptions import ModelRefusalError
 
-    assert answer(FakeModel(lang="de", fail={kind: ModelRefusalError()}), lang="de") == FS["idk_de"]
+    assert answer(FakeModel(lang="de", fail={kind: ModelRefusalError()}), "Wo arbeitet er?", lang="de") == FS["idk_de"]
 
 
 def test_rate_limit_and_5xx_give_busy():
