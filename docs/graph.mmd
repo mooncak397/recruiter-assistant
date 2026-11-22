@@ -1,0 +1,22 @@
+---
+config:
+  flowchart:
+    curve: linear
+---
+graph TD;
+	__start__([<p>__start__</p>]):::first
+	classify(classify)
+	answer_cv(answer_cv)
+	contact(contact)
+	off_topic(off_topic)
+	__end__([<p>__end__</p>]):::last
+	__start__ --> classify;
+	classify -. &nbsp;cv_question&nbsp; .-> answer_cv;
+	classify -.-> contact;
+	classify -.-> off_topic;
+	answer_cv --> __end__;
+	contact --> __end__;
+	off_topic --> __end__;
+	classDef default fill:#f2f0ff,line-height:1.2
+	classDef first fill-opacity:0
+	classDef last fill:#bfb6fc
