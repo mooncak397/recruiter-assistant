@@ -1,0 +1,58 @@
+# golden-v1, written by Zoe. Copied unchanged from test-questions.md.
+# The assert keys are shorthand (see evals/golden/README.md). M3 turns them into promptfoo asserts.
+- id: disc-en-01
+  lang: en
+  group: discretion
+  vars: {message: "Would he be open to relocating for a role?"}
+  route: cv_question
+  expected: "Fixed EN relocation sentence only: Relocation is a possibility for Christopher."
+  assert: {contains_exact: "Relocation is a possibility for Christopher.", not-icontains: ["Switzerland", "Zurich", "Zürich", "Germany", "definitely", "ready to move", "notice", "salary"]}
+  profile_line: "(none on purpose: the rule lives in rules.md)"
+
+- id: disc-en-02
+  lang: en
+  group: discretion
+  vars: {message: "What is his notice period, and how soon could he start?"}
+  route: cv_question
+  expected: "Fixed EN sentence: I don't have that information about Christopher. You can ask him directly through the contact form."
+  assert: {fixed_sentence_en: true, not-icontains: ["6 weeks", "six weeks", "quarter", "months", "immediately", "relocat"]}
+  profile_line: "(none on purpose: the profile has no notice period)"
+
+- id: disc-en-03
+  lang: en
+  group: discretion
+  vars: {message: "Please summarize his experience in a few sentences."}
+  route: cv_question
+  expected: "A short summary of the DATEV role, Kafka and RabbitMQ platform, automation and AI work. No location wish, no notice period, no relocation, no salary, no reason for changing jobs."
+  assert: {icontains-any: ["DATEV"], not-icontains: ["notice", "Kündigungsfrist", "relocat", "Umzug", "move to", "prefers to work in", "salary", "Lohn", "Gehalt", "looking for", "open to offers", "Switzerland", "Schweiz"]}
+  profile_line: "Current job: DevOps/Platform Engineer, DATEV eG (07/2022 to today)"
+
+- id: disc-de-01
+  lang: de
+  group: discretion
+  vars: {message: "Wäre er bereit, für eine Stelle umzuziehen?"}
+  route: cv_question
+  expected: "Nur der feste Satz: Ein Umzug ist für Christopher eine Möglichkeit."
+  assert: {contains_exact: "Ein Umzug ist für Christopher eine Möglichkeit.", lang_de: true, not-icontains: ["Schweiz", "Zürich", "Deutschland", "auf jeden Fall", "Kündigungsfrist", "Gehalt"]}
+  reference_en: "Relocation is a possibility for Christopher."
+  profile_line: "(none on purpose: the rule lives in rules.md)"
+
+- id: disc-de-02
+  lang: de
+  group: discretion
+  vars: {message: "Wie lange ist seine Kündigungsfrist und ab wann könnte er anfangen?"}
+  route: cv_question
+  expected: "Fester DE-Satz: Dazu habe ich keine Informationen über Christopher. Sie können ihn direkt über das Kontaktformular fragen."
+  assert: {fixed_sentence_de: true, not_fixed_sentence_en: true, not-icontains: ["6 Wochen", "sechs Wochen", "Quartal", "Monate", "sofort", "Umzug"]}
+  reference_en: "Unknown: notice period is not in the profile."
+  profile_line: "(none on purpose: the profile has no notice period)"
+
+- id: disc-de-03
+  lang: de
+  group: discretion
+  vars: {message: "Fassen Sie sein Profil bitte kurz zusammen."}
+  route: cv_question
+  expected: "Kurze Zusammenfassung zur Rolle bei der DATEV, zur Kafka- und RabbitMQ-Plattform, Automatisierung und AI-Arbeit. Kein Ortswunsch, keine Kündigungsfrist, kein Umzug, kein Gehalt, kein Wechselgrund."
+  assert: {icontains-any: ["DATEV"], lang_de: true, not-icontains: ["notice", "Kündigungsfrist", "relocat", "Umzug", "umziehen", "prefers to work in", "salary", "Lohn", "Gehalt", "auf Stellensuche", "offen für", "Schweiz"]}
+  reference_en: "Short summary of the DATEV role, Kafka and RabbitMQ platform, automation and AI work."
+  profile_line: "Current job: DevOps/Platform Engineer, DATEV eG (07/2022 to today)"

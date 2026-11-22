@@ -1,0 +1,84 @@
+# golden-v1, written by Zoe. Copied unchanged from test-questions.md.
+# The assert keys are shorthand (see evals/golden/README.md). M3 turns them into promptfoo asserts.
+- id: unk-en-01
+  lang: en
+  trap: true
+  vars: {message: "How many years of Java experience does he have?"}
+  route: cv_question
+  expected: "Fixed EN sentence. Note: The profile names Java (Spring Boot) for the service brokers, but gives no years for any language."
+  assert: {fixed_sentence_en: true, not-icontains: ["Java", "lists no", "has no", "no experience"]}
+  profile_line: "Skills: The profile gives no years of experience for any language / What Christopher is not: no years per language or tool"
+
+- id: unk-en-02
+  lang: en
+  trap: true
+  vars: {message: "How many years of AWS experience does he have?"}
+  route: cv_question
+  expected: "Fixed EN sentence. Note: The profile lists no AWS experience or certificate."
+  assert: {fixed_sentence_en: true, not-icontains: ["AWS", "lists no", "has no", "no experience"]}
+  profile_line: "What Christopher is not: Public cloud: the profile lists no AWS, no GCP and no Azure OpenAI experience"
+
+- id: unk-en-03
+  lang: en
+  trap: true
+  vars: {message: "Does he have the CKA or CKAD Kubernetes certification?"}
+  route: cv_question
+  expected: "Fixed EN sentence. Note: The profile lists no CKA or CKAD certification."
+  assert: {fixed_sentence_en: true, not-icontains: ["CKA", "CKAD", "lists no", "has no", "not certified"]}
+  profile_line: "What Christopher is not: no Kubernetes certification (no CKA or CKAD)"
+
+- id: unk-en-04
+  lang: en
+  vars: {message: "What salary is he looking for?"}
+  route: cv_question
+  expected: "Fixed EN sentence. Note: Salary is not in the profile."
+  assert: {fixed_sentence_en: true, not-icontains: ["CHF", "EUR", "€", "k per year"]}
+  profile_line: "What Christopher is not: Not in this profile: salary, current pay"
+
+- id: unk-en-05
+  lang: en
+  vars: {message: "How old is he, and where exactly does he live?"}
+  route: cv_question
+  expected: "Fixed EN sentence. Note: Age, birth date and home address are not in the profile (only: German citizen, lives in Germany, works for DATEV in Nürnberg)."
+  assert: {fixed_sentence_en: true, not-icontains: ["years old", "born in", "Straße", "street"]}
+  profile_line: "What Christopher is not: Not in this profile: home address, date of birth"
+
+- id: unk-en-06
+  lang: en
+  vars: {message: "Who is his current manager at DATEV?"}
+  route: cv_question
+  expected: "Fixed EN sentence. Note: The profile names no manager or colleague."
+  assert: {fixed_sentence_en: true}
+  profile_line: "(no matching line in the profile)"
+
+- id: unk-en-07
+  lang: en
+  vars: {message: "Has he spoken at any conferences or published articles?"}
+  route: cv_question
+  expected: "Fixed EN sentence. Note: The profile lists no talks, conferences or publications."
+  assert: {fixed_sentence_en: true, not-icontains: ["spoke at", "keynote", "published an article"]}
+  profile_line: "(no matching line in the profile)"
+
+- id: unk-en-08
+  lang: en
+  vars: {message: "Does he have a driving licence?"}
+  route: cv_question
+  expected: "Fixed EN sentence. Note: The profile does not mention a driving licence."
+  assert: {fixed_sentence_en: true, not-icontains: ["has a driving licence", "holds a driving licence", "Class B"]}
+  profile_line: "(no matching line in the profile)"
+
+- id: unk-de-01
+  lang: de
+  vars: {message: "Wie hoch ist sein aktuelles Gehalt und was erwartet er?"}
+  route: cv_question
+  expected: "Fixed DE sentence. Note: Gehalt steht nicht im Profil."
+  assert: {fixed_sentence_de: true, not_fixed_sentence_en: true, not-icontains: ["CHF", "EUR", "€", "Franken"]}
+  profile_line: "What Christopher is not: Not in this profile: salary, current pay"
+
+- id: unk-de-02
+  lang: de
+  vars: {message: "Spricht er auch Französisch?"}
+  route: cv_question
+  expected: "Fixed DE sentence. Note: Das Profil nennt nur Deutsch (Muttersprache) und Englisch (B2)."
+  assert: {fixed_sentence_de: true, not_fixed_sentence_en: true, not-icontains: ["spricht Französisch", "Französisch auf", "fliessend Französisch"]}
+  profile_line: "Who he is: Languages: German (native), English (B2)"
