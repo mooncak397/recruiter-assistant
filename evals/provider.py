@@ -18,6 +18,7 @@ from app.texts import BUSY  # noqa: E402
 from evals import usage  # noqa: E402
 
 _graph = None
+_done = None  # prompt -> saved result, loaded once per worker
 STOP = Path(__file__).resolve().parent / "results/.quota-day"  # written on a daily-quota 429; run.py stops the run
 
 
@@ -54,10 +55,30 @@ def _quota_reset() -> str:
     return reset.astimezone().strftime("%Y-%m-%d %H:%M %Z")
 
 
+def _saved() -> dict:
+    """Finished cases of a stopped run (EVAL_PARTIAL, set by run.py), keyed by the message."""
+    global _done
+    if _done is None:
+        p = os.environ.get("EVAL_PARTIAL")
+        rows = [json.loads(line) for line in open(p)] if p and Path(p).exists() else []
+        _done = {r["prompt"]: r for r in rows if "prompt" in r}
+    return _done
+
+
+def _save(prompt, result: dict) -> dict:
+    if p := os.environ.get("EVAL_PARTIAL"):
+        with open(p, "a") as f:  # one short line per case: appends from parallel workers do not mix
+            f.write(json.dumps({"prompt": prompt, **result}, ensure_ascii=False) + "\n")
+    return result
+
+
 def call_api(prompt, options, context):
     global _graph
     if STOP.exists():  # the daily quota is gone: no more calls in this run
         return {"error": "quota-day: run stopped"}
+    if prompt in _saved():  # resume: this case finished before the stop
+        r = _saved()[prompt]
+        return {"output": r["output"], "metadata": {**r.get("metadata", {}), "resumed": True}}
     _graph = _graph or build_graph(get_model())
     waits = 0
     graph_log = logging.getLogger("app.graph")
@@ -87,5 +108,5 @@ def call_api(prompt, options, context):
         return {"error": "rate limited after 6 tries"}
     out = {"route": s["route"], "lang": s["lang"], "answer": s["messages"][-1].text,
            "tool_calls": s["tool_calls"], "show_form": s["show_form"]}
-    return {"output": json.dumps(out, ensure_ascii=False),
-            "metadata": {"llm_calls": counter.n, "rate_limited": waits}}
+    return _save(prompt, {"output": json.dumps(out, ensure_ascii=False),
+                          "metadata": {"llm_calls": counter.n, "rate_limited": waits}})

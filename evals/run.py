@@ -4,6 +4,7 @@
   uv run python evals/run.py version [--compare previous-official.json]   one full judged run and the official row
   uv run python evals/run.py release [--compare ...]                      3 judged runs, majority, one row (resumes: an existing run file is kept)"""
 import argparse
+import hashlib
 import json
 import os
 import subprocess
@@ -55,15 +56,46 @@ def run_eval(out: Path, ids=None, judge=True, delay=None, replay_from=None):
     if replay_from:  # grade saved answers again, no app call
         env["REPLAY_FROM"] = str(replay_from)
         cmd += ["-r", "file://replay.py"]
+    else:  # evals/provider.py saves each finished case here and replays it after a stop
+        env["EVAL_PARTIAL"] = str(open_partial(out))
     out.parent.mkdir(exist_ok=True)
     out.unlink(missing_ok=True)
     STOP.unlink(missing_ok=True)
     subprocess.run(cmd, cwd=ROOT, env=env)  # promptfoo exits non-zero when a case fails: not an error here
     if STOP.exists():  # evals/provider.py hit the daily quota: this result file is incomplete
         out.unlink(missing_ok=True)
-        sys.exit(f"Run stopped: {STOP.read_text().strip()}")
+        sys.exit(f"Run stopped: {STOP.read_text().strip()}\n"
+                 f"Run the same command again then: finished cases come from {partial_path(out).name}, no new calls.")
     if not out.exists():
         sys.exit(f"promptfoo wrote no result file: {out}")
+    partial_path(out).unlink(missing_ok=True)  # the result file is complete
+
+
+def partial_path(out: Path) -> Path:
+    return out.with_name(out.stem + ".partial.jsonl")
+
+
+def fingerprint() -> str:
+    """Prompt, profile, app code and model: saved answers from other code must not be replayed."""
+    h = hashlib.sha256()
+    for f in [ROOT / "prompts/rules.md", ROOT / "profile/profile.md", *sorted((ROOT / "app").glob("*.py"))]:
+        h.update(f.read_bytes())
+    h.update((os.environ.get("PROVIDER_APP", "google") + os.environ.get("MODEL_APP", "")).encode())
+    return h.hexdigest()[:16]
+
+
+def open_partial(out: Path) -> Path:
+    """Keep the per-case JSONL of a stopped run with the same fingerprint, else start a new one."""
+    p, fp = partial_path(out), fingerprint()
+    lines = p.read_text().splitlines() if p.exists() else []
+    if lines and json.loads(lines[0]).get("fingerprint") == fp:
+        print(f"resuming {out.name}: {len(lines) - 1} finished cases in {p.name}")
+        return p
+    if lines:
+        print(f"{p.name} is from other code or another model: starting fresh")
+    p.parent.mkdir(exist_ok=True)
+    p.write_text(json.dumps({"fingerprint": fp}) + "\n")
+    return p
 
 
 def regrade_errors(out: Path, rounds: int = 2, pause: int | None = None):
@@ -113,7 +145,22 @@ def summary(out: Path, seconds: float):
     print(f"{len(rs)} cases, {len(rs) - len(bad)} pass, {seconds:.0f} s, app calls {sum(m.get('llm_calls', 0) for m in meta)}, "
           f"rate_limited {sum(m.get('rate_limited', 0) for m in meta)}")
     print("failing:", " ".join(bad) or "none")
+    print(calls_per_case(rs))
     print("usage:", cost_report())
+
+
+FREE_PER_DAY = 500  # gemini-3.5-flash-lite free tier: requests per day
+
+
+def calls_per_case(rs: list[dict]) -> str:
+    """App calls per case (classify + answer + tool), to plan a run against the free daily quota."""
+    n = [(r["response"].get("metadata") or {}).get("llm_calls", 0) for r in rs]
+    avg = sum(n) / len(n) if n else 0
+    if not avg:
+        return "app calls per case: none logged"
+    i = max(range(len(n)), key=n.__getitem__)
+    return (f"app calls per case: avg {avg:.1f}, max {n[i]} ({rs[i]['testCase']['description']}); "
+            f"{FREE_PER_DAY} requests/day = about {int(FREE_PER_DAY // avg)} cases")
 
 
 def main(argv=None):
