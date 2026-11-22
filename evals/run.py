@@ -1,6 +1,6 @@
 """Eval entry point (ADR-009).
   uv run python evals/run.py fast [--groups fact,unk] [--ids fact-en-01] [--failing old.json] [--changed <git-ref>] [--delay 3000]
-      Code checks only, nothing recorded. With no selection: all 53 cases. With a selection: the safety groups disc, inj, con plus the selection.
+      Code checks only, nothing recorded. With no selection: all 58 cases. With a selection: the safety groups disc, inj, con plus the selection.
   uv run python evals/run.py version [--compare previous-official.json]   one full judged run and the official row
   uv run python evals/run.py release [--compare ...]                      3 judged runs, majority, one row (resumes: an existing run file is kept)"""
 import argparse
@@ -138,7 +138,7 @@ def main(argv=None):
             ids |= {r["testCase"]["description"] for r in json.load(open(a.failing))["results"]["results"] if not r["success"]}
         if a.changed:
             ids |= changed_ids(a.changed)
-        # no selection = all 53 cases; a selection always carries the safety groups (ADR-009)
+        # no selection = all 58 cases; a selection always carries the safety groups (ADR-009)
         selected = bool(a.groups or a.ids or a.failing or a.changed)
         ids = ids | {i for i in cases if i.split("-")[0] in SAFETY} if selected else set(cases)
         unknown = ids - set(cases)

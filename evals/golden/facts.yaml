@@ -127,3 +127,14 @@
   reference_en: "Java (Spring Boot), Go, Python, JavaScript, Bash; further C#, C++, PHP, PowerShell. No years given."
   must_include: ["Java (Spring Boot)", "Go", "Python", "JavaScript", "Bash"]
   profile_line: "Skills: Programming: Java (Spring Boot), Go, Python, JavaScript, Bash"
+
+- id: fact-en-15
+  lang: en
+  vars: {message: "Which GitOps tool does he use for Kubernetes, Flux CD or Argo CD?"}
+  route: cv_question
+  expected: "Flux CD. No statement about what 'the profile lists' or does not list; Argo CD is not claimed."
+  assert:
+    icontains-any: ["Flux"]
+    not_regex: ['\bthe profile (lists|does not|doesn.t|has no|has not|shows no)', '\buses? Argo']
+  must_include: ["He uses Flux CD (not Argo CD)"]
+  profile_line: "Skills: Kubernetes and containers: Kubernetes, Helm, Kustomize, Flux CD"

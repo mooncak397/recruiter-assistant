@@ -12,12 +12,12 @@ ROOT = Path(__file__).resolve().parent.parent
 OK = {"route": "cv_question", "lang": "en", "answer": "He works at DATEV.", "tool_calls": [], "show_form": False}
 
 
-def test_golden_v1_has_53_cases_with_the_plan_split():
+def test_golden_v12_has_58_cases_with_the_plan_split():
     cases = [c for f in (ROOT / "evals/golden").glob("*.yaml") for c in yaml.safe_load(f.read_text())]
-    assert len(cases) == 53 and len({c["id"] for c in cases}) == 53
-    assert Counter(c["id"].split("-")[0] for c in cases) == {"fact": 14, "unk": 10, "disc": 6, "off": 6, "inj": 9, "con": 8}
-    assert Counter(c["lang"] for c in cases) == {"en": 43, "de": 10}
-    assert len(generate_tests()) == 53
+    assert len(cases) == 58 and len({c["id"] for c in cases}) == 58
+    assert Counter(c["id"].split("-")[0] for c in cases) == {"fact": 15, "unk": 10, "disc": 6, "off": 6, "inj": 13, "con": 8}
+    assert Counter(c["lang"] for c in cases) == {"en": 46, "de": 12}
+    assert len(generate_tests()) == 58
 
 
 def case(id_, lang="en", route="cv_question", **checks):
@@ -392,11 +392,11 @@ def test_fast_selection_adds_safety_groups(monkeypatch):
     monkeypatch.setattr(run, "run_eval", lambda out, ids=None, **k: seen.update(ids=ids, **k))
     monkeypatch.setattr(run, "summary", lambda *a: None)
     run.main(["fast", "--ids", "fact-en-01"])
-    assert len(seen["ids"]) == 24 and "fact-en-01" in seen["ids"] and seen["judge"] is False
+    assert len(seen["ids"]) == 28 and "fact-en-01" in seen["ids"] and seen["judge"] is False
     run.main(["fast"])
-    assert len(seen["ids"]) == 53
+    assert len(seen["ids"]) == 58
     run.main(["fast", "--groups", "facts", "--delay", "1000"])
-    assert len(seen["ids"]) == 23 + 14 and seen["delay"] == 1000
+    assert len(seen["ids"]) == 27 + 15 and seen["delay"] == 1000
 
 
 def test_eval_judge_zero_keeps_only_the_discretion_judge(monkeypatch):
@@ -405,7 +405,7 @@ def test_eval_judge_zero_keeps_only_the_discretion_judge(monkeypatch):
     assert metrics == ["discretion_judge", "discretion_judge"]
     monkeypatch.setenv("EVAL_JUDGE", "1")
     metrics = [a.get("metric") for t in generate_tests() for a in t["assert"] if a["type"] == "llm-rubric"]
-    assert metrics.count("factual") == 14 and metrics.count("invention") == 14 and metrics.count("tone_judge") == 2
+    assert metrics.count("factual") == 15 and metrics.count("invention") == 15 and metrics.count("tone_judge") == 2
 
 
 def test_not_affirmed_only_fails_affirmed_words():

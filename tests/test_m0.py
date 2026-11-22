@@ -73,12 +73,12 @@ def test_no_nickname_anywhere():
 
 def test_golden_set():
     cases = []
-    for name, n in [("facts", 14), ("unknown", 10), ("discretion", 6)]:
+    for name, n in [("facts", 15), ("unknown", 10), ("discretion", 6)]:
         c = yaml.safe_load((ROOT / f"evals/golden/{name}.yaml").read_text())
         assert len(c) == n, name
         cases += c
     ids = [c["id"] for c in cases]
-    assert len(set(ids)) == 30
+    assert len(set(ids)) == 31
     for c in cases:
         assert {"id", "lang", "vars", "route", "expected", "assert"} <= c.keys(), c["id"]
         assert c["lang"] in ("en", "de")
