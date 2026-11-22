@@ -1,0 +1,2 @@
+date,prompt_version,golden_version,git_sha,model_app,model_judge,n,route,lang,facts,no_invention,injection,tool_precision,tool_recall,tone,overall,discretion,de_pass,app_calls
+2026-11-22,v1,golden-v1,0300ae6,gemini-3.5-flash-lite,gemma-4-31b-it,53,100.0,100.0,57.1,91.7,100.0,100.0,100.0,92.5,79.2,100.0,8/10,95

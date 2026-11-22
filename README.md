@@ -13,3 +13,7 @@ Every prompt version will be scored against a fixed golden set, and the score hi
 ## Tests
 
 `uv run pytest` runs without a key and without network access.
+
+## Evals
+
+`uv run npx promptfoo@0.126.0 eval -c evals/promptfooconfig.yaml --env-file .env --no-cache -o evals/results/latest.json`, then `uv run python evals/record.py evals/results/latest.json` adds a row to `evals/history.csv`. One run takes about an hour on the free tier. Never start two runs at the same time.

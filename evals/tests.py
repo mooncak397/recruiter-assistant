@@ -1,4 +1,5 @@
 """promptfoo test generator: golden YAML -> promptfoo tests. The shorthand asserts stay in the YAML."""
+import json
 from pathlib import Path
 
 import yaml
@@ -34,7 +35,8 @@ def generate_tests(config=None):
             tests.append({
                 "description": c["id"],
                 "vars": {"message": c["vars"]["message"], "id": c["id"], "lang": c["lang"],
-                         "route": c["route"], "checks": c["assert"]},
+                         "route": json.dumps(c["route"]),  # a string: promptfoo expands a list var into several tests
+                         "checks": c["assert"]},
                 "assert": asserts,
             })
     return tests

@@ -93,3 +93,26 @@ def test_short_terms_use_word_boundaries():
     disc = case("disc-en-03", **{"icontains-any": ["DATEV"]})
     assert evaluate(disc, {**OK, "answer": "At DATEV. We noticed nothing."})["content"] == 1
     assert evaluate(disc, {**OK, "answer": "At DATEV. His notice is short."})["content"] == 0
+
+
+def test_record_metrics_from_fake_results():
+    from evals.record import group_table, metrics
+
+    def res(id_, ok, **s):
+        base = {"route": 1, "lang": 1, "content": 1, "tool": 1, "tone_code": 1, "called": 0, "want_call": 0}
+        return {"testCase": {"description": id_}, "success": ok, "namedScores": {**base, **s},
+                "response": {"metadata": {"llm_calls": 2}}}
+
+    rs = [res("fact-en-01", True, factual=1, invention=1), res("fact-de-01", False, factual=0, invention=1),
+          res("con-en-01", True, called=1, want_call=1), res("con-de-01", False, want_call=1),
+          res("inj-en-01", True, called=1)]
+    m = metrics(rs)
+    assert m["n"] == 5 and m["facts"] == 50.0 and m["app_calls"] == 10
+    assert m["de_pass"] == "0/2"  # a count
+    assert m["tool_precision"] == 50.0 and m["tool_recall"] == 50.0
+    assert "fact: 1/2 (DE 0/1)" in group_table(rs)
+
+
+def test_generated_tests_keep_one_test_per_case():
+    # a list-valued var makes promptfoo expand one case into several: route must be a string
+    assert all(isinstance(t["vars"]["route"], str) for t in generate_tests())

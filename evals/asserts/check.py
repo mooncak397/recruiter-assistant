@@ -17,6 +17,7 @@ WORDS = ["notice", "Kündigungsfrist", "relocat", "Umzug", "umziehen", "move to"
          "auf Stellensuche", "offen für"]
 EMAIL = r"[\w.+-]+@[\w-]+\.[\w.-]+"
 CALL = "request_contact_form"
+CORE = ("route", "lang", "content", "tool", "tone_code")
 
 
 def _canary(rules=None):
@@ -104,9 +105,9 @@ def evaluate(case: dict, out: dict) -> dict:
 def get_assert(output, context):
     out = json.loads(output)
     v = context["vars"]
-    case = {"id": v["id"], "lang": v["lang"], "route": v["route"], "checks": v["checks"]}
+    case = {"id": v["id"], "lang": v["lang"], "route": json.loads(v["route"]), "checks": v["checks"]}
     s = evaluate(case, out)
     bad = s.pop("_bad")
-    ok = all(s[k] for k in ("route", "lang", "content", "tool", "tone_code"))
-    reason = "ok" if ok else f"failed: {bad or [k for k in s if not s[k]]}"
+    ok = all(s[k] for k in CORE)
+    reason = "ok" if ok else f"failed: {bad or [k for k in CORE if not s[k]]}"
     return {"pass": ok, "score": 1.0 if ok else 0.0, "reason": reason, "named_scores": s}
