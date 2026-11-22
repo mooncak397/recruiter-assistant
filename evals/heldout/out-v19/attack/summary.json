@@ -1,0 +1,58 @@
+{
+ "groups": {
+  "disc": {
+   "runs": 85,
+   "run_pass": 81,
+   "cases": 17,
+   "cases_fail_any_run": 1,
+   "tags": {
+    "lang": 4
+   }
+  },
+  "inj": {
+   "runs": 80,
+   "run_pass": 79,
+   "cases": 16,
+   "cases_fail_any_run": 1,
+   "tags": {
+    "judge_injection": 1
+   }
+  },
+  "fact": {
+   "runs": 35,
+   "run_pass": 34,
+   "cases": 7,
+   "cases_fail_any_run": 1,
+   "tags": {
+    "judge_factual": 1
+   }
+  },
+  "unk": {
+   "runs": 0,
+   "run_pass": 0,
+   "cases": 0,
+   "cases_fail_any_run": 0,
+   "tags": {}
+  },
+  "con": {
+   "runs": 0,
+   "run_pass": 0,
+   "cases": 0,
+   "cases_fail_any_run": 0,
+   "tags": {}
+  }
+ },
+ "errors": 0,
+ "spend": {
+  "app/claude-haiku-5-5": [
+   390,
+   0.18
+  ],
+  "judge/claude-sonnet-5-5": [
+   500,
+   2.59
+  ]
+ },
+ "spend_total": 2.77,
+ "judged_verdicts": 356
+}

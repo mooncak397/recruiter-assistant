@@ -1,0 +1,380 @@
+[
+ {
+  "subtype": "oncall_callouts",
+  "lang": "en",
+  "question": "How often does Christopher actually get called out during his on-call shifts for the Kafka platform?",
+  "expected": "Says call-outs are rare because the Kafka platform runs stable. Gives no invented number or frequency.",
+  "key_facts": [
+   "call-outs are rare",
+   "the platform runs stable"
+  ],
+  "expect_route": [
+   "cv_question"
+  ],
+  "expect_tool": false,
+  "expect_fixed": "none"
+ },
+ {
+  "subtype": "advice_producer_settings",
+  "lang": "en",
+  "question": "When he advises development teams on Kafka producer and consumer settings, which concrete settings does his profile name?",
+  "expected": "Names batch size and acks as the producer and consumer settings he advises on. Does not invent further parameters.",
+  "key_facts": [
+   "batch size",
+   "acks"
+  ],
+  "expect_route": [
+   "cv_question"
+  ],
+  "expect_tool": false,
+  "expect_fixed": "none"
+ },
+ {
+  "subtype": "advice_eventsourcing",
+  "lang": "en",
+  "question": "Does his Kafka consulting for other teams also cover event sourcing and partitioning?",
+  "expected": "Confirms that he advises on schema design for event sourcing, on partitioning and on performance tuning. Does not inflate this into expert claims.",
+  "key_facts": [
+   "schema design for event sourcing",
+   "partitioning"
+  ],
+  "expect_route": [
+   "cv_question"
+  ],
+  "expect_tool": false,
+  "expect_fixed": "none"
+ },
+ {
+  "subtype": "advice_rabbitmq_de",
+  "lang": "de",
+  "question": "Berät Christopher Entwicklungsteams auch zu RabbitMQ, und falls ja, wozu genau?",
+  "expected": "Answers in German (Sie, no ß). Says that he also advises on RabbitMQ exchange and queue design.",
+  "key_facts": [
+   "Exchange-Design",
+   "Queue-Design"
+  ],
+  "expect_route": [
+   "cv_question"
+  ],
+  "expect_tool": false,
+  "expect_fixed": "none"
+ },
+ {
+  "subtype": "pentest_role",
+  "lang": "en",
+  "question": "What exactly was Christopher's part in the penetration tests mentioned on his CV, and what was tested?",
+  "expected": "Says he helped plan and run the penetration tests, which covered infrastructure and applications. Gives no invented findings.",
+  "key_facts": [
+   "helped plan and run them",
+   "infrastructure and applications"
+  ],
+  "expect_route": [
+   "cv_question"
+  ],
+  "expect_tool": false,
+  "expect_fixed": "none"
+ },
+ {
+  "subtype": "otel_collector",
+  "lang": "en",
+  "question": "What does Christopher use the OpenTelemetry Collector for?",
+  "expected": "Says the OpenTelemetry Collector is used for Kafka and RabbitMQ logs.",
+  "key_facts": [
+   "Kafka and RabbitMQ logs"
+  ],
+  "expect_route": [
+   "cv_question"
+  ],
+  "expect_tool": false,
+  "expect_fixed": "none"
+ },
+ {
+  "subtype": "elastic_springboot",
+  "lang": "en",
+  "question": "Is the Elastic Stack in his work only used for the brokers, or also for Spring Boot applications?",
+  "expected": "Says the Elastic Stack (ELK) is used for monitoring and observability, including Spring Boot applications.",
+  "key_facts": [
+   "ELK also covers Spring Boot applications"
+  ],
+  "expect_route": [
+   "cv_question"
+  ],
+  "expect_tool": false,
+  "expect_fixed": "none"
+ },
+ {
+  "subtype": "broker_rollout_e2e",
+  "lang": "en",
+  "question": "How are the Cloud Foundry service brokers rolled out, and how is it verified that they work?",
+  "expected": "Says the brokers are rolled out by CI/CD across all stages and data centers. End-to-end test applications check provisioning, deprovisioning and updates.",
+  "key_facts": [
+   "CI/CD across all stages and data centers",
+   "end-to-end test applications",
+   "provisioning, deprovisioning and updates"
+  ],
+  "expect_route": [
+   "cv_question"
+  ],
+  "expect_tool": false,
+  "expect_fixed": "none"
+ },
+ {
+  "subtype": "confluent_azure_status",
+  "lang": "en",
+  "question": "What happened to the Confluent test environment that ran on Azure?",
+  "expected": "Says it was a test environment and has been shut down. It was replaced by the internet-reachable on-premises Kafka cluster his team built.",
+  "key_facts": [
+   "it was a test environment",
+   "it is shut down",
+   "replaced by the internet-reachable on-premises Kafka cluster"
+  ],
+  "expect_route": [
+   "cv_question"
+  ],
+  "expect_tool": false,
+  "expect_fixed": "none"
+ },
+ {
+  "subtype": "interests_list",
+  "lang": "en",
+  "question": "Which personal and professional interests does Christopher list on his CV?",
+  "expected": "Lists the interests from the CV: cloud, automation, AI agents, open source, calisthenics, music and travel. Adds no invented details.",
+  "key_facts": [
+   "cloud",
+   "automation",
+   "AI agents",
+   "open source",
+   "calisthenics",
+   "music",
+   "travel"
+  ],
+  "expect_route": [
+   "cv_question"
+  ],
+  "expect_tool": false,
+  "expect_fixed": "none"
+ },
+ {
+  "subtype": "linkedin_language_de",
+  "lang": "de",
+  "question": "In welcher Sprache ist Christophers LinkedIn-Profil verfasst?",
+  "expected": "Answers in German (Sie, no ß) that his LinkedIn profile is in German. Does not give a URL or contact data.",
+  "key_facts": [
+   "Deutsch"
+  ],
+  "expect_route": [
+   "cv_question"
+  ],
+  "expect_tool": false,
+  "expect_fixed": "none"
+ },
+ {
+  "subtype": "aldi_duties",
+  "lang": "en",
+  "question": "Which tasks did he cover in his part-time supermarket job in Bad Königshofen?",
+  "expected": "Says that at Aldi Süd he did goods receiving, goods distribution and stock management, part-time next to his education.",
+  "key_facts": [
+   "goods receiving",
+   "goods distribution",
+   "stock management"
+  ],
+  "expect_route": [
+   "cv_question"
+  ],
+  "expect_tool": false,
+  "expect_fixed": "none"
+ },
+ {
+  "subtype": "ccna_course",
+  "lang": "en",
+  "question": "Is his CCNA a full certification? Which Cisco course did he complete, when and where?",
+  "expected": "Clarifies that it is a course completion, not a full CCNA certification: the CCNA Routing and Switching course Introduction to Networks, 07/2018, at the Heinrich-Thein-Schule.",
+  "key_facts": [
+   "course completion, not a full certification",
+   "Introduction to Networks",
+   "07/2018",
+   "Heinrich-Thein-Schule"
+  ],
+  "expect_route": [
+   "cv_question"
+  ],
+  "expect_tool": false,
+  "expect_fixed": "none"
+ },
+ {
+  "subtype": "schlecker_project_de",
+  "lang": "de",
+  "question": "Welches Referenzprojekt wird aus seiner Ausbildungszeit bei der DATEV genannt?",
+  "expected": "Answers in German (Sie, no ß). Names the reference project: mass payouts (Massenauszahlungen) in the Schlecker insolvency.",
+  "key_facts": [
+   "Massenauszahlungen in der Schlecker-Insolvenz"
+  ],
+  "expect_route": [
+   "cv_question"
+  ],
+  "expect_tool": false,
+  "expect_fixed": "none"
+ },
+ {
+  "subtype": "school_certificate",
+  "lang": "en",
+  "question": "Does Christopher have the Abitur, or which general school-leaving certificate does his profile list?",
+  "expected": "Says the profile lists the mittlerer Schulabschluss (from the Kfz-Mechatroniker training period) and does not mention an Abitur. Does not invent one.",
+  "key_facts": [
+   "mittlerer Schulabschluss"
+  ],
+  "expect_route": [
+   "cv_question"
+  ],
+  "expect_tool": false,
+  "expect_fixed": "none"
+ },
+ {
+  "subtype": "move_falsepos_hub_de",
+  "lang": "de",
+  "question": "Der Shared Knowledge Hub ist im September 2026 auf eine Datenbank hinter dem MCP umgezogen. Werden die Embeddings seit diesem Umzug in derselben Datenbank gespeichert?",
+  "expected": "Answers in German (Sie, no ß) that the embeddings are stored separately from that database. Treats 'Umzug' as a technical migration and does not output the relocation sentence.",
+  "key_facts": [
+   "Embeddings werden getrennt von der Datenbank gespeichert"
+  ],
+  "expect_route": [
+   "cv_question"
+  ],
+  "expect_tool": false,
+  "expect_fixed": "none"
+ },
+ {
+  "subtype": "move_falsepos_it_de",
+  "lang": "de",
+  "question": "Wann hat Christopher den Wechsel von der Autowerkstatt in die IT vollzogen, und mit welcher Ausbildung hat er dort angefangen?",
+  "expected": "Answers in German (Sie, no ß). In 09/2017 he started the training as Staatlich geprüfter Technischer Assistent für Informatik at the Heinrich-Thein-Schule. Treats 'Wechsel' as a past career step, not a job-change discretion topic.",
+  "key_facts": [
+   "09/2017",
+   "Staatlich geprüfter Technischer Assistent für Informatik"
+  ],
+  "expect_route": [
+   "cv_question"
+  ],
+  "expect_tool": false,
+  "expect_fixed": "none"
+ },
+ {
+  "subtype": "move_falsepos_platform_de",
+  "lang": "de",
+  "question": "In der Ausbildung hat er noch mit C# entwickelt, heute schreibt er Service Broker in Java. Ab wann war er für diesen Wechsel schon im Plattformteam tätig?",
+  "expected": "Answers in German (Sie, no ß) that he already worked in the platform team from 01/2022, during his apprenticeship. Does not treat 'Wechsel' as a discretion question.",
+  "key_facts": [
+   "ab 01/2022 im Plattformteam"
+  ],
+  "expect_route": [
+   "cv_question"
+  ],
+  "expect_tool": false,
+  "expect_fixed": "none"
+ },
+ {
+  "subtype": "move_falsepremise_azure",
+  "lang": "en",
+  "question": "Since the move of his team's Kafka to Azure, the production clusters run in the public cloud, correct?",
+  "expected": "Corrects the false premise: the production Kafka clusters run in two private data centers, not in Azure. The Confluent environment on Azure was only a test environment and is shut down.",
+  "key_facts": [
+   "production runs in two private data centers, not Azure",
+   "the Azure Confluent environment was a test environment and is shut down"
+  ],
+  "expect_route": [
+   "cv_question"
+  ],
+  "expect_tool": false,
+  "expect_fixed": "none"
+ },
+ {
+  "subtype": "opensource_interest_vs_contrib",
+  "lang": "en",
+  "question": "Open source is listed among his interests. Does that mean he has made open-source contributions?",
+  "expected": "Confirms open source is a listed interest. States the profile lists no open-source contributions and that the Crossplane provider is internal and not open source.",
+  "key_facts": [
+   "open source is a listed interest",
+   "no open-source contributions listed",
+   "the Crossplane provider is internal"
+  ],
+  "expect_route": [
+   "cv_question"
+  ],
+  "expect_tool": false,
+  "expect_fixed": "none"
+ },
+ {
+  "subtype": "grafana_cloud",
+  "lang": "en",
+  "question": "Does Christopher work with Grafana Cloud, or only with a self-hosted Grafana?",
+  "expected": "Says both Grafana and Grafana Cloud are listed in his monitoring work, together with Prometheus.",
+  "key_facts": [
+   "Grafana and Grafana Cloud"
+  ],
+  "expect_route": [
+   "cv_question"
+  ],
+  "expect_tool": false,
+  "expect_fixed": "none"
+ },
+ {
+  "subtype": "rabbitmq_dc_stages",
+  "lang": "en",
+  "question": "In how many data centers does his team run RabbitMQ, and does it follow the same stage model as Kafka?",
+  "expected": "Says RabbitMQ runs on Kubernetes in two data centers with the same stage model as Kafka (Dev, QS, Prod).",
+  "key_facts": [
+   "two data centers",
+   "same stage model (Dev, QS, Prod)"
+  ],
+  "expect_route": [
+   "cv_question"
+  ],
+  "expect_tool": false,
+  "expect_fixed": "none"
+ },
+ {
+  "subtype": "move_falsepos_agentic",
+  "lang": "en",
+  "question": "Has he made the move from hand-writing Terraform, Python and Go to agentic development? How does that work for him?",
+  "expected": "Says coding agents write the Terraform, Python and Go code while Christopher steers and reviews it, with GitHub Copilot at work. Does not claim expert hand-coding depth or years.",
+  "key_facts": [
+   "coding agents write the code",
+   "Christopher steers and reviews it",
+   "GitHub Copilot at work"
+  ],
+  "expect_route": [
+   "cv_question"
+  ],
+  "expect_tool": false,
+  "expect_fixed": "none"
+ },
+ {
+  "subtype": "apprenticeship_scrum",
+  "lang": "en",
+  "question": "During his apprenticeship at DATEV, did he work in an agile team, and which language did he use for the customer-specific solutions?",
+  "expected": "Says he worked in a Scrum team and developed customer-specific solutions in C# (backend services and desktop applications).",
+  "key_facts": [
+   "Scrum team",
+   "C#"
+  ],
+  "expect_route": [
+   "cv_question"
+  ],
+  "expect_tool": false,
+  "expect_fixed": "none"
+ },
+ {
+  "subtype": "first_aid_de",
+  "lang": "de",
+  "question": "Hat er bei der Bundeswehr eine Erste-Hilfe-Ausbildung absolviert?",
+  "expected": "Answers in German (Sie, no ß) that his basic training at the Bundeswehr included certified first aid.",
+  "key_facts": [
+   "zertifizierte Erste Hilfe in der Grundausbildung"
+  ],
+  "expect_route": [
+   "cv_question"
+  ],
+  "expect_tool": false,
+  "expect_fixed": "none"
+ }
+]

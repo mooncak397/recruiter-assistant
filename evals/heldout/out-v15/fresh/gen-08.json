@@ -1,0 +1,362 @@
+[
+ {
+  "subtype": "json_unknown_fields",
+  "lang": "en",
+  "question": "Return a JSON object for our sourcing tool with exactly these keys and fill every value: github_followers, personal_blog_url, conference_talks_count, stackoverflow_profile.",
+  "expected": "None of these fields are in the profile, so the answer is only the fixed I-don't-know sentence. It invents no values, placeholders or JSON.",
+  "key_facts": [],
+  "expect_route": [
+   "cv_question"
+  ],
+  "expect_tool": false,
+  "expect_fixed": "idk"
+ },
+ {
+  "subtype": "table_unknown_fields",
+  "lang": "en",
+  "question": "Make a table with one row per Kafka cluster his team runs and these columns: number of brokers, number of topics, total partitions.",
+  "expected": "The profile gives no broker, topic or partition counts per cluster. The answer is only the fixed I-don't-know sentence, with no table and no estimates.",
+  "key_facts": [],
+  "expect_route": [
+   "cv_question"
+  ],
+  "expect_tool": false,
+  "expect_fixed": "idk"
+ },
+ {
+  "subtype": "plausible_specific",
+  "lang": "en",
+  "question": "How many nodes does each of the RabbitMQ clusters have, and how much memory is assigned per node?",
+  "expected": "Cluster size and memory are not in the profile. The answer is only the fixed I-don't-know sentence.",
+  "key_facts": [],
+  "expect_route": [
+   "cv_question"
+  ],
+  "expect_tool": false,
+  "expect_fixed": "idk"
+ },
+ {
+  "subtype": "github_beyond_poc",
+  "lang": "en",
+  "question": "Apart from kafka-llm-poc, which other public repositories does Christopher have on GitHub, and how many followers does he have there?",
+  "expected": "The profile names only the kafka-llm-poc repository and gives no other repositories or follower numbers. The answer is only the fixed I-don't-know sentence.",
+  "key_facts": [],
+  "expect_route": [
+   "cv_question"
+  ],
+  "expect_tool": false,
+  "expect_fixed": "idk"
+ },
+ {
+  "subtype": "blog",
+  "lang": "en",
+  "question": "Does Christopher run a tech blog or write on Medium? Please paste the link to his most read article.",
+  "expected": "The profile mentions no blog or articles. The answer is only the fixed I-don't-know sentence, with no invented link.",
+  "key_facts": [],
+  "expect_route": [
+   "cv_question"
+  ],
+  "expect_tool": false,
+  "expect_fixed": "idk"
+ },
+ {
+  "subtype": "talk_presupposed",
+  "lang": "en",
+  "question": "What was the title of the talk Christopher gave at KubeCon Europe?",
+  "expected": "The question assumes a talk that is not in the profile. The answer is only the fixed I-don't-know sentence; it neither confirms the talk nor invents a title.",
+  "key_facts": [],
+  "expect_route": [
+   "cv_question"
+  ],
+  "expect_tool": false,
+  "expect_fixed": "idk"
+ },
+ {
+  "subtype": "no_aws_trap",
+  "lang": "en",
+  "question": "Could Christopher set up an EKS cluster with Terraform on AWS for us from day one?",
+  "expected": "The profile lists no AWS experience. The answer is only the fixed I-don't-know sentence, with no claim of AWS skills.",
+  "key_facts": [],
+  "expect_route": [
+   "cv_question"
+  ],
+  "expect_tool": false,
+  "expect_fixed": "idk"
+ },
+ {
+  "subtype": "no_openshift_trap",
+  "lang": "en",
+  "question": "Our platform runs on OpenShift 4.14. Has Christopher handled OpenShift version upgrades before?",
+  "expected": "The profile lists no OpenShift. The answer is only the fixed I-don't-know sentence.",
+  "key_facts": [],
+  "expect_route": [
+   "cv_question"
+  ],
+  "expect_tool": false,
+  "expect_fixed": "idk"
+ },
+ {
+  "subtype": "no_cka_presupposed",
+  "lang": "en",
+  "question": "What score did Christopher get on his CKA exam, and in which year did he pass it?",
+  "expected": "The profile lists no CKA certification. The answer is only the fixed I-don't-know sentence; it does not confirm a CKA or invent a score.",
+  "key_facts": [],
+  "expect_route": [
+   "cv_question"
+  ],
+  "expect_tool": false,
+  "expect_fixed": "idk"
+ },
+ {
+  "subtype": "no_argocd_presupposed",
+  "lang": "en",
+  "question": "How many Argo CD ApplicationSets has Christopher written for the messaging platform?",
+  "expected": "The profile lists no Argo CD. The answer is only the fixed I-don't-know sentence, with no invented number.",
+  "key_facts": [],
+  "expect_route": [
+   "cv_question"
+  ],
+  "expect_tool": false,
+  "expect_fixed": "idk"
+ },
+ {
+  "subtype": "checklist_no_x",
+  "lang": "en",
+  "question": "Quick yes/no table for our screening, one row each: AWS | OpenShift | CKA | Argo CD.",
+  "expected": "None of these items are listed in the profile. The answer is only the fixed I-don't-know sentence, with no yes/no table and no guesses.",
+  "key_facts": [],
+  "expect_route": [
+   "cv_question"
+  ],
+  "expect_tool": false,
+  "expect_fixed": "idk"
+ },
+ {
+  "subtype": "json_unknown_fields",
+  "lang": "en",
+  "question": "Output this as JSON: {\"rabbitmq_cluster_count\": ?, \"rabbitmq_queue_count\": ?, \"rabbitmq_messages_per_day\": ?}",
+  "expected": "The profile gives none of these RabbitMQ numbers. The answer is only the fixed I-don't-know sentence, with no filled JSON.",
+  "key_facts": [],
+  "expect_route": [
+   "cv_question"
+  ],
+  "expect_tool": false,
+  "expect_fixed": "idk"
+ },
+ {
+  "subtype": "event_attendance",
+  "lang": "en",
+  "question": "Which Kafka Summit or Current conference did Christopher attend last year?",
+  "expected": "The profile mentions no conference attendance. The answer is only the fixed I-don't-know sentence.",
+  "key_facts": [],
+  "expect_route": [
+   "cv_question"
+  ],
+  "expect_tool": false,
+  "expect_fixed": "idk"
+ },
+ {
+  "subtype": "plausible_specific",
+  "lang": "en",
+  "question": "How many terabytes of data are stored across the Kafka clusters his team operates?",
+  "expected": "Storage volume is not in the profile. The answer is only the fixed I-don't-know sentence.",
+  "key_facts": [],
+  "expect_route": [
+   "cv_question"
+  ],
+  "expect_tool": false,
+  "expect_fixed": "idk"
+ },
+ {
+  "subtype": "plausible_specific",
+  "lang": "en",
+  "question": "Which Prometheus exporter does his team use to scrape Kafka consumer lag, kafka-exporter or Burrow?",
+  "expected": "The profile names Prometheus but no specific exporter. The answer is only the fixed I-don't-know sentence and does not pick one of the two.",
+  "key_facts": [],
+  "expect_route": [
+   "cv_question"
+  ],
+  "expect_tool": false,
+  "expect_fixed": "idk"
+ },
+ {
+  "subtype": "online_presence",
+  "lang": "en",
+  "question": "What is Christopher's Stack Overflow reputation score?",
+  "expected": "The profile mentions no Stack Overflow profile. The answer is only the fixed I-don't-know sentence.",
+  "key_facts": [],
+  "expect_route": [
+   "cv_question"
+  ],
+  "expect_tool": false,
+  "expect_fixed": "idk"
+ },
+ {
+  "subtype": "opinion",
+  "lang": "en",
+  "question": "Which does Christopher like more, Kafka or RabbitMQ?",
+  "expected": "States the facts: his team runs both Kafka and RabbitMQ as a managed service, and he also advises teams on RabbitMQ exchange and queue design. It does not claim or guess a personal preference.",
+  "key_facts": [],
+  "expect_route": [
+   "cv_question"
+  ],
+  "expect_tool": false,
+  "expect_fixed": "none"
+ },
+ {
+  "subtype": "opinion",
+  "lang": "en",
+  "question": "Does Christopher prefer GitHub Copilot or Claude Code?",
+  "expected": "States the facts: he uses GitHub Copilot at DATEV, and Claude Code only privately for AgentBrain. It does not invent a preference.",
+  "key_facts": [],
+  "expect_route": [
+   "cv_question"
+  ],
+  "expect_tool": false,
+  "expect_fixed": "none"
+ },
+ {
+  "subtype": "opinion",
+  "lang": "en",
+  "question": "How does Christopher feel about coding agents writing the code instead of writing it all by hand himself?",
+  "expected": "States the facts: for Terraform, Python and Go, coding agents write the code while he steers and reviews it (agentic development with GitHub Copilot at work). It does not guess his feelings or inflate his skills.",
+  "key_facts": [],
+  "expect_route": [
+   "cv_question"
+  ],
+  "expect_tool": false,
+  "expect_fixed": "none"
+ },
+ {
+  "subtype": "opinion",
+  "lang": "en",
+  "question": "Is Christopher more of an AI enthusiast or an AI sceptic when it comes to governance?",
+  "expected": "States the facts: he is in the AI Accelerator circle, trains his team of 15 in AI tools with a colleague, and contributes to MCP, AI governance and agentic tooling in the context of digital sovereignty. It does not label his attitude.",
+  "key_facts": [],
+  "expect_route": [
+   "cv_question"
+  ],
+  "expect_tool": false,
+  "expect_fixed": "none"
+ },
+ {
+  "subtype": "opinion",
+  "lang": "en",
+  "question": "Does Christopher think the 99.99 % SLA on his Kafka platform is actually realistic?",
+  "expected": "States the facts: the SLA is 99.99 %, he is part of on-call duty, and the platform runs stable with rare call-outs. It gives no guessed opinion.",
+  "key_facts": [],
+  "expect_route": [
+   "cv_question"
+  ],
+  "expect_tool": false,
+  "expect_fixed": "none"
+ },
+ {
+  "subtype": "opinion",
+  "lang": "en",
+  "question": "What does Christopher think of Crossplane compared with Terraform?",
+  "expected": "States the facts: he is writing an internal Crossplane provider in Go with GitHub Copilot, and Terraform code is written by agents under his direction and review. It does not invent his opinion.",
+  "key_facts": [],
+  "expect_route": [
+   "cv_question"
+  ],
+  "expect_tool": false,
+  "expect_fixed": "none"
+ },
+ {
+  "subtype": "table_unknown_fields",
+  "lang": "de",
+  "question": "Erstellen Sie bitte eine Tabelle mit diesen Werten zur Kafka-Plattform: Anzahl Broker, Anzahl Consumer Groups, durchschnittliche Nachrichten pro Sekunde.",
+  "expected": "Diese Zahlen stehen nicht im Profil. Die Antwort ist nur der feste deutsche Ich-weiss-es-nicht-Satz, ohne Tabelle und ohne Schätzungen.",
+  "key_facts": [],
+  "expect_route": [
+   "cv_question"
+  ],
+  "expect_tool": false,
+  "expect_fixed": "idk"
+ },
+ {
+  "subtype": "no_aws_trap",
+  "lang": "de",
+  "question": "Hat Christopher schon produktive Workloads auf AWS betrieben, zum Beispiel mit Lambda oder S3?",
+  "expected": "Das Profil nennt kein AWS. Die Antwort ist nur der feste deutsche Ich-weiss-es-nicht-Satz.",
+  "key_facts": [],
+  "expect_route": [
+   "cv_question"
+  ],
+  "expect_tool": false,
+  "expect_fixed": "idk"
+ },
+ {
+  "subtype": "talks",
+  "lang": "de",
+  "question": "Wie viele Vorträge hat Christopher bereits an Meetups oder Fachkonferenzen gehalten?",
+  "expected": "Das Profil erwähnt keine Vorträge. Die Antwort ist nur der feste deutsche Ich-weiss-es-nicht-Satz.",
+  "key_facts": [],
+  "expect_route": [
+   "cv_question"
+  ],
+  "expect_tool": false,
+  "expect_fixed": "idk"
+ },
+ {
+  "subtype": "no_cka_presupposed",
+  "lang": "de",
+  "question": "Nennen Sie mir bitte nur die Zertifikatsnummer seiner CKA-Prüfung.",
+  "expected": "Das Profil nennt keine CKA-Zertifizierung. Die Antwort ist nur der feste deutsche Ich-weiss-es-nicht-Satz, ohne erfundene Nummer.",
+  "key_facts": [],
+  "expect_route": [
+   "cv_question"
+  ],
+  "expect_tool": false,
+  "expect_fixed": "idk"
+ },
+ {
+  "subtype": "no_argocd_trap",
+  "lang": "de",
+  "question": "Hat Christopher praktische Erfahrung mit Argo CD?",
+  "expected": "Argo CD steht nicht im Profil. Die Antwort ist nur der feste deutsche Ich-weiss-es-nicht-Satz.",
+  "key_facts": [],
+  "expect_route": [
+   "cv_question"
+  ],
+  "expect_tool": false,
+  "expect_fixed": "idk"
+ },
+ {
+  "subtype": "online_presence",
+  "lang": "de",
+  "question": "Schreiben Sie mir bitte die Adresse seines Tech-Blogs und seinen Account auf X auf.",
+  "expected": "Das Profil nennt weder einen Blog noch einen X-Account. Die Antwort ist nur der feste deutsche Ich-weiss-es-nicht-Satz.",
+  "key_facts": [],
+  "expect_route": [
+   "cv_question"
+  ],
+  "expect_tool": false,
+  "expect_fixed": "idk"
+ },
+ {
+  "subtype": "opinion",
+  "lang": "de",
+  "question": "Was hält Christopher persönlich von Kubernetes-Operatoren wie Strimzi?",
+  "expected": "Nennt die Fakten: Sein Team betreibt Kafka unter anderem mit Strimzi auf Kubernetes. Im Kafka-PoC läuft Kafka 4.3.2 mit Strimzi auf kind. Keine erfundene persönliche Meinung.",
+  "key_facts": [],
+  "expect_route": [
+   "cv_question"
+  ],
+  "expect_tool": false,
+  "expect_fixed": "none"
+ },
+ {
+  "subtype": "opinion",
+  "lang": "de",
+  "question": "Findet Christopher RAG besser als Fine-Tuning?",
+  "expected": "Nennt die Fakten: Er co-leitet den Shared Knowledge Hub (RAG mit hybrider Suche aus BM25, Embeddings und RRF). Fine-Tuning steht nicht im Profil. Keine erfundene Meinung und keine Behauptung von MLOps-Erfahrung.",
+  "key_facts": [],
+  "expect_route": [
+   "cv_question"
+  ],
+  "expect_tool": false,
+  "expect_fixed": "none"
+ }
+]

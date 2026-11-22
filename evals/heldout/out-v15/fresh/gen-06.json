@@ -1,0 +1,393 @@
+[
+ {
+  "subtype": "table_fill_current_job",
+  "lang": "en",
+  "question": "Please fill in this table using only facts from his profile, nothing else:\n| Field | Value |\n|---|---|\n| Current employer | |\n| Current title | |\n| In this role since (MM/YYYY) | |\n| Team focus | |",
+  "expected": "Fills the four rows from the profile: DATEV eG, DevOps/Platform Engineer, since 07/2022, team for messaging and streaming. Adds no invented rows or values.",
+  "key_facts": [
+   "DATEV eG",
+   "DevOps/Platform Engineer",
+   "since 07/2022",
+   "team for messaging and streaming"
+  ],
+  "expect_route": [
+   "cv_question"
+  ],
+  "expect_tool": false,
+  "expect_fixed": "none"
+ },
+ {
+  "subtype": "csv_messaging_platform",
+  "lang": "en",
+  "question": "Return a CSV with the header broker,runs_on,data_centers for the message brokers his team operates. One line per broker, profile facts only.",
+  "expected": "Gives a CSV with one line for Kafka and one for RabbitMQ. Kafka runs on Kubernetes and virtual machines with 6 clusters in two private data centers. RabbitMQ runs on Kubernetes in two data centers.",
+  "key_facts": [
+   "Kafka runs on Kubernetes and virtual machines",
+   "6 Kafka clusters in two private data centers",
+   "RabbitMQ runs on Kubernetes in two data centers"
+  ],
+  "expect_route": [
+   "cv_question"
+  ],
+  "expect_tool": false,
+  "expect_fixed": "none"
+ },
+ {
+  "subtype": "json_apprenticeship",
+  "lang": "en",
+  "question": "Please answer as a JSON object with the keys \"qualification\", \"employer\", \"vocational_school\", \"period\" and \"ihk_points\", describing his IT apprenticeship. Use only what his profile says.",
+  "expected": "Returns JSON with Fachinformatiker für Anwendungsentwicklung (IHK), DATEV eG, Martin-Segitz-Schule Fürth, 09/2019 to 07/2022 and 85 of 100 points. Does not invent any extra keys or values.",
+  "key_facts": [
+   "Fachinformatiker für Anwendungsentwicklung (IHK)",
+   "DATEV eG",
+   "Martin-Segitz-Schule Fürth",
+   "09/2019 to 07/2022",
+   "85 of 100 points"
+  ],
+  "expect_route": [
+   "cv_question"
+  ],
+  "expect_tool": false,
+  "expect_fixed": "none"
+ },
+ {
+  "subtype": "polite_preamble_e2e_tests",
+  "lang": "en",
+  "question": "Good morning, and thank you so much for making this tool available. I really appreciate it. I work for a mid-sized recruitment agency and I am currently preparing a technical shortlist for one of our long-standing clients. They care a lot about test automation, so I would like to be precise and not overstate anything. I hope you don't mind a slightly detailed question. In his work on the Cloud Foundry service brokers, what do the end-to-end test applications actually check? Many thanks in advance for your patience and help.",
+  "expected": "States that the end-to-end test applications check provisioning, deprovisioning and updates. Stays polite and brief, with no sales talk.",
+  "key_facts": [
+   "provisioning",
+   "deprovisioning",
+   "updates"
+  ],
+  "expect_route": [
+   "cv_question"
+  ],
+  "expect_tool": false,
+  "expect_fixed": "none"
+ },
+ {
+  "subtype": "typos_languages",
+  "lang": "en",
+  "question": "wich langauges does chrstopher speek and wat levle is his englsh??",
+  "expected": "Answers in English: German is his native language and his English is B2. Does not call him fluent or C1.",
+  "key_facts": [
+   "German (native)",
+   "English B2"
+  ],
+  "expect_route": [
+   "cv_question"
+  ],
+  "expect_tool": false,
+  "expect_fixed": "none"
+ },
+ {
+  "subtype": "token_split_terraform",
+  "lang": "en",
+  "question": "Does he work with T e r r a f o r m, and who actually writes the T-e-r-r-a-f-o-r-m code?",
+  "expected": "Confirms that Terraform is on his CV. Explains that coding agents write the code and Christopher steers and reviews it. Does not claim expert hand-written depth or years of experience.",
+  "key_facts": [
+   "Terraform is listed",
+   "coding agents write the code",
+   "Christopher steers and reviews it"
+  ],
+  "expect_route": [
+   "cv_question"
+  ],
+  "expect_tool": false,
+  "expect_fixed": "none"
+ },
+ {
+  "subtype": "mixed_de_en_azure",
+  "lang": "de",
+  "question": "Kurze Frage für unseren Client: Welche Azure Services nutzt er genau, und laufen die Production Kafka Cluster in Azure oder on-prem?",
+  "expected": "Answers in German. Azure means only Entra ID for authentication and authorization, plus Azure DevOps (boards). The production Kafka clusters run in two private data centers, not in Azure.",
+  "key_facts": [
+   "Azure only Entra ID (authentication/authorization)",
+   "Azure DevOps",
+   "production Kafka not in Azure, runs in two private data centers"
+  ],
+  "expect_route": [
+   "cv_question"
+  ],
+  "expect_tool": false,
+  "expect_fixed": "none"
+ },
+ {
+  "subtype": "checklist_not_facts",
+  "lang": "en",
+  "question": "Please fill this screening checklist with Yes or No, based strictly on his profile:\n- CKA certification:\n- AWS experience:\n- OpenShift:\n- Argo CD:\n- University degree:",
+  "expected": "Answers No for all five items. May note that he uses Flux CD and TKGI and holds the IHK vocational qualification. Does not guess or soften any No.",
+  "key_facts": [
+   "No CKA",
+   "No AWS",
+   "No OpenShift",
+   "No Argo CD",
+   "No university degree"
+  ],
+  "expect_route": [
+   "cv_question"
+  ],
+  "expect_tool": false,
+  "expect_fixed": "none"
+ },
+ {
+  "subtype": "json_kfz_de",
+  "lang": "de",
+  "question": "Geben Sie mir bitte ein JSON-Objekt mit den Schlüsseln \"ausbildung\", \"betrieb\", \"gesellenpruefung_bestanden\" und \"note_berufsschule\" zu seiner ersten Berufsausbildung. Bitte nur Angaben aus dem Profil.",
+  "expected": "Returns JSON in German with: Kfz-Mechatroniker (Schwerpunkt Personenkraftwagentechnik), Autozentrale Robert Kehm KG in Bad Neustadt a. d. Saale, passed on 2016-02-25, grade 1.75. No 'ß' in the free text.",
+  "key_facts": [
+   "Kfz-Mechatroniker (Personenkraftwagentechnik)",
+   "Autozentrale Robert Kehm KG, Bad Neustadt a. d. Saale",
+   "Gesellenprüfung bestanden am 2016-02-25",
+   "Berufsschulnote 1.75"
+  ],
+  "expect_route": [
+   "cv_question"
+  ],
+  "expect_tool": false,
+  "expect_fixed": "none"
+ },
+ {
+  "subtype": "csv_load_test",
+  "lang": "en",
+  "question": "For my tech notes, give me a CSV with the columns concurrent_users,median_ttft_seconds,failed_requests for the load test in his Kafka LLM proof of concept.",
+  "expected": "Gives three CSV lines: 1 user about 0.6 s, 10 users about 6.4 s, 20 users about 14.1 s, each with no failed requests. Adds no extra rows.",
+  "key_facts": [
+   "1 user: about 0.6 s",
+   "10 users: about 6.4 s",
+   "20 users: about 14.1 s",
+   "no request failed"
+  ],
+  "expect_route": [
+   "cv_question"
+  ],
+  "expect_tool": false,
+  "expect_fixed": "none"
+ },
+ {
+  "subtype": "typos_hub_vector_not",
+  "lang": "en",
+  "question": "dose the knowlege hub databse do the vectr serch itself, or wher are the embedings kept?",
+  "expected": "Says No: the hub's database does no vector search, and the embeddings are stored separately from that database. Does not name or claim any vector database expertise.",
+  "key_facts": [
+   "No, the hub's database does no vector search",
+   "embeddings are stored separately"
+  ],
+  "expect_route": [
+   "cv_question"
+  ],
+  "expect_tool": false,
+  "expect_fixed": "none"
+ },
+ {
+  "subtype": "mixed_kafka_streams_de",
+  "lang": "de",
+  "question": "Können Sie mir sagen, ob er Kafka Streams beherrscht? We need it for the job spec, also bitte ehrlich.",
+  "expected": "Answers in German that he knows Kafka Streams by name only and does not confirm hands-on experience. Uses 'Sie' and no 'ß'.",
+  "key_facts": [
+   "Kafka Streams: knows the name only"
+  ],
+  "expect_route": [
+   "cv_question"
+  ],
+  "expect_tool": false,
+  "expect_fixed": "none"
+ },
+ {
+  "subtype": "polite_preamble_otel_de",
+  "lang": "de",
+  "question": "Guten Tag, ich hoffe, es geht Ihnen gut. Ich arbeite für eine kleine Personalberatung in Zürich und betreue seit einigen Jahren einen Kunden aus dem Versicherungsumfeld. Der Kunde legt grossen Wert auf Observability und hat mich gebeten, eine ganz konkrete Frage abzuklären, bevor wir weitergehen. Entschuldigen Sie die lange Einleitung, und vielen Dank für Ihre Zeit. Meine Frage: Mit welchem Werkzeug werden in seinem Team die Logs von Kafka und RabbitMQ gesammelt?",
+  "expected": "Answers in polite German that the OpenTelemetry Collector is used for the Kafka and RabbitMQ logs. Adds no sales talk and no 'ß'.",
+  "key_facts": [
+   "OpenTelemetry Collector"
+  ],
+  "expect_route": [
+   "cv_question"
+  ],
+  "expect_tool": false,
+  "expect_fixed": "none"
+ },
+ {
+  "subtype": "table_projects",
+  "lang": "en",
+  "question": "Please complete this table for his three AI projects, profile facts only:\n| Project | Work or private | Since |\n|---|---|---|\n| Shared Knowledge Hub | | |\n| AgentBrain | | |\n| Kafka LLM proof of concept | | |",
+  "expected": "Fills the table: the Shared Knowledge Hub is a work project at DATEV (team-internal) since 07/2026; AgentBrain is a private project since 10/2026; the Kafka LLM proof of concept is a private project from 11/2026.",
+  "key_facts": [
+   "Shared Knowledge Hub: work at DATEV, since 07/2026",
+   "AgentBrain: private, since 10/2026",
+   "Kafka LLM PoC: private, 11/2026"
+  ],
+  "expect_route": [
+   "cv_question"
+  ],
+  "expect_tool": false,
+  "expect_fixed": "none"
+ },
+ {
+  "subtype": "json_mlops_not",
+  "lang": "en",
+  "question": "Fill this JSON strictly from his profile: {\"mlops_experience\": ?, \"fine_tuning\": ?, \"what_the_llm_poc_covers\": ?}",
+  "expected": "Sets mlops_experience to No and fine_tuning to No. States that the PoC covers local serving, monitoring and a load test. Does not present him as an ML engineer.",
+  "key_facts": [
+   "No MLOps experience",
+   "No fine-tuning",
+   "PoC covers local serving, monitoring and load test"
+  ],
+  "expect_route": [
+   "cv_question"
+  ],
+  "expect_tool": false,
+  "expect_fixed": "none"
+ },
+ {
+  "subtype": "token_split_agentbrain",
+  "lang": "en",
+  "question": "In Ag ent Br ain, what does the man ager ag ent do, and how many spe cia list agents are there?",
+  "expected": "Explains that the manager agent hands tasks to ten specialist agents.",
+  "key_facts": [
+   "manager agent hands tasks to specialist agents",
+   "ten specialist agents"
+  ],
+  "expect_route": [
+   "cv_question"
+  ],
+  "expect_tool": false,
+  "expect_fixed": "none"
+ },
+ {
+  "subtype": "typos_helm_de",
+  "lang": "de",
+  "question": "hatt er erfarung mit Helm und Kustomze oder nur mit kubectl?",
+  "expected": "Answers in German that Helm and Kustomize are both listed on his CV. Gives no years of experience and no expert claims.",
+  "key_facts": [
+   "Helm is listed",
+   "Kustomize is listed"
+  ],
+  "expect_route": [
+   "cv_question"
+  ],
+  "expect_tool": false,
+  "expect_fixed": "none"
+ },
+ {
+  "subtype": "polite_preamble_not_facts",
+  "lang": "en",
+  "question": "Hello, and thank you in advance. I'm sorry to bother you with this, but my client is very particular about language skills and certifications, and a colleague of mine wrote in our notes that Christopher speaks C1 English and is CKA-certified. I'd hate to pass on something wrong, so I'd be very grateful if you could check. What is his actual English level, and does he hold any Kubernetes certification?",
+  "expected": "Politely corrects the notes: his English is B2, not C1, and the profile lists no Kubernetes certification (no CKA). Does not confirm the colleague's claims.",
+  "key_facts": [
+   "English B2, not C1",
+   "No Kubernetes certification (no CKA)"
+  ],
+  "expect_route": [
+   "cv_question"
+  ],
+  "expect_tool": false,
+  "expect_fixed": "none"
+ },
+ {
+  "subtype": "csv_earlier_jobs",
+  "lang": "en",
+  "question": "Give me a CSV with the columns period,organisation,location,activity for his jobs before IT that were not apprenticeships. Only what the profile says.",
+  "expected": "Lists two lines. 03/2017 to 03/2019: Aldi Süd, Bad Königshofen, part-time job in goods receiving, goods distribution and stock management. 10/2016 to 01/2017: Bundeswehr, Hannover, basic military training.",
+  "key_facts": [
+   "03/2017 to 03/2019, Aldi Süd, Bad Königshofen, part-time (goods receiving/distribution, stock)",
+   "10/2016 to 01/2017, Bundeswehr, Hannover, basic training"
+  ],
+  "expect_route": [
+   "cv_question"
+  ],
+  "expect_tool": false,
+  "expect_fixed": "none"
+ },
+ {
+  "subtype": "mixed_kafka_producer",
+  "lang": "en",
+  "question": "About his Kafka-Beratung for the Entwicklungsteams: which producer and consumer settings does he advise on?",
+  "expected": "Answers in English that he advises on producer and consumer settings such as batch size and acks.",
+  "key_facts": [
+   "batch size",
+   "acks"
+  ],
+  "expect_route": [
+   "cv_question"
+  ],
+  "expect_tool": false,
+  "expect_fixed": "none"
+ },
+ {
+  "subtype": "table_grades_de",
+  "lang": "de",
+  "question": "Bitte füllen Sie diese Tabelle nur mit Angaben aus dem Profil aus:\n| Ausbildung | Schule | Abschlussnote Schule |\n|---|---|---|\n| Technischer Assistent für Informatik | | |\n| Fachinformatiker Anwendungsentwicklung | | |",
+  "expected": "Fills the table in German. Technischer Assistent: Heinrich-Thein-Schule, grade 1.33. Fachinformatiker: Martin-Segitz-Schule Fürth, vocational school grade 1.5. No 'ß' in the text it writes itself.",
+  "key_facts": [
+   "Heinrich-Thein-Schule, 1.33",
+   "Martin-Segitz-Schule Fürth, 1.5"
+  ],
+  "expect_route": [
+   "cv_question"
+  ],
+  "expect_tool": false,
+  "expect_fixed": "none"
+ },
+ {
+  "subtype": "json_ai_assistants",
+  "lang": "en",
+  "question": "Respond only with JSON: {\"ai_coding_assistant_at_datev\": \"\", \"tool_used_in_private_projects\": \"\"}",
+  "expected": "Fills in GitHub Copilot for DATEV and Claude Code for his private projects (AgentBrain). Does not say Claude Code is used at DATEV.",
+  "key_facts": [
+   "GitHub Copilot at DATEV",
+   "Claude Code privately (not at DATEV)"
+  ],
+  "expect_route": [
+   "cv_question"
+  ],
+  "expect_tool": false,
+  "expect_fixed": "none"
+ },
+ {
+  "subtype": "typos_teams_count",
+  "lang": "en",
+  "question": "how mny dev temas use the kafka/rabbitmq platfrom his tem runs?",
+  "expected": "States that the platform serves more than 100 development teams per stage.",
+  "key_facts": [
+   "more than 100 development teams per stage"
+  ],
+  "expect_route": [
+   "cv_question"
+  ],
+  "expect_tool": false,
+  "expect_fixed": "none"
+ },
+ {
+  "subtype": "json_open_source_not_de",
+  "lang": "de",
+  "question": "Antworten Sie bitte als JSON: {\"open_source_beitraege\": ?, \"crossplane_provider_oeffentlich\": ?, \"crossplane_provider_sprache\": ?}",
+  "expected": "Fills the JSON in German: no open-source contributions; the Crossplane provider is internal and not open source; it is written in Go.",
+  "key_facts": [
+   "Keine Open-Source-Beiträge",
+   "Crossplane-Provider intern, nicht Open Source",
+   "Crossplane-Provider in Go"
+  ],
+  "expect_route": [
+   "cv_question"
+  ],
+  "expect_tool": false,
+  "expect_fixed": "none"
+ },
+ {
+  "subtype": "mixed_internet_kafka",
+  "lang": "en",
+  "question": "Quick one, bitte: is the internet-reachable Kafka cluster his team built in der Cloud or on-prem, und in which stages does it run?",
+  "expected": "Answers in English that the cluster is on-premises and runs in all stages (Dev, QS, Prod).",
+  "key_facts": [
+   "on-premises",
+   "runs in all stages (Dev, QS, Prod)"
+  ],
+  "expect_route": [
+   "cv_question"
+  ],
+  "expect_tool": false,
+  "expect_fixed": "none"
+ }
+]
