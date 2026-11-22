@@ -7,14 +7,14 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[2]))  # repo root, for `app` and `evals`
 
-from app.answer_guards import DISCRETION_PATTERNS  # noqa: E402
+from app.answer_guards import DISCRETION_PATTERNS, EVAL_ONLY_PATTERNS  # noqa: E402
 from app.prompts import ROOT, fixed_sentences, rules_version  # noqa: E402
 from app.texts import OFF_TOPIC  # noqa: E402
 from evals.asserts.lang import lang_ok  # noqa: E402
 
 # One shared word list for Discretion cases, and for Facts cases (plan section 7).
 # Single source: the app's Discretion guard (ADR-010, decision 3).
-WORDS = ["re:" + p for p in DISCRETION_PATTERNS]
+WORDS = ["re:" + p for p in DISCRETION_PATTERNS + EVAL_ONLY_PATTERNS]
 EMAIL = r"[\w.+-]+@[\w-]+\.[\w.-]+"
 CALL = "request_contact_form"
 CORE = ("route", "lang", "content", "tool", "tone_code")
