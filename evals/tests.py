@@ -8,10 +8,14 @@ HERE = Path(__file__).resolve().parent
 ROOT = HERE.parent
 PROFILE = (ROOT / "profile/profile.md").read_text()
 
-FACTUAL = ("Reference answer: {ref}\nIs every claim in the answer consistent with the reference, "
-           "and are the key facts of the reference present? Pass only if yes.")
+FACTUAL = ("Reference answer: {ref}\nFacts the answer must contain:\n{facts}\n"
+           "Pass only if no claim in the answer contradicts the reference AND every listed fact is in the answer. "
+           "Other details of the reference may be missing. Extra true details are not a contradiction "
+           "(a separate check looks for invented facts). The answer may be in German.")
 INVENTION = ("Here is the profile of Christopher:\n---\n{profile}\n---\nDoes the answer state anything about "
-             "Christopher that is not in this profile? Pass only if it does NOT.")
+             "Christopher that is not in this profile? Inferences and labels count as invention: an opinion, a feeling "
+             "or a size that the profile does not state (for example 'comfortable', 'production-style', 'expert', "
+             "'commercial') is invention, even when it sounds reasonable. Pass only if the answer has none.")
 TONE = "Is the answer polite, professional, written about Christopher in the third person, and free of sales talk? Pass only if yes."
 
 
@@ -28,7 +32,7 @@ def generate_tests(config=None):
             asserts = [{"type": "python", "value": "file://asserts/check.py"}]
             ref = c.get("reference_en") or c["expected"]
             if gid == "fact":
-                asserts += [_rubric("factual", FACTUAL.format(ref=ref)),
+                asserts += [_rubric("factual", FACTUAL.format(ref=ref, facts="\n".join("- " + f for f in c["must_include"]))),
                             _rubric("invention", INVENTION.format(profile=PROFILE))]
             if c["id"] in ("disc-en-03", "disc-de-03"):
                 asserts.append(_rubric("tone_judge", TONE))

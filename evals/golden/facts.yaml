@@ -1,4 +1,4 @@
-# golden-v1, written by Zoe. Copied unchanged from test-questions.md.
+# golden-v1, written by Zoe, copied from test-questions.md. Finn added `must_include` (the facts the judge checks).
 # The assert keys are shorthand (see evals/golden/README.md). M3 turns them into promptfoo asserts.
 - id: fact-en-01
   lang: en
@@ -6,6 +6,7 @@
   route: cv_question
   expected: "DevOps/Platform Engineer at DATEV eG in Nürnberg, in this role since 07/2022 (with DATEV since 09/2019)."
   assert: {icontains-any: ["DATEV"], also_icontains_any: ["Platform Engineer", "DevOps"]}
+  must_include: ["DevOps/Platform Engineer", "at DATEV eG in Nürnberg"]
   profile_line: "Current job: DevOps/Platform Engineer, DATEV eG (07/2022 to today)"
 
 - id: fact-en-02
@@ -14,6 +15,7 @@
   route: cv_question
   expected: "Apache Kafka and RabbitMQ as a managed service on Kubernetes and VMs, for more than 100 development teams per stage."
   assert: {icontains-any: ["100"], also_icontains_any: ["Kafka"], also_icontains_any_2: ["RabbitMQ"]}
+  must_include: ["Apache Kafka and RabbitMQ", "for more than 100 development teams per stage"]
   profile_line: "Messaging platform: The team runs Apache Kafka and RabbitMQ as a managed service ... more than 100 development teams per stage"
 
 - id: fact-en-03
@@ -22,6 +24,7 @@
   route: cv_question
   expected: "6 Kafka clusters in two private data centers (on premises), in the stages Dev, QS and Prod. Not in the public cloud."
   assert: {icontains-any: ["6", "six"], also_icontains_any: ["private data center", "on-prem", "on prem", "two data centers", "two private"]}
+  must_include: ["6 Kafka clusters", "on premises in two private data centers, not in the public cloud"]
   profile_line: "Messaging platform: Kafka runs on 6 clusters in two private data centers"
 
 - id: fact-en-04
@@ -30,6 +33,7 @@
   route: cv_question
   expected: "An SLA of 99.99 %."
   assert: {icontains-any: ["99.99", "99,99"]}
+  must_include: ["an SLA of 99.99 %"]
   profile_line: "Messaging platform: The service level agreement (SLA) is 99.99 %"
 
 - id: fact-en-05
@@ -38,6 +42,7 @@
   route: cv_question
   expected: "Yes. He is part of the on-call duty (Pikett) for the Kafka platform. The platform runs stable and call-outs are rare."
   assert: {icontains-any: ["on-call", "on call", "Pikett"], not-icontains: ["24/7", "weekly rotation", "many incidents"]}
+  must_include: ["he is part of the on-call duty (Pikett) for the Kafka platform"]
   profile_line: "Operations and security: Christopher is part of the on-call duty (Pikett) for the Kafka platform"
 
 - id: fact-en-06
@@ -46,6 +51,7 @@
   route: cv_question
   expected: "Terraform, Crossplane (he is writing a Crossplane provider in Go, with GitHub Copilot), GitOps and Ansible. In Terraform, Go and Python, agents write the code and he steers and reviews."
   assert: {icontains-any: ["Terraform"], also_icontains_any: ["Crossplane"]}
+  must_include: ["Terraform", "Crossplane", "GitOps", "Ansible", "in Terraform, Go and Python agents write the code and he steers and reviews"]
   profile_line: "Self-service and automation: Crossplane provider in Go ... / Skills: Infrastructure as code and automation"
 
 - id: fact-en-07
@@ -54,6 +60,7 @@
   route: cv_question
   expected: "Fachinformatiker für Anwendungsentwicklung (IHK), apprenticeship at DATEV 09/2019 to 07/2022, final exam 'gut' (85 of 100). Before that Staatlich geprüfter Technischer Assistent für Informatik (grade 1.33) and Kfz-Mechatroniker."
   assert: {icontains-any: ["Fachinformatiker"], not-icontains: ["Bachelor of", "Master of", "university degree in", "PhD"]}
+  must_include: ["Fachinformatiker für Anwendungsentwicklung (IHK), an apprenticeship at DATEV from 2019 to 2022"]
   profile_line: "Education and training (official German names)"
 
 - id: fact-en-08
@@ -62,6 +69,7 @@
   route: cv_question
   expected: "German is his native language. His English level is B2."
   assert: {icontains-any: ["B2"], not-icontains: ["fluent", "C1", "C2", "native English"]}
+  must_include: ["his English level is B2"]
   profile_line: "Who he is: Languages: German (native), English (B2)"
 
 - id: fact-en-09
@@ -69,7 +77,8 @@
   vars: {message: "Has he worked with MCP or RAG? Is that a real project or just a course?"}
   route: cv_question
   expected: "Yes, a real team-internal project: the Shared Knowledge Hub for AI agents (MCP), which he co-leads with a colleague since 07/2026. It has a hybrid search (BM25 keyword search plus semantic search over embeddings, merged by rank fusion). It is used in 10 projects today. Separately, he has Claude Academy course certificates on MCP."
-  assert: {icontains-any: ["Shared Knowledge Hub", "knowledge hub"], also_icontains_any: ["colleague"], not-icontains: ["he leads the", "he alone", "production at scale"]}
+  assert: {icontains-any: ["Shared Knowledge Hub", "knowledge hub"], also_icontains_any: ["colleague", "co-led", "co-lead"], not-icontains: ["he leads the", "he alone", "production at scale"]}
+  must_include: ["a real team-internal project, the Shared Knowledge Hub for AI agents (MCP)", "he co-leads it with a colleague, not alone"]
   profile_line: "AI at work: Shared Knowledge Hub (RAG) for AI Agents (MCP), since 07/2026"
 
 - id: fact-en-10
@@ -78,6 +87,7 @@
   route: cv_question
   expected: "A private project (since 10/2026): a multi-agent system on Claude Code. A manager agent hands tasks to ten specialist agents. It uses an Obsidian vault, shared memory, skills and MCP servers, and has a local vault search."
   assert: {icontains-any: ["private", "personal"], also_icontains_any: ["ten", "10"], also_icontains_any_2: ["Claude Code"]}
+  must_include: ["a private project since 10/2026", "a multi-agent system on Claude Code", "a manager agent and ten specialist agents"]
   profile_line: "Private projects: AgentBrain"
 
 - id: fact-en-11
@@ -86,6 +96,7 @@
   route: cv_question
   expected: "No. Claude Code is a private tool that he uses in his private project AgentBrain. At DATEV he works with GitHub Copilot."
   assert: {icontains-any: ["private"], also_icontains_any: ["Copilot"], not-icontains: ["uses Claude Code at DATEV", "Yes, he uses Claude Code at"]}
+  must_include: ["no: Claude Code is a private tool and is not used at DATEV", "at DATEV he works with GitHub Copilot"]
   profile_line: "Private projects: Claude Code is a private tool ... / What Christopher is not: Claude Code is not used at DATEV"
 
 - id: fact-en-12
@@ -94,6 +105,7 @@
   route: cv_question
   expected: "Six Anthropic course certificates, all issued 11/2026: Claude Academy: Introduction to Model Context Protocol; Claude Academy: Model Context Protocol: Advanced topics; Claude Academy: AI Fluency: Framework and foundations; Claude Academy: AI capabilities and limitations; Claude Academy: Building effective human-agent teams (beta); Claude Academy: Introduction to evals."
   assert: {icontains-any: ["Claude Academy", "Anthropic"], also_icontains_any: ["six", "6"]}
+  must_include: ["six Anthropic (Claude Academy) course certificates, all issued 11/2026"]
   profile_line: "Private projects: Certificates from Anthropic, all issued 11/2026"
 
 - id: fact-de-01
@@ -103,6 +115,7 @@
   expected: "Fachinformatiker für Anwendungsentwicklung (IHK), duale Ausbildung bei der DATEV eG in Nürnberg 09/2019 bis 07/2022, Berufsschule Martin-Segitz-Schule Fürth, Abschlussprüfung 'gut' (85 von 100 Punkten). Davor Technischer Assistent für Informatik und Kfz-Mechatroniker."
   assert: {icontains-any: ["Fachinformatiker"], also_icontains_any: ["DATEV"], lang_de: true}
   reference_en: "Fachinformatiker für Anwendungsentwicklung (IHK), dual apprenticeship at DATEV eG, Nürnberg, 09/2019 to 07/2022, IHK exam 'gut' (85 of 100)."
+  must_include: ["Fachinformatiker für Anwendungsentwicklung (IHK)", "a dual apprenticeship at DATEV eG in Nürnberg from 09/2019 to 07/2022"]
   profile_line: "Education and training: 09/2019 to 07/2022: Fachinformatiker für Anwendungsentwicklung (IHK)"
 
 - id: fact-de-02
@@ -112,4 +125,5 @@
   expected: "Java (Spring Boot), Go, Python, JavaScript und Bash; weitere: C#, C++, PHP, PowerShell. Bei Terraform, Go und Python schreiben Agents den Code, er steuert und prüft. Jahre werden nicht genannt."
   assert: {icontains-any: ["Java"], also_icontains_any: ["Go"], also_icontains_any_2: ["Python"], lang_de: true}
   reference_en: "Java (Spring Boot), Go, Python, JavaScript, Bash; further C#, C++, PHP, PowerShell. No years given."
+  must_include: ["Java (Spring Boot)", "Go", "Python", "JavaScript", "Bash"]
   profile_line: "Skills: Programming: Java (Spring Boot), Go, Python, JavaScript, Bash"
