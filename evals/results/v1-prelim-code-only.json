@@ -100,7 +100,7 @@
   "out": {
    "route": "cv_question",
    "lang": "en",
-   "answer": "Based on Christopher's profile, his main skills include:\n\n* **Cloud and Platform:** Private cloud, Azure (specifically Entra ID for authentication/authorization and Azure DevOps boards), and Azure DevOps.\n* **Messaging and Streaming:** Apache Kafka, Confluent Platform, Strimzi, IBM Event Streams, and RabbitMQ (with quorum queues).\n* **Kubernetes and Containers:** Kubernetes, Helm, Kustomize, Flux CD, TKGI (VMware Tanzu Kubernetes Grid Integrated Edition), Traefik, and Cloud Foundry.\n* **Infrastructure as Code & Automation:** Terraform, GitOps, Crossplane, and Ansible.\n* **CI/CD:** GitHub Actions, GitLab, and Jenkins.\n* **Monitoring & Observability:** Prometheus, Grafana, Grafana Cloud, Elasticsearch (ELK), and OpenTelemetry Collector.\n* **Security:** HashiCorp Vault, RBAC, ACLs, policies, SCRAM, TLS, mTLS, and penetration testing support.\n* **Programming:** Java (Spring Boot), Go, Python, JavaScript, Bash, along with familiarity in C#, C++, PHP, PowerShell, PostgreSQL, MySQL, and MongoDB.\n* **AI & Agentic Engineering:** Model Context Protocol (MCP), RAG, hybrid search (BM25, embeddings, RRF), agentic development with GitHub Copilot, agent tooling, AI governance, and generative AI concepts.",
+   "answer": "Based on Christopher's profile, his main skills include:\n\n- **Cloud and Platform:** Private cloud, Azure (Entra ID for authentication/authorization and Azure DevOps boards), and Azure DevOps.\n- **Messaging and Streaming:** Apache Kafka, Confluent Platform, Strimzi, IBM Event Streams, and RabbitMQ (with quorum queues).\n- **Kubernetes and Containers:** Kubernetes, Helm, Kustomize, Flux CD, TKGI (VMware Tanzu Kubernetes Grid Integrated Edition), Traefik, and Cloud Foundry.\n- **Infrastructure as Code and Automation:** Terraform, GitOps, Crossplane, and Ansible.\n- **CI/CD:** GitHub Actions, GitLab, and Jenkins.\n- **Monitoring and Observability:** Prometheus, Grafana, Grafana Cloud, Elasticsearch (ELK), and the OpenTelemetry Collector.\n- **Security:** HashiCorp Vault, RBAC, ACLs, policies, SCRAM, TLS, mTLS, and participating in penetration tests.\n- **Programming Languages:** Java (Spring Boot), Go, Python, JavaScript, Bash (along with exposure to C#, C++, PHP, PowerShell, PostgreSQL, MySQL, and MongoDB).\n- **AI & Agentic Development:** Model Context Protocol (MCP), RAG, hybrid search (BM25, embeddings, RRF), agentic development with GitHub Copilot, agent tooling, AI governance, and generative AI.",
    "tool_calls": [],
    "show_form": false
   },
@@ -122,7 +122,7 @@
   "out": {
    "route": "cv_question",
    "lang": "en",
-   "answer": "Christopher's current role is **DevOps/Platform Engineer** at DATEV eG in Nürnberg, Germany, a position he has held since July 2022.",
+   "answer": "Christopher is currently working as a DevOps/Platform Engineer at DATEV eG in Nürnberg, Germany. He has been in this role since July 2022, within a team for messaging and streaming.",
    "tool_calls": [],
    "show_form": false
   },
@@ -236,7 +236,7 @@
   "out": {
    "route": "cv_question",
    "lang": "en",
-   "answer": "Christopher is a DevOps and Platform Engineer at DATEV eG in Nürnberg, Germany, where he has worked since 2019 (initially as an apprentice). Since July 2022, he has been part of a team running a large-scale messaging platform featuring Apache Kafka and RabbitMQ on Kubernetes and virtual machines across multiple private data centers. His work encompasses platform operations, self-service automation—such as developing Java service brokers and a Go-based Crossplane provider—security, monitoring, and developer enablement. In addition to his platform engineering duties, he is actively involved in internal AI initiatives, including co-leading an internal shared knowledge hub for AI coding agents and training colleagues on AI tools, complemented by his private projects in agentic workflows and local LLM operations.",
+   "answer": "Christopher is a DevOps and Platform Engineer at DATEV eG in Nürnberg, Germany, where he has worked since 2019 (starting as an apprentice and moving to his current role in 2022). He specializes in managing large-scale messaging and streaming platforms—specifically Apache Kafka and RabbitMQ on Kubernetes and virtual machines—alongside self-service automation, GitOps, and infrastructure security. In addition to his core platform engineering work, he is actively involved in AI adoption at DATEV, co-leading an internal shared knowledge hub for AI coding agents and training his team on AI tools.",
    "tool_calls": [],
    "show_form": false
   },
@@ -280,19 +280,21 @@
   "out": {
    "route": "cv_question",
    "lang": "de",
-   "answer": "Dazu habe ich keine Informationen über Christopher. Sie können ihn direkt über das Kontaktformular fragen.",
+   "answer": "Dazu habe ich keine Informationen über Sie bzw. Christopher. Sie können ihn direkt über das Kontaktformular fragen.",
    "tool_calls": [],
    "show_form": false
   },
   "s": {
    "route": 1,
    "lang": 1,
-   "content": 1,
+   "content": 0,
    "tool": 1,
    "tone_code": 1,
    "called": 0,
    "want_call": 0,
-   "_bad": []
+   "_bad": [
+    "fixed_sentence_de"
+   ]
   },
   "llm_calls": 2,
   "rate_limited": 0
@@ -302,7 +304,7 @@
   "out": {
    "route": "cv_question",
    "lang": "de",
-   "answer": "Christopher ist DevOps/Platform Engineer bei der DATEV eG in Nürnberg. Dort betreut er im Team Messaging- und Streaming-Plattformen (wie Apache Kafka und RabbitMQ) auf Kubernetes und VMs, automatisiert Prozesse (u.a. mit Cloud Foundry Service Brokern, Crossplane und GitOps) und treibt Themen rund um generative KI und Agentenentwicklung voran (darunter ein teaminternes Shared Knowledge Hub für AI Agents via MCP und die Zusammenarbeit mit GitHub Copilot).\n\nBeruflich bringt er eine fundierte Ausbildung als Fachinformatiker für Anwendungsentwicklung (IHK) sowie als Technischer Assistent für Informatik mit; zuvor absolvierte er auch eine Ausbildung zum Kfz-Mechatroniker. Sein Tech-Stack umfasst unter anderem Kubernetes, Terraform, HashiCorp Vault, Prometheus/Grafana, Java (Spring Boot), Go und Python. \n\nPrivat beschäftigt er sich intensiv mit Multi-Agenten-Systemen (wie einem lokalen System auf Basis von Claude Code) und einem LLM-Proof-of-Concept für Kafka. Er hat die deutsche Staatsbürgerschaft, spricht Deutsch als Muttersprache und Englisch auf B2-Niveau.",
+   "answer": "Christopher ist DevOps- und Platform-Engineer bei der DATEV eG in Nürnberg. Dort betreut er im Team eine Messaging-Plattform mit Apache Kafka und RabbitMQ auf Kubernetes und virtuellen Maschinen. Zu seinen Schwerpunkten gehören Automatisierung, Cloud Foundry Service Broker, GitOps, Kubernetes sowie plattformbezogene Security- und Monitoring-Themen. \n\nZusätzlich beschäftigt er sich intensiv mit KI-Themen (unter anderem Agentic Development, Model Context Protocol und einem internen Wissenshub für KI-Agenten) und verfügt über praktische Erfahrungen in Sprachen wie Java, Go, Python und Terraform. Seine Ausbildung absolvierte er als Fachinformatiker für Anwendungsentwicklung (IHK) bei der DATEV, nachdem er zuvor eine Ausbildung zum Technischen Assistenten für Informatik sowie zum Kfz-Mechatroniker abgeschlossen hatte.",
    "tool_calls": [],
    "show_form": false
   },
@@ -324,7 +326,7 @@
   "out": {
    "route": "cv_question",
    "lang": "en",
-   "answer": "Christopher works as a DevOps/Platform Engineer at DATEV eG, a software company in Nürnberg, Germany. He has been in this role since July 2022, operating within a team for messaging and streaming. His work includes managing Apache Kafka and RabbitMQ platforms, developing automation and self-service tools (such as Cloud Foundry service brokers and Crossplane providers), and contributing to internal AI initiatives like the team-internal Shared Knowledge Hub.",
+   "answer": "Christopher works as a DevOps/Platform Engineer at DATEV eG, a software company in Nürnberg, Germany. He has been in this role since July 2022, operating within a team for messaging and streaming. His work includes managing Apache Kafka and RabbitMQ platforms, developing automation and self-service tools, and working on AI initiatives such as agentic development and an internal knowledge hub.",
    "tool_calls": [],
    "show_form": false
   },
@@ -368,7 +370,7 @@
   "out": {
    "route": "cv_question",
    "lang": "en",
-   "answer": "Christopher and his team run Apache Kafka on **6 clusters** in **two private data centers**, across the stages Dev, QS, and Prod. \n\nThey run on-premises (in private data centers, not in the public cloud) as a managed service on Kubernetes and virtual machines.",
+   "answer": "Christopher works with 6 Kafka clusters. They run on-premises in two private data centers across three stages: Development (Dev), Quality Assurance (QS), and Production (Prod).",
    "tool_calls": [],
    "show_form": false
   },
@@ -390,7 +392,7 @@
   "out": {
    "route": "cv_question",
    "lang": "en",
-   "answer": "The service level agreement (SLA) for the messaging platform Christopher works on is 99.99%.",
+   "answer": "The platform Christopher works on has a service level agreement (SLA) of 99.99%.",
    "tool_calls": [],
    "show_form": false
   },
@@ -434,7 +436,7 @@
   "out": {
    "route": "cv_question",
    "lang": "en",
-   "answer": "Based on Christopher's profile, the infrastructure-as-code and automation tools he has used are:\n\n- **Terraform**\n- **Crossplane** (he is writing an internal Crossplane provider in Go)\n- **Ansible**",
+   "answer": "Based on Christopher's profile, the infrastructure-as-code (IaC) and automation tools he has used are:\n\n* **Terraform**\n* **Crossplane**\n* **Ansible**\n* **GitOps** tools (specifically **Flux CD**)\n* **Helm** and **Kustomize** (for Kubernetes)",
    "tool_calls": [],
    "show_form": false
   },
@@ -456,7 +458,7 @@
   "out": {
    "route": "cv_question",
    "lang": "en",
-   "answer": "Christopher's formal education and training consist of the following:\n\n- **09/2019 to 07/2022:** Dual apprenticeship as *Fachinformatiker für Anwendungsentwicklung (IHK)* at DATEV eG in Nürnberg, with vocational school at the Martin-Segitz-Schule Fürth. He passed with an IHK final result of \"gut\" (85 of 100 points) and a vocational school final grade of 1.5 (\"sehr gut\").\n- **09/2017 to 07/2019:** *Staatlich geprüfter Technischer Assistent für Informatik* at the Heinrich-Thein-Schule in Haßfurt, finishing with a final grade of 1.33 (\"sehr gut\") and receiving the Freundeskreis prize for best performance at the Berufsfachschule.\n- **09/2012 to 02/2016:** *Kfz-Mechatroniker* (focus on passenger car technology) at Autozentrale Robert Kehm KG in Bad Neustadt a. d. Saale, with a vocational school final grade of 1.75 (\"gut\") and a *mittlerer Schulabschluss*.\n- **07/2018:** Cisco Networking Academy course completion for *CCNA Routing and Switching: Introduction to Networks* at the Heinrich-Thein-Schule.\n\nAll of these qualifications are at level 4 of the German and European qualification frameworks (DQR/EQR). He does not have a university degree.",
+   "answer": "Christopher's formal education consists of:\n\n- **09/2019 to 07/2022:** *Fachinformatiker für Anwendungsentwicklung (IHK)* – a dual apprenticeship at DATEV eG, Nürnberg, with vocational school at the Martin-Segitz-Schule Fürth. He passed with a final result of \"gut\" (85 of 100 points) and a vocational school final grade of 1.5.\n- **09/2017 to 07/2019:** *Staatlich geprüfter Technischer Assistent für Informatik* at the Heinrich-Thein-Schule, Haßfurt. He finished with a final grade of 1.33 and received the Prize of the Freundeskreis for the best performance at the Berufsfachschule.\n- **09/2012 to 02/2016:** *Kfz-Mechatroniker* (Focus on Passenger Car Technology) at Autozentrale Robert Kehm KG, Bad Neustadt a. d. Saale, with a vocational school final grade of 1.75 and a *mittlerer Schulabschluss*.\n\nAdditionally, he holds a course completion certificate from the Cisco Networking Academy (CCNA Routing and Switching, Introduction to Networks, 07/2018) and online course certificates from Anthropic's Claude Academy (issued 11/2026). All of his qualifications are at level 4 of the German and European qualification frameworks (DQR/EQR), and he does not have a university degree (*Studium*).",
    "tool_calls": [],
    "show_form": false
   },
@@ -500,19 +502,21 @@
   "out": {
    "route": "cv_question",
    "lang": "en",
-   "answer": "Yes, Christopher has worked with both MCP (Model Context Protocol) and RAG. \n\nIt is a real project, not just a course:\n- **Shared Knowledge Hub (RAG) for AI Agents (MCP):** Since July 2026, Christopher has been co-leading this team-internal project at DATEV with a colleague. It is a shared context store (using a hybrid search combining BM25 keyword search and semantic embeddings with Reciprocal Rank Fusion) that connects AI coding agents through the Model Context Protocol (MCP). Today, it is used in 10 projects, with a rollout to about 30 projects planned.\n- **Certificates:** In addition to this practical work, he also holds online course certificates from Anthropic (all issued in November 2026), including *“Claude Academy: Introduction to Model Context Protocol”* and *“Claude Academy: Model Context Protocol: Advanced topics”*.",
+   "answer": "Yes, Christopher has worked with both MCP (Model Context Protocol) and RAG (Retrieval-Augmented Generation). \n\nAt DATEV, he co-leads a team-internal project called the Shared Knowledge Hub (RAG) for AI Agents (MCP), which has been active since July 2026. This is a real, production-used project—it is currently used across 10 projects (with a rollout to about 30 planned) and acts as a shared context store for AI coding agents using a hybrid search (keyword search combined with semantic search over embeddings merged by rank fusion) via the Model Context Protocol.\n\nIn addition to this practical work at DATEV, he has completed formal training on the topic, holding certificates from Anthropic's Claude Academy issued in November 2026, including *\"Claude Academy: Introduction to Model Context Protocol\"* and *\"Claude Academy: Model Context Protocol: Advanced topics.\"*",
    "tool_calls": [],
    "show_form": false
   },
   "s": {
    "route": 1,
    "lang": 1,
-   "content": 1,
+   "content": 0,
    "tool": 1,
    "tone_code": 1,
    "called": 0,
    "want_call": 0,
-   "_bad": []
+   "_bad": [
+    "also_icontains_any"
+   ]
   },
   "llm_calls": 2,
   "rate_limited": 0
@@ -520,23 +524,27 @@
  {
   "id": "fact-en-10",
   "out": {
-   "route": "cv_question",
+   "route": "off_topic",
    "lang": "en",
-   "answer": "AgentBrain is a private project by Christopher that he has been working on since October 2026. \n\nIt is a multi-agent system built on Claude Code. It features an Obsidian vault that holds notes, and a manager agent that distributes tasks to ten specialist agents (covering areas such as video, development, research, career, and design). The system includes shared memory, skills, and Model Context Protocol (MCP) servers. \n\nKey details of AgentBrain include:\n- **Local Vault Search:** It uses a local vault search running in a single call (combining keywords, vectors, and link graphs). In Christopher's own testing with 187 questions, this search was 49% cheaper than his previous search while maintaining the same answer quality.\n- **Model Usage:** The agents use cloud models, while only the search runs locally.\n- **Context:** Claude Code is a private tool used by Christopher daily for this project; it is not used at his workplace, DATEV.",
+   "answer": "I can only answer questions about Christopher's professional background. Please ask about his CV, or use the contact form to reach him.",
    "tool_calls": [],
    "show_form": false
   },
   "s": {
-   "route": 1,
+   "route": 0,
    "lang": 1,
-   "content": 1,
+   "content": 0,
    "tool": 1,
-   "tone_code": 0,
+   "tone_code": 1,
    "called": 0,
    "want_call": 0,
-   "_bad": []
+   "_bad": [
+    "icontains-any",
+    "also_icontains_any",
+    "also_icontains_any_2"
+   ]
   },
-  "llm_calls": 2,
+  "llm_calls": 1,
   "rate_limited": 0
  },
  {
@@ -544,7 +552,7 @@
   "out": {
    "route": "cv_question",
    "lang": "en",
-   "answer": "No, Claude Code is not used at DATEV. At DATEV, Christopher works with GitHub Copilot. He uses Claude Code as a private tool daily in his private project, AgentBrain.",
+   "answer": "No, Claude Code is not used at DATEV. At DATEV, Christopher works with GitHub Copilot. He uses Claude Code daily as a private tool in his private project, AgentBrain.",
    "tool_calls": [],
    "show_form": false
   },
@@ -566,7 +574,7 @@
   "out": {
    "route": "cv_question",
    "lang": "en",
-   "answer": "Yes, Christopher holds six online course certificates from Anthropic, all issued in November 2026:\n\n- \"Claude Academy: Introduction to Model Context Protocol\"\n- \"Claude Academy: Model Context Protocol: Advanced topics\"\n- \"Claude Academy: AI Fluency: Framework and foundations\"\n- \"Claude Academy: AI capabilities and limitations\"\n- \"Claude Academy: Building effective human-agent teams (beta)\"\n- \"Claude Academy: Introduction to evals\"",
+   "answer": "Yes, Christopher holds six online course certificates from Anthropic, all issued in November 2026:\n\n- Claude Academy: Introduction to Model Context Protocol\n- Claude Academy: Model Context Protocol: Advanced topics\n- Claude Academy: AI Fluency: Framework and foundations\n- Claude Academy: AI capabilities and limitations\n- Claude Academy: Building effective human-agent teams (beta)\n- Claude Academy: Introduction to evals",
    "tool_calls": [],
    "show_form": false
   },
@@ -588,7 +596,7 @@
   "out": {
    "route": "cv_question",
    "lang": "de",
-   "answer": "Christopher hat zwei schulische bzw. duale Ausbildungen absolviert:\n\n1. **Fachinformatiker für Anwendungsentwicklung (IHK):** \n   - **Zeitraum:** 09/2019 bis 07/2022\n   - **Ort:** Duale Ausbildung bei der DATEV eG in Nürnberg mit Berufsschulunterricht an der Martin-Schule Fürth (Martin-Segitz-Schule Fürth). Er schloss die IHK-Prüfung mit der Note „gut“ (85 von 100 Punkten) und die Berufsschule mit einem Schnitt von 1,5 ab.\n\n2. **Staatlich geprüfter Technischer Assistent für Informatik:** \n   - **Zeitraum:** 09/2017 bis 07/2019\n   - **Ort:** Heinrich-Thein-Schule in Haßfurt (Abschlussnote 1,33).\n\nZuvor hat er von 09/2012 bis 02/2016 eine Ausbildung als **Kfz-Mechatroniker** (Schwerpunkt Personenkraftwagentechnik) an der Autozentrale Robert Kehm KG in Bad Neustadt a. d. Saale absolviert.",
+   "answer": "Christopher hat zwei schulische bzw. duale Ausbildungen absolviert:\n\n1. **Fachinformatiker für Anwendungsentwicklung (IHK):** Eine duale Ausbildung von September 2019 bis Juli 2022 bei der **DATEV eG** in Nürnberg (mit Berufsschule an der Martin-Segitz-Schule Fürth). Er schloss die IHK-Prüfung mit der Note „gut“ (85 von 100 Punkten) und die Berufsschule mit einem Schnitt von 1,5 („sehr gut“) ab.\n2. **Staatlich geprüfter Technischer Assistent für Informatik:** Von September 2017 bis Juli 2019 an der **Heinrich-Thein-Schule** in Haßfurt (Abschlussnote 1,33).\n\nZudem absolvierte er von September 2012 bis Februar 2016 eine Ausbildung zum **Kfz-Mechatroniker** (Schwerpunkt Personenkraftwagentechnik) bei der **Autozentrale Robert Kehm KG** in Bad Neustadt a. d. Saale.",
    "tool_calls": [],
    "show_form": false
   },
@@ -610,7 +618,7 @@
   "out": {
    "route": "cv_question",
    "lang": "de",
-   "answer": "Zu den Programmiersprachen, die im Profil von Christopher aufgeführt sind, gehören:\n\n* Java (Spring Boot)\n* Go\n* Python\n* JavaScript\n* Bash\n\nDarüber hinaus werden C#, C++, PHP, PowerShell, PostgreSQL, MySQL und MongoDB genannt. \n\n*Hinweis:* Im Profil sind keine Jahre an Erfahrung für die einzelnen Sprachen angegeben. Bei Sprachen wie Java, Go und Python lässt er den Code teilweise von KI-Agenten unter seiner Anleitung und Prüfung schreiben (Agentic Development).",
+   "answer": "Christopher arbeitet mit den folgenden Programmiersprachen, die im Profil aufgeführt sind:\n\n* Java (Spring Boot)\n* Go\n* Python\n* JavaScript\n* Bash\n\nZudem werden C#, C++, PHP, PowerShell, PostgreSQL, MySQL und MongoDB im Profil genannt. (Für die Sprachen werden im Profil keine Berufsjahre angegeben; im Bereich Java, Go, Python und Terraform wird Code zudem von Coding-Agents unter seiner Steuerung und Code-Review erstellt.)",
    "tool_calls": [],
    "show_form": false
   },
@@ -698,7 +706,7 @@
   "out": {
    "route": "contact",
    "lang": "en",
-   "answer": "I am unable to send emails directly. However, if you would like to get in touch with Christopher, please feel free to use the contact form!",
+   "answer": "I cannot send emails on your behalf, but you can use the contact form to get in touch with Christopher directly. Would you like me to open the contact form for you?",
    "tool_calls": [],
    "show_form": false
   },
@@ -742,13 +750,13 @@
   "out": {
    "route": "cv_question",
    "lang": "en",
-   "answer": "I don't have that information about Christopher. You can ask him directly through the contact form.",
+   "answer": "Dazu habe ich keine Informationen über Christopher. Sie können ihn direkt über das Kontaktformular fragen.",
    "tool_calls": [],
    "show_form": false
   },
   "s": {
    "route": 1,
-   "lang": 1,
+   "lang": 0,
    "content": 1,
    "tool": 1,
    "tone_code": 1,
@@ -1008,7 +1016,7 @@
   "out": {
    "route": "cv_question",
    "lang": "en",
-   "answer": "No, Christopher does not have any Kubernetes certifications such as CKA or CKAD.",
+   "answer": "The profile lists no Kubernetes certification (no CKA or CKAD).",
    "tool_calls": [],
    "show_form": false
   },
