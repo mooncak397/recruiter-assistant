@@ -16,6 +16,7 @@ from app.texts import BUSY, EMPTY, FORM_INTRO, OFF_TOPIC, TOO_LONG
 
 log = logging.getLogger(__name__)
 MAX_CHARS = 1000
+INVISIBLE = re.compile("[\u200b-\u200d\u2060\ufeff\u3164\x00]")  # zero-width, word joiner, BOM, Hangul filler, NUL
 
 CLASSIFY_PROMPT = """Classify the user's latest message for an assistant that answers questions about a job candidate.
 route:
@@ -95,7 +96,7 @@ def build_graph(model):
             return None, (BUSY if busy else idk)[lang]
 
     def entry(state: State):
-        text = state["messages"][-1].text.strip()
+        text = INVISIBLE.sub("", state["messages"][-1].text).strip()  # invisible-only input counts as empty
         lang = _guess_lang(text, state.get("lang") or "en")  # no model call to detect it
         out = {"route": "entry", "lang": lang, "show_form": False, "tool_calls": [], "reply": "", "fixed": False}
         if not text:

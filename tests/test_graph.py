@@ -119,6 +119,12 @@ def test_entry_fixed_texts_cost_no_call(q, lang, text):
     assert m.calls == []
 
 
+@pytest.mark.parametrize("q", ["\u200b", "\ufeff", "\u2060\u2060", "\u200b \u200b", "\x00", "\xa0\t\n", "\u3164", "\u200d"])
+def test_invisible_only_input_is_empty(q):
+    m = FakeModel()
+    assert answer(m, q) == EMPTY["en"] and m.calls == []
+
+
 def test_too_long_uses_the_language_of_the_text():
     de = "Bitte sagen Sie mir, was er bei der DATEV macht und wie das Team arbeitet. " * 20
     assert answer(FakeModel(), de) == TOO_LONG["de"]
