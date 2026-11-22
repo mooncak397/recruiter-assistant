@@ -50,6 +50,8 @@ def request_contact_form() -> str:
 
 def _transport(e: Exception) -> bool:
     """429, 5xx, timeout or connection error (after the SDK's own retries)."""
+    if getattr(e, "is_retryable", False):  # langchain_core ModelError subclasses
+        return True
     code = getattr(e, "status_code", None) or getattr(e, "code", None)
     if isinstance(code, int) and (code == 429 or code >= 500):
         return True
