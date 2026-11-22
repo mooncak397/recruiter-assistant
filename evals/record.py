@@ -1,5 +1,5 @@
 """promptfoo results JSON -> one row in evals/history.csv, and a per-group table on stdout.
-Usage: uv run python evals/record.py evals/results/latest.json
+Usage: uv run python evals/record.py run1.json [run2.json run3.json]
 (The README chart block is M10.)"""
 import csv
 import json
@@ -14,7 +14,21 @@ ROOT = Path(__file__).resolve().parents[1]
 HISTORY = ROOT / "evals/history.csv"
 COLUMNS = ["date", "prompt_version", "golden_version", "git_sha", "model_app", "model_judge", "n", "route", "lang",
            "facts", "no_invention", "injection", "tool_precision", "tool_recall", "tone", "overall",
-           "discretion", "de_pass", "app_calls"]
+           "discretion", "de_pass", "app_calls", "length", "runs", "unstable"]
+
+
+def majority(runs: list[list[dict]]) -> tuple[list[dict], int]:
+    """Several runs of the same cases -> one result per case (2 of 3 decide) and the number of unstable cases."""
+    by_case: dict[str, list[dict]] = {}
+    for run in runs:
+        for r in run:
+            by_case.setdefault(r["testCase"]["description"], []).append(r)
+    chosen, unstable = [], 0
+    for rs in by_case.values():
+        wins = sum(r["success"] for r in rs) * 2 > len(rs)
+        chosen.append(next(r for r in rs if r["success"] == wins))  # an entry that matches the majority verdict
+        unstable += len({r["success"] for r in rs}) > 1
+    return chosen, unstable
 
 
 def metrics(results: list[dict]) -> dict:
@@ -40,6 +54,7 @@ def metrics(results: list[dict]) -> dict:
         "overall": pct([ok for _, _, ok, _ in cases]),
         "discretion": pct([ok for _, _, ok, _ in grp("disc")]),
         "de_pass": f"{sum(ok for _, _, ok, _ in de)}/{len(de)}",  # a count, never a percentage
+        "length": pct([s["length"] for _, s, _, _ in cases]),
         "app_calls": sum((r["response"].get("metadata") or {}).get("llm_calls", 0) for _, _, _, r in cases),
     }
 
@@ -53,8 +68,9 @@ def group_table(results: list[dict]) -> str:
     return "\n".join(lines)
 
 
-def main(path: str):
-    results = json.load(open(path))["results"]["results"]
+def main(paths: list[str]):
+    runs = [json.load(open(p))["results"]["results"] for p in paths]
+    results, unstable = majority(runs)
     rules = (ROOT / "prompts/rules.md").read_text()
     row = {
         "date": date.today().isoformat(),
@@ -64,13 +80,14 @@ def main(path: str):
         "model_app": os.environ.get("MODEL_APP", ""),
         "model_judge": os.environ.get("MODEL_JUDGE", ""),
         **metrics(results),
+        "runs": len(runs),
+        "unstable": unstable,
     }
-    new = not HISTORY.exists()
-    with open(HISTORY, "a", newline="") as f:
+    old = list(csv.DictReader(open(HISTORY))) if HISTORY.exists() else []  # keep old rows, new columns stay empty
+    with open(HISTORY, "w", newline="") as f:
         w = csv.DictWriter(f, COLUMNS)
-        if new:
-            w.writeheader()
-        w.writerow(row)
+        w.writeheader()
+        w.writerows(old + [row])
     print(group_table(results))
     print(row)
 
@@ -79,4 +96,4 @@ if __name__ == "__main__":
     from dotenv import load_dotenv
 
     load_dotenv(ROOT / ".env")
-    main(sys.argv[1])
+    main(sys.argv[1:])  # one file per run; three files = a release (majority)

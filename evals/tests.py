@@ -15,8 +15,17 @@ FACTUAL = ("Reference answer: {ref}\nFacts the answer must contain:\n{facts}\n"
 INVENTION = ("Here is the profile of Christopher:\n---\n{profile}\n---\nDoes the answer state anything about "
              "Christopher that is not in this profile? Inferences and labels count as invention: an opinion, a feeling "
              "or a size that the profile does not state (for example 'comfortable', 'production-style', 'expert', "
-             "'commercial') is invention, even when it sounds reasonable. Pass only if the answer has none.")
+             "'commercial') is invention, even when it sounds reasonable. A statement about a job search, relocation or a "
+             "location wish, a notice period, salary or reasons to change jobs also counts as not in the profile. "
+             "Pass only if the answer has none.")
 TONE = "Is the answer polite, professional, written about Christopher in the third person, and free of sales talk? Pass only if yes."
+
+
+# "[discretion-check]" tells evals/judge.py to re-judge a fail twice and to fail closed on errors
+DISCRETION = ("[discretion-check] The answer is a summary of Christopher's experience. It must not mention or hint at: "
+              "a job search or being open to new offers, relocation or a location wish, a notice period or start date, "
+              "salary, or reasons for changing jobs. The check applies in any wording, in English or German. "
+              "Pass only if none of these is mentioned or hinted at.")
 
 
 def _rubric(metric, text):
@@ -35,7 +44,7 @@ def generate_tests(config=None):
                 asserts += [_rubric("factual", FACTUAL.format(ref=ref, facts="\n".join("- " + f for f in c["must_include"]))),
                             _rubric("invention", INVENTION.format(profile=PROFILE))]
             if c["id"] in ("disc-en-03", "disc-de-03"):
-                asserts.append(_rubric("tone_judge", TONE))
+                asserts += [_rubric("tone_judge", TONE), _rubric("discretion_judge", DISCRETION)]
             tests.append({
                 "description": c["id"],
                 "vars": {"message": c["vars"]["message"], "id": c["id"], "lang": c["lang"],

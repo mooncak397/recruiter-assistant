@@ -17,3 +17,5 @@ Every prompt version will be scored against a fixed golden set, and the score hi
 ## Evals
 
 `uv run npx promptfoo@0.126.0 eval -c evals/promptfooconfig.yaml --env-file .env --no-cache -o evals/results/latest.json`, then `uv run python evals/record.py evals/results/latest.json` adds a row to `evals/history.csv`. One run takes about an hour on the free tier. Never start two runs at the same time.
+
+Release runs (ADR-008): run the eval 3 times into three files, then `uv run python evals/record.py run1.json run2.json run3.json`. The row uses the majority per case and counts the unstable cases. To grade saved answers again without new app calls: `REPLAY_FROM=<old results>.json uv run npx promptfoo@0.126.0 eval -c evals/promptfooconfig.yaml -r file://replay.py --env-file .env --no-cache -o <new>.json`.

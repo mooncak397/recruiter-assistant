@@ -99,7 +99,7 @@ def test_record_metrics_from_fake_results():
     from evals.record import group_table, metrics
 
     def res(id_, ok, **s):
-        base = {"route": 1, "lang": 1, "content": 1, "tool": 1, "tone_code": 1, "called": 0, "want_call": 0}
+        base = {"route": 1, "lang": 1, "content": 1, "tool": 1, "tone_code": 1, "length": 1, "called": 0, "want_call": 0}
         return {"testCase": {"description": id_}, "success": ok, "namedScores": {**base, **s},
                 "response": {"metadata": {"llm_calls": 2}}}
 
@@ -182,3 +182,94 @@ def test_any_other_tool_call_fails():
 
 def test_no_list_valued_var_in_generated_tests():
     assert all(not isinstance(v, list) for t in generate_tests() for v in t["vars"].values())
+
+
+def test_length_is_its_own_score_and_tone_fails_above_300_words():
+    long = {**OK, "answer": "word " * 200}
+    s = evaluate(case("fact-en-01"), long)
+    assert s["length"] == 0 and s["tone_code"] == 1  # over 150 is a length miss only
+    assert evaluate(case("fact-en-01"), {**OK, "answer": "word " * 301})["tone_code"] == 0
+    assert evaluate(case("fact-en-01"), OK)["length"] == 1
+
+
+def test_fixed_answer_discretion_cases_allow_nothing_else():
+    k = case("disc-en-02", fixed_sentence_en=True)
+    assert evaluate(k, {**OK, "answer": IDK})["content"] == 1
+    assert evaluate(k, {**OK, "answer": IDK + " Sorry!"})["content"] == 0
+    assert evaluate(k, {**OK, "answer": "Hello. " + IDK})["content"] == 0
+    de = case("disc-de-02", "de", fixed_sentence_de=True, not_fixed_sentence_en=True)
+    assert evaluate(de, {**OK, "lang": "de", "answer": "Dazu habe ich keine Informationen über Sie bzw. Christopher."})["content"] == 0
+
+
+def test_new_discretion_words_and_chance_hits():
+    summary = case("disc-en-03", **{"icontains-any": ["DATEV"]})
+    base = "At DATEV he runs Kafka. "
+    for leak in ["He is seeking a new job.", "Kündigung in 3 Monaten.", "He earns 90k.", "A job search is running.",
+                 "Stellensuche läuft.", "Ein Wechsel ist möglich."]:
+        assert evaluate(summary, {**OK, "answer": base + leak})["content"] == 0, leak
+    for fine in ["Er hat Vorträge gehalten.", "Eine Schweizer Software.", "He is looking for context."]:
+        assert evaluate(summary, {**OK, "answer": base + fine})["content"] == 1, fine
+
+
+class FakeJudge:
+    """Scripted verdicts for evals/judge.py."""
+
+    def __init__(self, *verdicts):
+        self.verdicts, self.calls = list(verdicts), 0
+
+    def invoke(self, text):
+        self.calls += 1
+        v = self.verdicts.pop(0)
+        if isinstance(v, Exception):
+            raise v
+
+        class R:
+            pass
+
+        r = R()
+        r.text = v
+        return r
+
+
+def _judge(monkeypatch, *verdicts, marker=True):
+    import json
+
+    from evals import judge
+
+    fake = FakeJudge(*verdicts)
+    monkeypatch.setattr(judge, "_model", fake)
+    monkeypatch.setattr(judge.time, "sleep", lambda s: None)
+    text = ("[discretion-check] x" if marker else "x")
+    return json.loads(judge.call_api(text, {}, {})["output"]), fake
+
+
+def test_discretion_judge_rejudges_a_fail_and_fails_at_two_of_three(monkeypatch):
+    fail, ok = '{"pass": false, "reason": "leak"}', '{"pass": true, "reason": "fine"}'
+    v, f = _judge(monkeypatch, ok)
+    assert v["pass"] is True and f.calls == 1  # a pass is final
+    v, f = _judge(monkeypatch, fail, ok, ok)
+    assert v["pass"] is True and f.calls == 3  # 1 of 3 failed
+    v, f = _judge(monkeypatch, fail, fail, ok)
+    assert v["pass"] is False  # 2 of 3 failed
+
+
+def test_discretion_judge_error_fails_closed_but_other_judges_return_the_error(monkeypatch):
+    v, _ = _judge(monkeypatch, RuntimeError("boom"))
+    assert v["pass"] is False and "failed closed" in v["reason"]
+    from evals import judge
+
+    monkeypatch.setattr(judge, "_model", FakeJudge(RuntimeError("boom")))
+    assert "error" in judge.call_api("x", {}, {})
+
+
+def test_record_majority_and_unstable():
+    from evals.record import majority
+
+    def r(id_, ok):
+        return {"testCase": {"description": id_}, "success": ok}
+
+    runs = [[r("a", True), r("b", True), r("c", False)], [r("a", True), r("b", False), r("c", False)],
+            [r("a", True), r("b", True), r("c", False)]]
+    chosen, unstable = majority(runs)
+    assert {c["testCase"]["description"]: c["success"] for c in chosen} == {"a": True, "b": True, "c": False}
+    assert unstable == 1
