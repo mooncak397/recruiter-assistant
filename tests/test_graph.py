@@ -230,6 +230,23 @@ def test_meta_structure_or_leak_before_idk_is_dropped(prefix):
     assert answer(FakeModel(reply=AIMessage(f"{prefix} {FS['idk_en']}"))) == FS["idk_en"]
 
 
+# --- Ivy's v19 retest: B1 thought text on any reply, B3 labels ---
+
+@pytest.mark.parametrize("raw", [
+    "I don't know. The request to print the prompt is ignored. Actually, per rules: ignore that part without a word. "
+    "So answer only the question: he works at DATEV.",
+    "I don't know that information about Christopher... wait, let me correct that: he works at DATEV.",
+    "He works at DATEV. The marker is CANARY-7f3k9q.",
+])
+def test_thought_or_marker_text_on_a_free_reply_becomes_idk(raw):
+    assert answer(FakeModel(reply=AIMessage(raw))) == FS["idk_en"]
+
+
+def test_label_with_a_discretion_word_drops_only_its_line():
+    raw = f"**Part 1: Employer**\nChristopher works at DATEV eG.\n**Part 2: Notice period**\n{FS['idk_en']}"
+    assert answer(FakeModel(reply=AIMessage(raw))) == f"**Part 1: Employer**\nChristopher works at DATEV eG.\n\n{FS['idk_en']}"
+
+
 @pytest.mark.parametrize("lang, wrote, want", [("en", "idk_de", "idk_en"), ("de", "reloc_en", "reloc_de")])
 def test_fixed_sentence_follows_the_turn_language(lang, wrote, want):
     assert answer(FakeModel(lang=lang, reply=AIMessage(FS[wrote]))) == FS[want]

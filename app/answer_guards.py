@@ -1,5 +1,6 @@
 """Deterministic answer guards (ADR-010, decisions 2 and 3). Pure functions, no model call.
 The `finalize` node in app/graph.py runs them; evals/asserts/check.py imports DISCRETION_PATTERNS."""
+import functools
 import re
 
 from app.texts import ADDR_REMOVED, LINK_REMOVED
@@ -39,6 +40,16 @@ DISCRETION_PATTERNS = [
     r"(?<!\w)beruflich\w*\s+(?:\w+\s+)?Wechsel",
     r"(?<!\w)(?:seine[nmr]?|ihre[nmr]?|Ihre[nmr]?)\s+" + _VERF, r"(?<!\w)" + _VERF + r"\s*[:(]",
     r"(?<!\w)" + _VERF + r"\s+(?:ab|zum|per|innerhalb)(?!\w)", r"^\W*" + _VERF + r"(?!\w)",
+    # v19 red-team (B2) paraphrases: a job change, availability, pay, mood
+    r"(?<!\w)such\w* (?:eine[nm]? )?neue", _w("Jobsuche"), _w("Wechselabsicht"),
+    r"(?<!\w)(?:plans?|planning|wants?|intends?|going) to leave(?!\w)", r"(?<!\w)leave (?:DATEV|his (?:job|employer|company))",
+    r"(?<!\w)looking for (?:a |an |new |another |other )*" + _JOB, r"(?<!\w)change (?:of |his )?(?:employer|job|company)",
+    r"(?<!\w)(?:he|christopher)(?:'s| is| would be| will be| could be| can be) available(?!\w)",
+    r"(?<!\w)(?:er|christopher) (?:ist|wäre|waere) (?:\S+ ){0,2}verf(?:ü|ue)gbar",
+    r"(?<!\w)(?:he|er) (?:can|could|kann|könnte|koennte) (?:\w+ ){0,2}(?:start|anfangen|beginnen)(?!\w)",
+    _w("Verg(?:ü|ue)tung"), _w("compensation"), r"(?<!\w)(?:a |expects? (?:a )?)pay(?: of)?(?!\w)",
+    _w("unzufrieden"), _w("unhappy"), _w("dissatisfied"),
+    r"(?<!\w)(?:welcomes?|open to|happy to hear from) (?:\w+ )?recruiter",
 ]
 _DISCRETION = re.compile("|".join(DISCRETION_PATTERNS), re.I | re.M)
 
@@ -50,24 +61,53 @@ IMAGE = re.compile(r"!\[[^\]]*\]\([^)]*\)")
 URL = re.compile(r"https?://\S+|www\.\S+")
 
 
-# Thought or rule text the model sometimes writes next to a fixed sentence (red-team finding 6)
+# Thought, rule or marker text on ANY free reply (v19 red-team B1). A hit gives the idk sentence.
+# Narrow on purpose: these words do not occur in a plain fact answer about Christopher.
+THOUGHT = re.compile(r"(?<!\w)(?:wait,|actually,|hmm+\b|scratch that|let me correct|rewriting:|per (?:the )?rules|"
+                     r"these rules|my (?:rules|instructions|guidelines)|system prompt|ignore that part|without a word|"
+                     r"I don't know|I must not|I'm not going to|canary|laut (?:den )?Regeln|"
+                     r"meine (?:Regeln|Anweisungen))", re.I)
+
+# Stricter check for the text kept before an idk sentence (red-team findings 6 and B2)
 META = re.compile(r"(?<!\w)(?:rules?|the user|wait|instructions?|fixed sentence|system prompt|Regel\w*|"
-                  r"der (?:Nutzer|Benutzer)|Anweisung\w*|I don't know|profiles?|Profil\w*|the question|die Frage)(?!\w)"
-                  r"|\((?:EN|DE)\)|:\s*$|[{}\[\]<>|]", re.I)  # a cut JSON, XML or table is not a fact text
+                  r"der (?:Nutzer|Benutzer)|Anweisung\w*|I don't know|profiles?|Profil\w*|the question|die Frage|"
+                  r"hmm+|actually|scratch that|correction|note|confidential|hidden|guidelines|ignored?|sorry|"
+                  r"must not|cannot|can't|darf|Moment|I|I'm|I've|my|me|ich|mein\w*|mir|mich)(?!\w)"
+                  r"|\((?:EN|DE)\)|[{}\[\]<>]|https?://|www\.|@", re.I)  # cut JSON/XML, links, addresses
+_CAPS = re.compile(r"(?<![\w-])[A-Z][A-Z0-9-]{3,}(?![\w-])")  # an echoed token such as APPROVED or PWNED-42
+
+
+def _plain(line: str, profile: str) -> bool:
+    return not META.search(line) and not THOUGHT.search(line) and all(t in profile for t in _CAPS.findall(line))
 
 
 def only_fixed(text: str, fixed: dict[str, str]) -> tuple[str, str] | None:
     """(kind, kept) if the reply contains a fixed sentence, else None. kind = "idk" or "reloc".
-    kept = the fact text before an idk sentence, if it has no Discretion hit and no meta text ("" otherwise).
-    Text after the sentence and text around a relocation sentence are dropped. Both kinds: idk wins."""
+    kept = the fact lines before an idk sentence. A line with a Discretion hit or a table row is dropped alone
+    (a label such as "Notice period:" must not delete the fact above it); any meta, first-person, marker,
+    link or unknown CAPS-token line drops all kept text. Text after the sentence and around a relocation
+    sentence is dropped. Both kinds: idk wins."""
     found = sorted((k for k, s in fixed.items() if s in text), key=lambda k: not k.startswith("idk"))
     if not found:
         return None
     kind = found[0][:-3]
     kept = text.split(fixed[found[0]])[0].strip() if kind == "idk" and len(found) == 1 else ""
-    if not re.search(r"\w", kept) or discretion_hit(kept) or META.search(kept):
-        kept = ""
-    return kind, kept
+    lines = [ln for ln in kept.splitlines() if re.search(r"\w", ln) and "|" not in ln and not discretion_hit(ln)]
+    profile = _profile()
+    # a lead-in colon on the last line ("so:", "Notice period:") means the fact it introduces is missing
+    ok = all(_plain(ln, profile) for ln in lines) and not (lines and lines[-1].rstrip().endswith(":"))
+    return kind, "\n".join(lines).strip() if ok else ""
+
+
+@functools.cache
+def _profile() -> str:
+    from app.prompts import ROOT  # late import: answer_guards stays importable without the repo files
+
+    return (ROOT / "profile/profile.md").read_text()
+
+
+def thought_hit(text: str) -> bool:
+    return THOUGHT.search(text) is not None
 
 
 def discretion_hit(text: str) -> bool:

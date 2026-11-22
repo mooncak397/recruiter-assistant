@@ -10,7 +10,7 @@ from langchain_core.tools import tool
 from langgraph.graph import END, START, MessagesState, StateGraph
 from pydantic import BaseModel
 
-from app.answer_guards import discretion_hit, only_fixed, scrub
+from app.answer_guards import discretion_hit, only_fixed, scrub, thought_hit
 from app.prompts import fixed_sentences, system_prompt
 from app.texts import BUSY, EMPTY, FORM_INTRO, OFF_TOPIC, TOO_LONG
 
@@ -138,6 +138,8 @@ def build_graph(model):
                 s = fixed[f"{k}_{lang}"]  # the turn's language wins: the model sometimes picks the other one
                 s = f"{scrub(kept, lang)}\n\n{s}" if kept else s
                 text, guard = s, ("fixed_sentence" if s != text else None)
+            elif thought_hit(text):  # thought, rule or marker text: never show it
+                text, guard = idk[lang], "thought"
             elif discretion_hit(text):
                 text, guard = idk[lang], "discretion"
             elif (s := scrub(text, lang)) != text:
