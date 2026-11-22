@@ -5,3 +5,4 @@ __pycache__/
 .pytest_cache/
 node_modules/
 evals/.judge-cache.jsonl
+evals/.usage.jsonl

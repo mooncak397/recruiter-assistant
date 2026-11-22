@@ -36,13 +36,20 @@ def changed_ids(ref: str) -> set[str]:
     return {i for i, c in now.items() if old.get(i) != c}
 
 
+def claude() -> bool:
+    """True when app and judge both run on Claude: no pacing, no waits (the paid key has no free-tier limits)."""
+    return os.environ.get("PROVIDER_APP", "google") == "anthropic" and os.environ.get("PROVIDER_JUDGE", "google") == "anthropic"
+
+
 def run_eval(out: Path, ids=None, judge=True, delay=None, replay_from=None):
     env = {**os.environ, "EVAL_JUDGE": "1" if judge else "0"}  # read by evals/tests.py
     cmd = ["npx", "promptfoo@0.126.0", "eval", "-c", "evals/promptfooconfig.yaml", "--env-file", ".env",
            "--no-cache", "-o", str(out)]
     if ids is not None:
         cmd += ["--filter-pattern", "^(" + "|".join(sorted(ids)) + ")$"]
-    if delay:
+    if claude():
+        cmd += ["--delay", "0", "-j", "8"]
+    elif delay:
         cmd += ["--delay", str(delay)]
     if replay_from:  # grade saved answers again, no app call
         env["REPLAY_FROM"] = str(replay_from)
@@ -54,23 +61,44 @@ def run_eval(out: Path, ids=None, judge=True, delay=None, replay_from=None):
         sys.exit(f"promptfoo wrote no result file: {out}")
 
 
-def regrade_errors(out: Path, rounds: int = 2, pause: int = 300):
+def regrade_errors(out: Path, rounds: int = 2, pause: int | None = None):
     """Judge-error cases are graded again on the saved answer, after a pause, at most twice (ADR-008, amendment 1)."""
     from evals.record import is_error
 
+    pause = (0 if claude() else 300) if pause is None else pause
     for _ in range(rounds):
         data = json.load(open(out))
         ids = [r["testCase"]["description"] for r in data["results"]["results"] if is_error(r)]
         if not ids:
             return
         print(f"{len(ids)} judge errors, waiting {pause} s: {' '.join(ids)}")
-        time.sleep(pause)
+        if pause:
+            time.sleep(pause)
         tmp = out.with_suffix(".regrade.json")
         run_eval(tmp, ids, judge=True, replay_from=out)
         new = {r["testCase"]["description"]: r for r in json.load(open(tmp))["results"]["results"]}
         data["results"]["results"] = [new.get(r["testCase"]["description"], r) for r in data["results"]["results"]]
         json.dump(data, open(out, "w"))
         tmp.unlink()
+
+
+PRICES = {"claude-haiku-5-5": (0.10, 0.50), "claude-sonnet-5-5": (2.0, 10.0)}  # USD per 1M tokens (input, output)
+
+
+def cost_report() -> str:
+    """Tokens and USD for the Claude calls logged since the last reset (evals/.usage.jsonl)."""
+    from evals.usage import LOG
+
+    rows = [json.loads(l) for l in LOG.read_text().splitlines()] if LOG.exists() else []
+    parts, total = [], 0.0
+    for role in ("app", "judge"):
+        r = [x for x in rows if x["role"] == role]
+        if r:
+            pin, pout = PRICES.get(r[0]["model"], (0, 0))
+            usd = sum(x["in"] for x in r) / 1e6 * pin + sum(x["out"] for x in r) / 1e6 * pout
+            total += usd
+            parts.append(f"{role}: {len(r)} calls, {sum(x['in'] for x in r)} in / {sum(x['out'] for x in r)} out tokens, ${usd:.3f}")
+    return " | ".join(parts) + f" | total ${total:.3f}" if parts else "no usage logged"
 
 
 def summary(out: Path, seconds: float):
@@ -80,6 +108,7 @@ def summary(out: Path, seconds: float):
     print(f"{len(rs)} cases, {len(rs) - len(bad)} pass, {seconds:.0f} s, app calls {sum(m.get('llm_calls', 0) for m in meta)}, "
           f"rate_limited {sum(m.get('rate_limited', 0) for m in meta)}")
     print("failing:", " ".join(bad) or "none")
+    print("usage:", cost_report())
 
 
 def main(argv=None):
@@ -99,6 +128,9 @@ def main(argv=None):
 
     load_dotenv(ROOT / ".env")  # MODEL_APP and MODEL_JUDGE for the row
     cases = golden()
+    from evals.usage import LOG
+
+    LOG.unlink(missing_ok=True)  # the cost report covers this command only
     if a.mode == "fast":
         wanted = {GROUPS[g] for g in a.groups.split(",") if g}
         ids = {i for i in cases if i.split("-")[0] in wanted} | {i for i in a.ids.split(",") if i}

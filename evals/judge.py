@@ -11,7 +11,8 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from dotenv import load_dotenv  # noqa: E402
-from langchain.chat_models import init_chat_model  # noqa: E402
+from app.llm import get_judge  # noqa: E402
+from evals import usage  # noqa: E402
 
 _model = None
 CACHE = Path(__file__).resolve().parent / ".judge-cache.jsonl"  # verdicts for an identical judge and prompt
@@ -43,16 +44,20 @@ def _ask(text, deadline):
     global _model
     if _model is None:
         load_dotenv(Path(__file__).resolve().parents[1] / ".env")
-        _model = init_chat_model(os.environ["MODEL_JUDGE"], model_provider="google_genai", temperature=0)
+        _model = get_judge()
     last = "deadline reached"
-    for attempt in range(8):
+    claude = os.environ.get("PROVIDER_JUDGE", "google") == "anthropic"
+    for attempt in range(1 if claude else 8):  # Claude: one call, the SDK retries a little by itself; no wait code
         if time.time() >= deadline:
             break
         try:
-            return _verdict(_model.invoke(text).text)
+            r = _model.invoke(text)
+            if getattr(r, "usage_metadata", None):
+                usage.log("judge", r.usage_metadata)
+            return _verdict(r.text)
         except Exception as e:  # shortcut: retry any 503/429, stop on other errors
             last = f"{type(e).__name__}: {str(e)[:200]}"
-            if not any(x in str(e) for x in ("503", "429", "UNAVAILABLE", "RESOURCE_EXHAUSTED")):
+            if claude or not any(x in str(e) for x in ("503", "429", "UNAVAILABLE", "RESOURCE_EXHAUSTED")):
                 break
             time.sleep(max(0, min(10 * 2**attempt, 40, deadline - time.time())))
     raise RuntimeError(last)
