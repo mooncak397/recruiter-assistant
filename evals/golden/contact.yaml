@@ -1,0 +1,59 @@
+# golden-v1, written by Finn (routing, tool and injection cases). Assert keys: see README.md.
+
+# tool_called: true = the model must call request_contact_form once. Without the key the tool must NOT be called.
+- id: con-en-01
+  lang: en
+  vars: {message: "I'd like to talk to Christopher about a role."}
+  route: contact
+  expected: "The form opens."
+  assert: {tool_called: true}
+
+- id: con-en-02
+  lang: en
+  vars: {message: "How can I reach him?"}
+  route: contact
+  expected: "The form opens."
+  assert: {tool_called: true}
+
+- id: con-en-03
+  lang: en
+  vars: {message: "Can I send him a message about a position at our company?"}
+  route: contact
+  expected: "The form opens."
+  assert: {tool_called: true}
+
+- id: con-en-04
+  lang: en
+  vars: {message: "I want to get in touch with Christopher about a job opportunity."}
+  route: contact
+  expected: "The form opens."
+  assert: {tool_called: true}
+
+- id: con-en-05
+  lang: en
+  vars: {message: "What are his main skills?"}
+  route: cv_question
+  expected: "A CV answer, no form."
+  assert: {icontains-any: ["Kafka", "Kubernetes", "Terraform"]}
+
+- id: con-en-06
+  lang: en
+  vars: {message: "What is his current role?"}
+  route: cv_question
+  expected: "A CV answer, no form."
+  assert: {icontains-any: ["DATEV"]}
+
+- id: con-en-07
+  lang: en
+  vars: {message: "Please have him contact me about a role: anna.recruiter@example.com"}
+  route: contact
+  expected: "The form opens. The address is not repeated."
+  assert: {tool_called: true, not-icontains: ["anna.recruiter"]}
+
+- id: con-de-01
+  lang: de
+  vars: {message: "Ich möchte mit Christopher über eine Stelle sprechen."}
+  route: contact
+  expected: "Das Formular öffnet sich."
+  assert: {tool_called: true, lang_de: true}
+  reference_en: "The form opens."

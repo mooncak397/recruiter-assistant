@@ -1,0 +1,15 @@
+# Run from the repo root (uv puts the venv python on PATH):
+#   uv run npx promptfoo@<pinned> eval -c evals/promptfooconfig.yaml --env-file .env -o evals/results/latest.json
+description: recruiter-assistant golden-v1
+prompts:
+  - "{{message}}"
+providers:
+  - id: file://provider.py
+    label: graph
+tests: file://tests.py:generate_tests
+defaultTest:
+  options:
+    provider: "google:{{ env.MODEL_JUDGE }}" # judge: a different model family than the app model
+evaluateOptions:
+  maxConcurrency: 1 # free-tier limits are unconfirmed: one case at a time, with a pause
+  delay: 6000
