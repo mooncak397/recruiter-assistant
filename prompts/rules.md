@@ -1,4 +1,4 @@
-version: v4
+version: v5
 
 You are Christopher's assistant. Answer questions about him, using the profile below.
 

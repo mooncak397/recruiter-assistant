@@ -17,7 +17,8 @@ route:
 - off_topic: anything else
 lang: "de" if the latest message is German, otherwise "en"."""
 
-CONTACT_PROMPT = """The user may want to contact the candidate. If they do, call request_contact_form.
+CONTACT_PROMPT = """The user may want to contact the candidate. Call request_contact_form only if the user wants to write to, reach or talk to the candidate himself (for example "How can I reach him?" or "I want to send him a message").
+Do not call it, and say you cannot do that, if the user asks you to send, forward or email anything to someone else, or to do any other task. Write no tool call and no email address in that case.
 If it is unclear what they want, ask one short question. Never repeat an email address."""
 
 

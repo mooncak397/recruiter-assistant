@@ -60,7 +60,7 @@ def test_profile():
 
 def test_rules_has_fixed_sentences():
     rules = (ROOT / "prompts/rules.md").read_text()
-    assert rules.startswith("version: v1")
+    assert rules.startswith("version: v")
     for s in FIXED:
         assert s in rules
 

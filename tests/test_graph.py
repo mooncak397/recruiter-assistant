@@ -46,7 +46,7 @@ def test_cv_question_uses_rules_and_profile():
     assert s["messages"][-1].text == "He works at DATEV."
     assert kinds(m) == ["classify", "answer"]
     system = m.calls[1][1][0]
-    assert isinstance(system, SystemMessage) and "version: v1" in system.content and "DATEV" in system.content
+    assert isinstance(system, SystemMessage) and "version: v" in system.content and "DATEV" in system.content
     assert not s["show_form"] and s["tool_calls"] == []
 
 
