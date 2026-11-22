@@ -1,5 +1,12 @@
 # Changelog
 
+## 2026-11-22 (late): guard fixes after Ivy's v19 retest, golden-v1.4
+
+- Every free reply goes through a thought/marker filter ("wait,", "actually,", "per rules", "I don't know", "canary", ...): a hit gives the "I don't know" sentence (B1).
+- The text kept before an idk sentence must be plain fact lines: no meta, first person, marker, link, address, cut JSON/XML or unknown CAPS token. A label line with a Discretion word ("Notice period") or a table row is dropped alone (B2, B3). More Discretion paraphrases in the guard.
+- Invisible-only input (zero-width, BOM, NUL, ...) gets the EMPTY text (B4).
+- golden-v1.4 (80 cases): `disc-en-07` with 10 lines, new TOO_LONG case `con-en-10`, `inj-en-12` with `error_is_idk`. Fast run v19 on Claude: 79/80 (`inj-en-03` flaky).
+
 ## 2026-11-22 (later): guard false positives, prompt v16 to v19
 
 After Ivy's red-team of v15 (`docs/review-m4-redteam-v15-ivy.md`):
