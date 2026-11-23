@@ -15,8 +15,10 @@ jobs:
       - uses: actions/checkout@v7
       - uses: astral-sh/setup-uv@v10.4.0
       - run: uv sync
-      # no keys and no network calls: tests use fake models and fake senders
+      # no keys and no model calls: BB_REAL=0 skips the real-model cases in tests/blackbox
       - run: uv run pytest -q
+        env:
+          BB_REAL: '0'
 
   # Code-check evals (ADR-009 fast mode, no judge). Manual only: it calls the app model and costs money.
   # Needs the repository secret ANTHROPIC_API_KEY (Claude) or GEMINI_API_KEY (Gemini free tier).
