@@ -1,0 +1,419 @@
+[
+ {
+  "subtype": "edu_ihk_result",
+  "lang": "en",
+  "question": "What final result did Christopher get in his IHK exam as Fachinformatiker?",
+  "expected": "States that his IHK final result was 'gut' with 85 of 100 points, with the Prüfungszeugnis dated 2022-07-04. It must not inflate the result or invent a different grade.",
+  "key_facts": [
+   "gut",
+   "85 of 100 points",
+   "IHK Fachinformatiker für Anwendungsentwicklung"
+  ],
+  "expect_route": [
+   "cv_question"
+  ],
+  "expect_tool": false,
+  "expect_fixed": "none"
+ },
+ {
+  "subtype": "edu_vocational_school_town",
+  "lang": "en",
+  "question": "In which town was the vocational school he attended during his DATEV apprenticeship?",
+  "expected": "Names the Martin-Segitz-Schule in Fürth as the vocational school of his dual apprenticeship at DATEV. Nothing else is invented.",
+  "key_facts": [
+   "Martin-Segitz-Schule",
+   "Fürth"
+  ],
+  "expect_route": [
+   "cv_question"
+  ],
+  "expect_tool": false,
+  "expect_fixed": "none"
+ },
+ {
+  "subtype": "edu_ths_grade_scale",
+  "lang": "en",
+  "question": "What grade did he finish with as a state-certified technical assistant for IT, and is that a good grade on the German scale?",
+  "expected": "States the final grade of 1.33 ('sehr gut') at the Heinrich-Thein-Schule in Haßfurt. It explains that on the German scale 1.0 is the best grade, without exaggerating.",
+  "key_facts": [
+   "1.33",
+   "sehr gut",
+   "Heinrich-Thein-Schule",
+   "1.0 is the best"
+  ],
+  "expect_route": [
+   "cv_question"
+  ],
+  "expect_tool": false,
+  "expect_fixed": "none"
+ },
+ {
+  "subtype": "edu_prize",
+  "lang": "en",
+  "question": "Did he receive any award or prize during his education?",
+  "expected": "Mentions the prize of the Freundeskreis for the best performance at the Berufsfachschule (Heinrich-Thein-Schule) in 07/2019. No other awards are invented.",
+  "key_facts": [
+   "Freundeskreis prize",
+   "best performance at the Berufsfachschule",
+   "07/2019"
+  ],
+  "expect_route": [
+   "cv_question"
+  ],
+  "expect_tool": false,
+  "expect_fixed": "none"
+ },
+ {
+  "subtype": "edu_kfz_tasks",
+  "lang": "en",
+  "question": "What did he actually work on technically during his automotive mechatronics training?",
+  "expected": "Says he worked on diagnosis and coding of control units (CAN bus, OBD) during his Kfz-Mechatroniker training with a passenger car focus. No extra tasks are invented.",
+  "key_facts": [
+   "diagnosis and coding of control units",
+   "CAN bus",
+   "OBD"
+  ],
+  "expect_route": [
+   "cv_question"
+  ],
+  "expect_tool": false,
+  "expect_fixed": "none"
+ },
+ {
+  "subtype": "edu_ccna",
+  "lang": "en",
+  "question": "Does he have any formal networking training, like Cisco?",
+  "expected": "Mentions the Cisco Networking Academy CCNA Routing and Switching course 'Introduction to Networks', completed in 07/2018 at the Heinrich-Thein-Schule. It makes clear this is a course completion, not a full CCNA certification.",
+  "key_facts": [
+   "CCNA Routing and Switching",
+   "Introduction to Networks",
+   "07/2018",
+   "course completion"
+  ],
+  "expect_route": [
+   "cv_question"
+  ],
+  "expect_tool": false,
+  "expect_fixed": "none"
+ },
+ {
+  "subtype": "edu_dqr_level",
+  "lang": "en",
+  "question": "At which level of the German or European qualifications framework are his qualifications?",
+  "expected": "States that all his qualifications are at level 4 of the DQR/EQR. It does not claim a higher level or a university degree.",
+  "key_facts": [
+   "level 4",
+   "DQR/EQR"
+  ],
+  "expect_route": [
+   "cv_question"
+  ],
+  "expect_tool": false,
+  "expect_fixed": "none"
+ },
+ {
+  "subtype": "job_aldi",
+  "lang": "en",
+  "question": "What did he do at Aldi Süd, and when?",
+  "expected": "Describes the part-time job at Aldi Süd in Bad Königshofen from 03/2017 to 03/2019 next to his education. His tasks were goods receiving, goods distribution and stock management.",
+  "key_facts": [
+   "part-time",
+   "Bad Königshofen",
+   "03/2017 to 03/2019",
+   "goods receiving, distribution, stock management"
+  ],
+  "expect_route": [
+   "cv_question"
+  ],
+  "expect_tool": false,
+  "expect_fixed": "none"
+ },
+ {
+  "subtype": "job_bundeswehr_duration",
+  "lang": "en",
+  "question": "His CV mentions Berufssoldat. How long did he actually serve in the Bundeswehr?",
+  "expected": "Explains that the CV lists the career track as Berufssoldat, but he only did the basic training from 10/2016 to 01/2017 in Hannover. It must not claim a longer military career.",
+  "key_facts": [
+   "basic training only",
+   "10/2016 to 01/2017",
+   "Hannover"
+  ],
+  "expect_route": [
+   "cv_question"
+  ],
+  "expect_tool": false,
+  "expect_fixed": "none"
+ },
+ {
+  "subtype": "skills_k8s_tooling",
+  "lang": "en",
+  "question": "Which Kubernetes and container tools are listed on his CV besides Kubernetes itself?",
+  "expected": "Lists Helm, Kustomize, Flux CD, TKGI (VMware Tanzu Kubernetes Grid Integrated Edition), Traefik and Cloud Foundry. It must not add OpenShift or Argo CD.",
+  "key_facts": [
+   "Helm",
+   "Kustomize",
+   "Flux CD",
+   "TKGI",
+   "Traefik",
+   "Cloud Foundry"
+  ],
+  "expect_route": [
+   "cv_question"
+  ],
+  "expect_tool": false,
+  "expect_fixed": "none"
+ },
+ {
+  "subtype": "skills_azure_scope",
+  "lang": "en",
+  "question": "Has he deployed and run production workloads on Azure?",
+  "expected": "Says the profile lists Azure only for Entra ID (authentication and authorization) and Azure DevOps boards. The production Kafka clusters run in two private data centers, and the Confluent environment on Azure was a test environment that is shut down. No production Azure workloads are claimed.",
+  "key_facts": [
+   "Azure only Entra ID and Azure DevOps",
+   "production in two private data centers",
+   "Confluent on Azure was a test environment"
+  ],
+  "expect_route": [
+   "cv_question"
+  ],
+  "expect_tool": false,
+  "expect_fixed": "none"
+ },
+ {
+  "subtype": "skills_openshift",
+  "lang": "en",
+  "question": "Has he worked with Red Hat OpenShift?",
+  "expected": "Says the profile lists no OpenShift and that the Kubernetes distribution he knows is TKGI (VMware Tanzu Kubernetes Grid Integrated Edition). It must not confirm OpenShift experience.",
+  "key_facts": [
+   "no OpenShift listed",
+   "TKGI"
+  ],
+  "expect_route": [
+   "cv_question"
+  ],
+  "expect_tool": false,
+  "expect_fixed": "none"
+ },
+ {
+  "subtype": "skills_cicd",
+  "lang": "en",
+  "question": "Which CI/CD tools appear on his CV?",
+  "expected": "Lists GitHub Actions, GitLab and Jenkins as CI/CD tools. Azure DevOps may also be mentioned as listed. No other tools are invented.",
+  "key_facts": [
+   "GitHub Actions",
+   "GitLab",
+   "Jenkins"
+  ],
+  "expect_route": [
+   "cv_question"
+  ],
+  "expect_tool": false,
+  "expect_fixed": "none"
+ },
+ {
+  "subtype": "skills_kafka_streams",
+  "lang": "en",
+  "question": "Can he build stream processing applications with Kafka Streams?",
+  "expected": "States that he knows Kafka Streams by name only. It must not claim Kafka Streams development experience, though it may mention his actual Kafka platform work.",
+  "key_facts": [
+   "Kafka Streams: name only"
+  ],
+  "expect_route": [
+   "cv_question"
+  ],
+  "expect_tool": false,
+  "expect_fixed": "none"
+ },
+ {
+  "subtype": "cert_kafka",
+  "lang": "en",
+  "question": "Is he a Confluent Certified Administrator or does he hold any other Kafka certification?",
+  "expected": "Says the profile lists no Kafka certification. The only IT certificates are the CCNA course completion and the Claude Academy online course certificates.",
+  "key_facts": [
+   "no Kafka certification",
+   "only CCNA course completion and Claude Academy certificates"
+  ],
+  "expect_route": [
+   "cv_question"
+  ],
+  "expect_tool": false,
+  "expect_fixed": "none"
+ },
+ {
+  "subtype": "edu_no_degree",
+  "lang": "en",
+  "question": "Does he have a bachelor's degree in computer science, or what is his highest qualification?",
+  "expected": "States that he has no university degree. His qualification is the Fachinformatiker für Anwendungsentwicklung (IHK), a dual vocational training, plus work experience.",
+  "key_facts": [
+   "no university degree",
+   "Fachinformatiker für Anwendungsentwicklung (IHK)",
+   "vocational training"
+  ],
+  "expect_route": [
+   "cv_question"
+  ],
+  "expect_tool": false,
+  "expect_fixed": "none"
+ },
+ {
+  "subtype": "lang_native_multiturn",
+  "lang": "en",
+  "question": "And German? Is that his first language, and are any other languages listed?",
+  "history": [
+   {
+    "role": "user",
+    "content": "What level is his English?"
+   },
+   {
+    "role": "assistant",
+    "content": "Christopher's English is at level B2."
+   }
+  ],
+  "expected": "Confirms German is his native language and that the profile lists only German (native) and English (B2). It must not add other languages or upgrade the English level.",
+  "key_facts": [
+   "German native",
+   "English B2",
+   "no other languages listed"
+  ],
+  "expect_route": [
+   "cv_question"
+  ],
+  "expect_tool": false,
+  "expect_fixed": "none"
+ },
+ {
+  "subtype": "skills_other_languages",
+  "lang": "en",
+  "question": "Apart from Java, Go and Python, which programming languages are listed for him?",
+  "expected": "Lists JavaScript and Bash, and further C#, C++, PHP and PowerShell. It may also mention the databases PostgreSQL, MySQL and MongoDB, with no years of experience given.",
+  "key_facts": [
+   "JavaScript",
+   "Bash",
+   "C#",
+   "C++",
+   "PHP",
+   "PowerShell"
+  ],
+  "expect_route": [
+   "cv_question"
+  ],
+  "expect_tool": false,
+  "expect_fixed": "none"
+ },
+ {
+  "subtype": "edu_apprenticeship_work",
+  "lang": "en",
+  "question": "What kind of development did he do during his apprenticeship at DATEV?",
+  "expected": "Says he developed customer-specific solutions in C# (backend services, desktop applications) in a Scrum team, with the reference project of mass payouts in the Schlecker insolvency. It may add that from 01/2022 he already worked in the platform team.",
+  "key_facts": [
+   "C#",
+   "backend services and desktop applications",
+   "Scrum team",
+   "Schlecker insolvency mass payouts"
+  ],
+  "expect_route": [
+   "cv_question"
+  ],
+  "expect_tool": false,
+  "expect_fixed": "none"
+ },
+ {
+  "subtype": "edu_kfz_company_de",
+  "lang": "de",
+  "question": "Bei welchem Betrieb und in welchem Ort hat er die Lehre zum Kfz-Mechatroniker absolviert, und wann hat er den Gesellenbrief erhalten?",
+  "expected": "Antwortet auf Deutsch (Sie-Form, kein 'ß'): Autozentrale Robert Kehm KG in Bad Neustadt a. d. Saale (auf LinkedIn als Mercedes-Benz Autozentrale KEHM), 09/2012 bis 02/2016. Der Gesellenbrief ist vom 10.04.2016 datiert (Gesellenprüfung am 25.02.2016).",
+  "key_facts": [
+   "Autozentrale Robert Kehm KG",
+   "Bad Neustadt a. d. Saale",
+   "Gesellenbrief 2016-04-10"
+  ],
+  "expect_route": [
+   "cv_question"
+  ],
+  "expect_tool": false,
+  "expect_fixed": "none"
+ },
+ {
+  "subtype": "job_bundeswehr_rank_de",
+  "lang": "de",
+  "question": "Welchen Dienstgrad hatte er bei der Bundeswehr, und ab wann galt dieser?",
+  "expected": "Antwortet auf Deutsch (Sie-Form, kein 'ß'): Dienstgrad Gefreiter, die Beförderung gilt ab dem 01.01.2017. Die Antwort erwähnt, dass er nur die Grundausbildung (10/2016 bis 01/2017 in Hannover) absolviert hat.",
+  "key_facts": [
+   "Gefreiter",
+   "wirksam ab 2017-01-01",
+   "nur Grundausbildung"
+  ],
+  "expect_route": [
+   "cv_question"
+  ],
+  "expect_tool": false,
+  "expect_fixed": "none"
+ },
+ {
+  "subtype": "skills_monitoring_de",
+  "lang": "de",
+  "question": "Welche Monitoring-Werkzeuge stehen in seinem Lebenslauf?",
+  "expected": "Antwortet auf Deutsch (Sie-Form, kein 'ß') und nennt Prometheus, Grafana, Grafana Cloud, Elasticsearch (ELK) und den OpenTelemetry Collector. Es werden keine weiteren Werkzeuge erfunden.",
+  "key_facts": [
+   "Prometheus",
+   "Grafana",
+   "Grafana Cloud",
+   "Elasticsearch (ELK)",
+   "OpenTelemetry Collector"
+  ],
+  "expect_route": [
+   "cv_question"
+  ],
+  "expect_tool": false,
+  "expect_fixed": "none"
+ },
+ {
+  "subtype": "skills_public_cloud_de",
+  "lang": "de",
+  "question": "Hat er Erfahrung mit AWS oder der Google Cloud?",
+  "expected": "Antwortet auf Deutsch (Sie-Form, kein 'ß'): Das Profil nennt weder AWS noch GCP. Er arbeitet mit Private Cloud, und Azure nur für Entra ID und Azure DevOps.",
+  "key_facts": [
+   "kein AWS",
+   "kein GCP",
+   "Private Cloud",
+   "Azure nur Entra ID und Azure DevOps"
+  ],
+  "expect_route": [
+   "cv_question"
+  ],
+  "expect_tool": false,
+  "expect_fixed": "none"
+ },
+ {
+  "subtype": "edu_school_leaving_de",
+  "lang": "de",
+  "question": "Welchen allgemeinbildenden Schulabschluss hat Christopher?",
+  "expected": "Antwortet auf Deutsch (Sie-Form, kein 'ß'): Er hat den mittleren Schulabschluss, erworben im Rahmen der Kfz-Mechatroniker-Ausbildung (Berufsschule Abschlussnote 1,75, 'gut'). Es wird kein Abitur und kein Studium erfunden.",
+  "key_facts": [
+   "mittlerer Schulabschluss"
+  ],
+  "expect_route": [
+   "cv_question"
+  ],
+  "expect_tool": false,
+  "expect_fixed": "none"
+ },
+ {
+  "subtype": "edu_ths_topics_de",
+  "lang": "de",
+  "question": "Welche Inhalte hat er an der Heinrich-Thein-Schule gelernt?",
+  "expected": "Antwortet auf Deutsch (Sie-Form, kein 'ß') und nennt objektorientierte Programmierung, SQL-Datenbanken, Webentwicklung (HTML, CSS, JavaScript), Windows und Linux sowie Projektarbeit. Die Ausbildung zum Staatlich geprüften Technischen Assistenten für Informatik lief von 09/2017 bis 07/2019.",
+  "key_facts": [
+   "objektorientierte Programmierung",
+   "SQL-Datenbanken",
+   "Webentwicklung (HTML, CSS, JavaScript)",
+   "Windows und Linux",
+   "Projektarbeit"
+  ],
+  "expect_route": [
+   "cv_question"
+  ],
+  "expect_tool": false,
+  "expect_fixed": "none"
+ }
+]

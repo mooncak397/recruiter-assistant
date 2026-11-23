@@ -1,0 +1,412 @@
+[
+ {
+  "subtype": "ai_circle",
+  "lang": "en",
+  "question": "What is this AI Accelerator circle at DATEV, and is Christopher leading it?",
+  "expected": "Explains that the AI Accelerator circle is an informal internal DATEV group that exchanges on AI adoption in the company, and that Christopher is a member. It does not claim he leads it.",
+  "key_facts": [
+   "internal AI Accelerator circle at DATEV",
+   "informal group exchanging on AI adoption",
+   "Christopher is a member, not the leader"
+  ],
+  "expect_route": [
+   "cv_question"
+  ],
+  "expect_tool": false,
+  "expect_fixed": "none"
+ },
+ {
+  "subtype": "hub_rollout",
+  "lang": "en",
+  "question": "How widely is the Shared Knowledge Hub used today, and how far is it supposed to grow?",
+  "expected": "States that the hub is used in 10 projects today and that a rollout to about 30 projects is planned. It does not present the 30 as already reached.",
+  "key_facts": [
+   "used in 10 projects today",
+   "rollout to about 30 projects planned"
+  ],
+  "expect_route": [
+   "cv_question"
+  ],
+  "expect_tool": false,
+  "expect_fixed": "none"
+ },
+ {
+  "subtype": "hub_not_sole_lead",
+  "lang": "en",
+  "question": "So Christopher is the project lead of the knowledge hub and manages the people on it?",
+  "expected": "Corrects the premise. He co-leads the team-internal hub project together with a colleague, not alone, and the profile lists no people-management or team-lead role.",
+  "key_facts": [
+   "co-leads together with a colleague",
+   "not sole lead",
+   "no people-management role listed"
+  ],
+  "expect_route": [
+   "cv_question"
+  ],
+  "expect_tool": false,
+  "expect_fixed": "none"
+ },
+ {
+  "subtype": "hub_hybrid_search",
+  "lang": "en",
+  "question": "Technically, how does the search in his knowledge hub work?",
+  "expected": "Describes the hybrid search. A BM25 keyword search with stemming for German and English and a semantic search over embeddings run in parallel, and the results are merged by rank fusion (RRF). It adds no invented components.",
+  "key_facts": [
+   "hybrid search",
+   "BM25 keyword search with German and English stemming",
+   "semantic search over embeddings",
+   "run in parallel",
+   "merged by rank fusion (RRF)"
+  ],
+  "expect_route": [
+   "cv_question"
+  ],
+  "expect_tool": false,
+  "expect_fixed": "none"
+ },
+ {
+  "subtype": "hub_ptc_not_mcp_tools",
+  "lang": "en",
+  "question": "Are the hub's search functions exposed to the agents as MCP tools?",
+  "expected": "Explains that agents reach the hub through the Model Context Protocol (MCP), but that the hybrid search runs through Programmatic Tool Calling, not as MCP tools.",
+  "key_facts": [
+   "agents reach the hub via MCP",
+   "hybrid search runs through Programmatic Tool Calling",
+   "not as MCP tools"
+  ],
+  "expect_route": [
+   "cv_question"
+  ],
+  "expect_tool": false,
+  "expect_fixed": "none"
+ },
+ {
+  "subtype": "hub_not_vector_db",
+  "lang": "en",
+  "question": "Which vector database did he move the knowledge hub to in September 2026?",
+  "expected": "Corrects the premise. In 09/2026 the hub moved to a database behind the MCP, but that database does no vector search, and the embeddings are stored separately. It does not name a vector DB product or claim vector-database expertise.",
+  "key_facts": [
+   "09/2026 moved to a database behind the MCP",
+   "the database does no vector search",
+   "embeddings stored separately",
+   "no vector database product named"
+  ],
+  "expect_route": [
+   "cv_question"
+  ],
+  "expect_tool": false,
+  "expect_fixed": "none"
+ },
+ {
+  "subtype": "hub_token_savings",
+  "lang": "en",
+  "question": "Did the knowledge hub save any tokens? Give me the exact figure and the reason.",
+  "expected": "States that an analysis showed 30 to 40 % fewer tokens, because agents only get the context their task needs. It does not give a single inflated number.",
+  "key_facts": [
+   "30 to 40 % fewer tokens",
+   "shown by an analysis",
+   "agents only get the context their task needs"
+  ],
+  "expect_route": [
+   "cv_question"
+  ],
+  "expect_tool": false,
+  "expect_fixed": "none"
+ },
+ {
+  "subtype": "hub_ranking",
+  "lang": "en",
+  "question": "How does the hub decide which entries come first in the results?",
+  "expected": "Explains that a named ID ranks first, that linked entries of the best hits are added, and that outdated or closed entries count less.",
+  "key_facts": [
+   "a named ID ranks first",
+   "linked entries of the best hits are added",
+   "outdated or closed entries count less"
+  ],
+  "expect_route": [
+   "cv_question"
+  ],
+  "expect_tool": false,
+  "expect_fixed": "none"
+ },
+ {
+  "subtype": "copilot_vs_claude_code",
+  "lang": "en",
+  "question": "Which AI assistant helps him write the Crossplane provider, and is it the same tool he uses for AgentBrain?",
+  "expected": "Says the Crossplane provider is written in Go with GitHub Copilot at work. AgentBrain is a private project built on Claude Code, which is not used at DATEV, so they are different tools.",
+  "key_facts": [
+   "Crossplane provider: Go with GitHub Copilot",
+   "AgentBrain uses Claude Code (private)",
+   "Claude Code is not used at DATEV"
+  ],
+  "expect_route": [
+   "cv_question"
+  ],
+  "expect_tool": false,
+  "expect_fixed": "none"
+ },
+ {
+  "subtype": "hub_origin",
+  "lang": "en",
+  "question": "How did the idea for the Shared Knowledge Hub come about, and what problem does it solve for coding agents?",
+  "expected": "States that the hub came out of daily work with agentic development, among others on the Crossplane provider. It is a shared context store, so context stays available across sessions, tools and repositories.",
+  "key_facts": [
+   "came out of daily agentic development work",
+   "among others on the Crossplane provider",
+   "shared context store for AI coding agents",
+   "context available across sessions, tools and repositories"
+  ],
+  "expect_route": [
+   "cv_question"
+  ],
+  "expect_tool": false,
+  "expect_fixed": "none"
+ },
+ {
+  "subtype": "date_order",
+  "lang": "en",
+  "question": "Which came first, the knowledge hub or AgentBrain, and how many specialist agents does AgentBrain have?",
+  "expected": "States that the hub started first (since 07/2026) and AgentBrain later (since 10/2026). AgentBrain has a manager agent and ten specialist agents.",
+  "key_facts": [
+   "hub since 07/2026",
+   "AgentBrain since 10/2026",
+   "the hub came first",
+   "manager agent plus ten specialist agents"
+  ],
+  "expect_route": [
+   "cv_question"
+  ],
+  "expect_tool": false,
+  "expect_fixed": "none"
+ },
+ {
+  "subtype": "agentbrain_local_vs_cloud",
+  "lang": "en",
+  "question": "Does AgentBrain run completely on local models?",
+  "expected": "Says no. The agents use cloud models, and only the vault search runs locally. It does not claim a fully local setup.",
+  "key_facts": [
+   "agents use cloud models",
+   "only the vault search runs locally"
+  ],
+  "expect_route": [
+   "cv_question"
+  ],
+  "expect_tool": false,
+  "expect_fixed": "none"
+ },
+ {
+  "subtype": "poc_model_serving",
+  "lang": "en",
+  "question": "Which LLM did he run in the Kafka agent proof of concept, and what served it?",
+  "expected": "Names the model qwen3:4b-instruct-2507, running locally on Ollama on his laptop. It does not name another model or invent a cloud setup.",
+  "key_facts": [
+   "qwen3:4b-instruct-2507",
+   "served locally with Ollama",
+   "on his laptop"
+  ],
+  "expect_route": [
+   "cv_question"
+  ],
+  "expect_tool": false,
+  "expect_fixed": "none"
+ },
+ {
+  "subtype": "poc_kafka_setup",
+  "lang": "en",
+  "question": "What Kafka version and cluster setup does the LLM proof of concept use?",
+  "expected": "States that the PoC runs Kafka 4.3.2 with Strimzi on kind, locally with fake data.",
+  "key_facts": [
+   "Kafka 4.3.2",
+   "Strimzi",
+   "on kind",
+   "local with fake data"
+  ],
+  "expect_route": [
+   "cv_question"
+  ],
+  "expect_tool": false,
+  "expect_fixed": "none"
+ },
+ {
+  "subtype": "poc_readonly_layers",
+  "lang": "en",
+  "question": "How did he make sure the Kafka agent can't change anything in the cluster?",
+  "expected": "Explains that the agent has five read-only tools over MCP and that read-only is enforced in three layers: a tool allow-list, a Kafka user with only Describe and Read rights, and the authorizer.",
+  "key_facts": [
+   "five read-only tools over MCP",
+   "three layers",
+   "tool allow-list",
+   "Kafka user with only Describe and Read rights",
+   "the authorizer"
+  ],
+  "expect_route": [
+   "cv_question"
+  ],
+  "expect_tool": false,
+  "expect_fixed": "none"
+ },
+ {
+  "subtype": "poc_negative_test",
+  "lang": "en",
+  "question": "Did he ever test what happens if the agent tries to delete a topic? What was the outcome?",
+  "expected": "Describes the negative test. With the tool filter turned off on purpose, the agent was asked to delete a topic; Kafka refused all 5 attempts and the topic was still there.",
+  "key_facts": [
+   "tool filter off on purpose",
+   "asked to delete a topic",
+   "Kafka refused all 5 attempts",
+   "topic was still there"
+  ],
+  "expect_route": [
+   "cv_question"
+  ],
+  "expect_tool": false,
+  "expect_fixed": "none"
+ },
+ {
+  "subtype": "poc_load_test",
+  "lang": "en",
+  "question": "What were the median time-to-first-token values in his load test at 1, 10 and 20 users?",
+  "expected": "Gives about 0.6 s, 6.4 s and 14.1 s for 1, 10 and 20 concurrent users. It may add that speed stayed at about 40 tokens per second per user and that no request failed.",
+  "key_facts": [
+   "about 0.6 s at 1 user",
+   "about 6.4 s at 10 users",
+   "about 14.1 s at 20 users"
+  ],
+  "expect_route": [
+   "cv_question"
+  ],
+  "expect_tool": false,
+  "expect_fixed": "none"
+ },
+ {
+  "subtype": "no_mlops",
+  "lang": "en",
+  "question": "Given his Kafka LLM project, it's fair to say he has MLOps experience with training, fine-tuning and a model registry, right?",
+  "expected": "Corrects the premise. The profile lists no MLOps experience; the PoC covers only local serving, monitoring and a load test on his laptop with fake data. It has no model training, fine-tuning, model registry, ML pipelines or drift monitoring, and makes no production claim.",
+  "key_facts": [
+   "no MLOps experience",
+   "PoC covers local serving, monitoring and load test",
+   "no training, fine-tuning, model registry, ML pipelines or drift monitoring",
+   "local on laptop with fake data, no production claim"
+  ],
+  "expect_route": [
+   "cv_question"
+  ],
+  "expect_tool": false,
+  "expect_fixed": "none"
+ },
+ {
+  "subtype": "claude_certs",
+  "lang": "en",
+  "question": "How many Claude Academy certificates does he have, when did he get them, and are they professional certifications?",
+  "expected": "States six Claude Academy certificates from Anthropic, all issued 11/2026. They are online course certificates, not professional certifications.",
+  "key_facts": [
+   "six certificates",
+   "from Anthropic (Claude Academy)",
+   "all issued 11/2026",
+   "online course certificates"
+  ],
+  "expect_route": [
+   "cv_question"
+  ],
+  "expect_tool": false,
+  "expect_fixed": "none"
+ },
+ {
+  "subtype": "hub_co_lead_de",
+  "lang": "de",
+  "question": "Seit wann leitet Christopher den Shared Knowledge Hub, und macht er das allein?",
+  "expected": "Antwortet auf Deutsch: Das Projekt läuft seit 07/2026, und Christopher leitet es gemeinsam mit einem Kollegen, nicht allein.",
+  "key_facts": [
+   "seit 07/2026",
+   "gemeinsame Projektleitung mit einem Kollegen",
+   "nicht allein"
+  ],
+  "expect_route": [
+   "cv_question"
+  ],
+  "expect_tool": false,
+  "expect_fixed": "none"
+ },
+ {
+  "subtype": "hub_db_de",
+  "lang": "de",
+  "question": "Wurde der Hub im September 2026 auf eine Vektordatenbank umgestellt?",
+  "expected": "Antwortet auf Deutsch und korrigiert die Annahme: Im 09/2026 zog der Hub auf eine Datenbank hinter dem MCP. Diese Datenbank macht keine Vektorsuche, und die Embeddings werden getrennt davon gespeichert.",
+  "key_facts": [
+   "09/2026 Datenbank hinter dem MCP",
+   "keine Vektorsuche in der Datenbank",
+   "Embeddings getrennt gespeichert"
+  ],
+  "expect_route": [
+   "cv_question"
+  ],
+  "expect_tool": false,
+  "expect_fixed": "none"
+ },
+ {
+  "subtype": "agentbrain_test_de",
+  "lang": "de",
+  "question": "Mit wie vielen Fragen hat er die Suche in AgentBrain getestet, und wie viel günstiger war sie?",
+  "expected": "Antwortet auf Deutsch: In seinem eigenen Test mit 187 Fragen war die lokale Suche 49 % günstiger als seine vorherige Suche, bei gleicher Antwortqualität.",
+  "key_facts": [
+   "eigener Test mit 187 Fragen",
+   "49 % günstiger",
+   "gleiche Antwortqualität"
+  ],
+  "expect_route": [
+   "cv_question"
+  ],
+  "expect_tool": false,
+  "expect_fixed": "none"
+ },
+ {
+  "subtype": "agentbrain_private_de",
+  "lang": "de",
+  "question": "Worauf basiert AgentBrain, und ist das ein Projekt bei DATEV?",
+  "expected": "Antwortet auf Deutsch: AgentBrain ist ein privates Projekt, ein Multi-Agenten-System auf Basis von Claude Code mit einem Obsidian-Vault. Es ist nicht Teil seiner Arbeit bei DATEV, wo er GitHub Copilot nutzt.",
+  "key_facts": [
+   "privates Projekt",
+   "basiert auf Claude Code",
+   "Obsidian-Vault",
+   "nicht Teil der Arbeit bei DATEV"
+  ],
+  "expect_route": [
+   "cv_question"
+  ],
+  "expect_tool": false,
+  "expect_fixed": "none"
+ },
+ {
+  "subtype": "ai_training_de",
+  "lang": "de",
+  "question": "Wie viele Personen schult er in KI-Werkzeugen, und wer sind diese Personen?",
+  "expected": "Antwortet auf Deutsch: Er schult gemeinsam mit einem Kollegen sein eigenes Team von 15 Personen in KI-Werkzeugen.",
+  "key_facts": [
+   "15 Personen",
+   "sein eigenes Team",
+   "gemeinsam mit einem Kollegen"
+  ],
+  "expect_route": [
+   "cv_question"
+  ],
+  "expect_tool": false,
+  "expect_fixed": "none"
+ },
+ {
+  "subtype": "poc_gpu_de",
+  "lang": "de",
+  "question": "Auf welcher Grafikkarte läuft das lokale Modell im Kafka-PoC, und wie schnell ist es pro Nutzer?",
+  "expected": "Antwortet auf Deutsch: Das Modell läuft lokal auf Ollama auf einer GTX 1060 mit 6 GB. Die Geschwindigkeit blieb bei etwa 40 Tokens pro Sekunde pro Nutzer.",
+  "key_facts": [
+   "GTX 1060 mit 6 GB",
+   "lokal auf Ollama",
+   "etwa 40 Tokens pro Sekunde pro Nutzer"
+  ],
+  "expect_route": [
+   "cv_question"
+  ],
+  "expect_tool": false,
+  "expect_fixed": "none"
+ }
+]

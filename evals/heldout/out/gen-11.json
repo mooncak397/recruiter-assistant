@@ -1,0 +1,409 @@
+[
+ {
+  "subtype": "multi_part_kafka",
+  "lang": "en",
+  "question": "Which Kafka distributions does his team run, how many clusters are there, and in which stages?",
+  "expected": "The answer names all three Kafka distributions, the number of clusters, the stages and where they run. It does not claim public cloud.",
+  "key_facts": [
+   "Confluent Platform",
+   "Strimzi",
+   "IBM Event Streams",
+   "6 clusters",
+   "Dev, QS and Prod",
+   "two private data centers"
+  ],
+  "expect_route": [
+   "cv_question"
+  ],
+  "expect_tool": false,
+  "expect_fixed": "none"
+ },
+ {
+  "subtype": "tenure",
+  "lang": "en",
+  "question": "How long has Christopher been at DATEV, and did he start there directly as an engineer?",
+  "expected": "The answer says he has been with DATEV since 09/2019 and started as an apprentice. It says he has been DevOps/Platform Engineer since 07/2022 and does not state a number of years of experience.",
+  "key_facts": [
+   "at DATEV since 09/2019",
+   "started as an apprentice (Fachinformatiker Anwendungsentwicklung)",
+   "DevOps/Platform Engineer since 07/2022"
+  ],
+  "expect_route": [
+   "cv_question"
+  ],
+  "expect_tool": false,
+  "expect_fixed": "none"
+ },
+ {
+  "subtype": "before_it",
+  "lang": "en",
+  "question": "What did he do before he moved into IT?",
+  "expected": "The answer lists his earlier path: the Kfz-Mechatroniker apprenticeship, basic military training and the part-time job at Aldi Süd. It invents nothing else.",
+  "key_facts": [
+   "Kfz-Mechatroniker apprenticeship 2012 to 2016",
+   "Autozentrale Robert Kehm / Mercedes-Benz in Bad Neustadt",
+   "Bundeswehr basic training 2016 to 2017, rank Gefreiter",
+   "part-time job at Aldi Süd"
+  ],
+  "expect_route": [
+   "cv_question"
+  ],
+  "expect_tool": false,
+  "expect_fixed": "none"
+ },
+ {
+  "subtype": "inflation_go",
+  "lang": "en",
+  "question": "Is he an expert Go developer?",
+  "expected": "The answer does not confirm 'expert' and gives no years. It says he writes a Crossplane provider in Go, with coding agents writing the code while he steers and reviews it.",
+  "key_facts": [
+   "Crossplane provider in Go",
+   "code written by coding agents under his direction and review",
+   "no years of experience given"
+  ],
+  "expect_route": [
+   "cv_question"
+  ],
+  "expect_tool": false,
+  "expect_fixed": "none"
+ },
+ {
+  "subtype": "inflation_english",
+  "lang": "en",
+  "question": "Is Christopher fluent in English?",
+  "expected": "The answer does not say 'fluent'. It states English is at level B2 and German is his native language.",
+  "key_facts": [
+   "English B2",
+   "German native"
+  ],
+  "expect_route": [
+   "cv_question"
+  ],
+  "expect_tool": false,
+  "expect_fixed": "none"
+ },
+ {
+  "subtype": "inflation_leadership",
+  "lang": "en",
+  "question": "Has he ever led a team or managed people?",
+  "expected": "The answer says the profile lists no people-management or team-lead role. It mentions that he co-leads the Shared Knowledge Hub project with a colleague, and that together with a colleague he trains his team in AI tools.",
+  "key_facts": [
+   "no people-management or team-lead role listed",
+   "co-leads the Shared Knowledge Hub with a colleague, not alone",
+   "trains his team of 15 in AI tools together with a colleague"
+  ],
+  "expect_route": [
+   "cv_question"
+  ],
+  "expect_tool": false,
+  "expect_fixed": "none"
+ },
+ {
+  "subtype": "inflation_public_cloud",
+  "lang": "en",
+  "question": "Does he have hands-on AWS or GCP experience?",
+  "expected": "The answer says the profile lists no AWS and no GCP. It explains that his Azure use is only Entra ID and Azure DevOps and that the platform runs in private data centers.",
+  "key_facts": [
+   "no AWS or GCP listed",
+   "Azure only Entra ID and Azure DevOps",
+   "platform runs in private data centers"
+  ],
+  "expect_route": [
+   "cv_question"
+  ],
+  "expect_tool": false,
+  "expect_fixed": "none"
+ },
+ {
+  "subtype": "choice_kafka_distro",
+  "lang": "en",
+  "question": "Does his team use Strimzi or Confluent Platform for Kafka?",
+  "expected": "The answer says both are used and may also mention IBM Event Streams.",
+  "key_facts": [
+   "both Strimzi and Confluent Platform",
+   "also IBM Event Streams"
+  ],
+  "expect_route": [
+   "cv_question"
+  ],
+  "expect_tool": false,
+  "expect_fixed": "none"
+ },
+ {
+  "subtype": "timeline_education",
+  "lang": "en",
+  "question": "Can you list his education and training in chronological order?",
+  "expected": "The answer gives the qualifications in the correct order with their dates. It mentions no university degree.",
+  "key_facts": [
+   "Kfz-Mechatroniker 09/2012 to 02/2016",
+   "Technischer Assistent für Informatik 09/2017 to 07/2019 at Heinrich-Thein-Schule",
+   "CCNA course Introduction to Networks 07/2018",
+   "Fachinformatiker für Anwendungsentwicklung (IHK) 09/2019 to 07/2022 at DATEV"
+  ],
+  "expect_route": [
+   "cv_question"
+  ],
+  "expect_tool": false,
+  "expect_fixed": "none"
+ },
+ {
+  "subtype": "typo_terms",
+  "lang": "en",
+  "question": "does he know kubernets and rabit mq?",
+  "expected": "The answer reads the typos as Kubernetes and RabbitMQ and confirms both from the profile.",
+  "key_facts": [
+   "Kubernetes (with Helm, Kustomize, Flux CD, TKGI)",
+   "RabbitMQ runs on Kubernetes",
+   "high availability via quorum queues"
+  ],
+  "expect_route": [
+   "cv_question"
+  ],
+  "expect_tool": false,
+  "expect_fixed": "none"
+ },
+ {
+  "subtype": "synonym_observability",
+  "lang": "en",
+  "question": "What does his observability stack look like?",
+  "expected": "The answer lists the monitoring and observability tools from the profile.",
+  "key_facts": [
+   "Prometheus",
+   "Grafana and Grafana Cloud",
+   "Elastic Stack (ELK)",
+   "OpenTelemetry Collector for Kafka and RabbitMQ logs"
+  ],
+  "expect_route": [
+   "cv_question"
+  ],
+  "expect_tool": false,
+  "expect_fixed": "none"
+ },
+ {
+  "subtype": "recruiter_k8s_ops",
+  "lang": "en",
+  "question": "Can he handle Kubernetes operations in a production environment?",
+  "expected": "The answer describes the relevant profile facts without inflating them or using 'expert': his team runs Kafka and RabbitMQ on Kubernetes, he is on call, and he uses GitOps tooling.",
+  "key_facts": [
+   "team runs Kafka and RabbitMQ as a managed service on Kubernetes",
+   "part of the on-call duty (Pikett) for the Kafka platform",
+   "Flux CD, Helm, Kustomize, TKGI"
+  ],
+  "expect_route": [
+   "cv_question"
+  ],
+  "expect_tool": false,
+  "expect_fixed": "none"
+ },
+ {
+  "subtype": "comparison_search",
+  "lang": "en",
+  "question": "How does the search in the Shared Knowledge Hub differ from the search in his AgentBrain project?",
+  "expected": "The answer contrasts the hub's hybrid search with AgentBrain's local one-call vault search, using only profile facts.",
+  "key_facts": [
+   "hub: BM25 keyword search and embedding search merged by RRF",
+   "hub search runs through Programmatic Tool Calling",
+   "AgentBrain: local vault search in one call (keywords, vectors, link graph)",
+   "AgentBrain search 49 % cheaper in his test with 187 questions"
+  ],
+  "expect_route": [
+   "cv_question"
+  ],
+  "expect_tool": false,
+  "expect_fixed": "none"
+ },
+ {
+  "subtype": "multi_part_poc",
+  "lang": "en",
+  "question": "What were the load test results of his Kafka LLM proof of concept, and on what hardware did the model run?",
+  "expected": "The answer gives the load test numbers and the GPU and model. It makes no production claim.",
+  "key_facts": [
+   "1, 10 and 20 concurrent users",
+   "median time to first token about 0.6 s, 6.4 s and 14.1 s",
+   "about 40 tokens per second per user, no failed requests",
+   "qwen3:4b-instruct-2507 on Ollama on a GTX 1060 with 6 GB"
+  ],
+  "expect_route": [
+   "cv_question"
+  ],
+  "expect_tool": false,
+  "expect_fixed": "none"
+ },
+ {
+  "subtype": "inflation_mlops",
+  "lang": "en",
+  "question": "Does he have MLOps experience?",
+  "expected": "The answer says the profile lists no MLOps experience. It explains that the PoC covers only local serving, monitoring and a load test, with no training or ML pipelines.",
+  "key_facts": [
+   "no MLOps experience listed",
+   "PoC covers local serving, monitoring and a load test",
+   "no model training, fine-tuning or ML pipelines"
+  ],
+  "expect_route": [
+   "cv_question"
+  ],
+  "expect_tool": false,
+  "expect_fixed": "none"
+ },
+ {
+  "subtype": "inflation_open_source",
+  "lang": "en",
+  "question": "Has he contributed to any open-source projects?",
+  "expected": "The answer says the profile lists no open-source contributions and the Crossplane provider is internal. It may mention that his Kafka LLM PoC is a public repository.",
+  "key_facts": [
+   "no open-source contributions listed",
+   "Crossplane provider is internal, not open source"
+  ],
+  "expect_route": [
+   "cv_question"
+  ],
+  "expect_tool": false,
+  "expect_fixed": "none"
+ },
+ {
+  "subtype": "apprenticeship_details",
+  "lang": "en",
+  "question": "What kind of work did he do during his apprenticeship at DATEV, and when did he join the platform team?",
+  "expected": "The answer describes the C# work in a Scrum team and the reference project. It says he joined the platform team from 01/2022.",
+  "key_facts": [
+   "customer-specific solutions in C# (backend services, desktop applications)",
+   "Scrum team",
+   "reference project: mass payouts in the Schlecker insolvency",
+   "platform team from 01/2022"
+  ],
+  "expect_route": [
+   "cv_question"
+  ],
+  "expect_tool": false,
+  "expect_fixed": "none"
+ },
+ {
+  "subtype": "inflation_vector_db",
+  "lang": "en",
+  "question": "Is he experienced with vector databases like Pinecone or Weaviate?",
+  "expected": "The answer says the profile lists no vector database product expertise. It notes that the hub's database does no vector search and the embeddings are stored separately.",
+  "key_facts": [
+   "no vector database product expertise listed",
+   "hub database does no vector search",
+   "embeddings stored separately from the database"
+  ],
+  "expect_route": [
+   "cv_question"
+  ],
+  "expect_tool": false,
+  "expect_fixed": "none"
+ },
+ {
+  "subtype": "recruiter_security",
+  "lang": "en",
+  "question": "What's his background on the security side, any pen testing?",
+  "expected": "The answer lists his security tools and says he helped plan and run penetration tests, without inflating.",
+  "key_facts": [
+   "helped plan and run penetration tests of infrastructure and applications",
+   "HashiCorp Vault",
+   "RBAC, ACLs, policies",
+   "SCRAM, TLS, mTLS"
+  ],
+  "expect_route": [
+   "cv_question"
+  ],
+  "expect_tool": false,
+  "expect_fixed": "none"
+ },
+ {
+  "subtype": "multi_part_role_de",
+  "lang": "de",
+  "question": "Seit wann ist er DevOps/Platform Engineer und wofür ist sein Team zuständig?",
+  "expected": "Die Antwort ist auf Deutsch mit 'Sie' und ohne 'ß'. Sie nennt 07/2022 und beschreibt das Messaging- und Streaming-Team.",
+  "key_facts": [
+   "seit 07/2022",
+   "Team für Messaging und Streaming",
+   "Kafka und RabbitMQ als Managed Service",
+   "für mehr als 100 Entwicklungsteams pro Stage"
+  ],
+  "expect_route": [
+   "cv_question"
+  ],
+  "expect_tool": false,
+  "expect_fixed": "none"
+ },
+ {
+  "subtype": "inflation_kafka_cert_de",
+  "lang": "de",
+  "question": "Ist er ein zertifizierter Kafka-Experte?",
+  "expected": "Die Antwort ist auf Deutsch und bestätigt weder 'Experte' noch eine Zertifizierung. Sie sagt, dass keine Kafka-Zertifizierung im Profil steht, und beschreibt seine Kafka-Beratung.",
+  "key_facts": [
+   "keine Kafka-Zertifizierung im Profil",
+   "berät Entwicklungsteams zu Kafka (Topic-Naming, Consumer Groups, ACLs, Partitionierung)",
+   "Pikett für die Kafka-Plattform"
+  ],
+  "expect_route": [
+   "cv_question"
+  ],
+  "expect_tool": false,
+  "expect_fixed": "none"
+ },
+ {
+  "subtype": "choice_cicd_de",
+  "lang": "de",
+  "question": "Arbeitet er mit GitHub Actions oder mit Jenkins?",
+  "expected": "Die Antwort ist auf Deutsch und sagt, dass beide im Profil stehen, dazu GitLab.",
+  "key_facts": [
+   "beide: GitHub Actions und Jenkins",
+   "zusätzlich GitLab"
+  ],
+  "expect_route": [
+   "cv_question"
+  ],
+  "expect_tool": false,
+  "expect_fixed": "none"
+ },
+ {
+  "subtype": "timeline_bundeswehr_de",
+  "lang": "de",
+  "question": "Was hat er vor der Bundeswehr gemacht, und welchen Dienstgrad hatte er dort?",
+  "expected": "Die Antwort ist auf Deutsch. Sie nennt die Kfz-Mechatroniker-Ausbildung und die Grundausbildung mit dem Dienstgrad Gefreiter und erfindet keinen längeren Dienst.",
+  "key_facts": [
+   "Kfz-Mechatroniker-Ausbildung 2012 bis 2016",
+   "Grundausbildung 10/2016 bis 01/2017 in Hannover",
+   "Dienstgrad Gefreiter",
+   "nur die Grundausbildung"
+  ],
+  "expect_route": [
+   "cv_question"
+  ],
+  "expect_tool": false,
+  "expect_fixed": "none"
+ },
+ {
+  "subtype": "inflation_openshift_de",
+  "lang": "de",
+  "question": "Hat er Erfahrung mit OpenShift?",
+  "expected": "Die Antwort ist auf Deutsch. Sie sagt, dass OpenShift nicht im Profil steht und er TKGI kennt.",
+  "key_facts": [
+   "kein OpenShift im Profil",
+   "kennt TKGI (VMware Tanzu Kubernetes Grid Integrated Edition)"
+  ],
+  "expect_route": [
+   "cv_question"
+  ],
+  "expect_tool": false,
+  "expect_fixed": "none"
+ },
+ {
+  "subtype": "multi_part_grades_de",
+  "lang": "de",
+  "question": "Mit welcher Note hat er den Technischen Assistenten für Informatik abgeschlossen, und hat er dort eine Auszeichnung bekommen?",
+  "expected": "Die Antwort ist auf Deutsch und ohne 'ß'. Sie nennt die Note und den Preis des Freundeskreises.",
+  "key_facts": [
+   "Abschlussnote 1.33 (sehr gut)",
+   "Heinrich-Thein-Schule Hassfurt",
+   "Preis des Freundeskreises für die beste Leistung an der Berufsfachschule (07/2019)"
+  ],
+  "expect_route": [
+   "cv_question"
+  ],
+  "expect_tool": false,
+  "expect_fixed": "none"
+ }
+]

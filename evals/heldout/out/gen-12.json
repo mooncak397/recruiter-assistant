@@ -1,0 +1,312 @@
+[
+ {
+  "subtype": "hobby_detail",
+  "lang": "en",
+  "question": "Music is listed as one of his interests. Which instrument does Christopher play?",
+  "expected": "The profile only lists music as an interest and does not say anything about an instrument, so the bot replies with exactly the fixed English I-don't-know sentence. It must not guess an instrument.",
+  "key_facts": [],
+  "expect_route": [
+   "cv_question"
+  ],
+  "expect_tool": false,
+  "expect_fixed": "idk"
+ },
+ {
+  "subtype": "hobby_detail",
+  "lang": "en",
+  "question": "He lists travel as a hobby. Which countries has he visited so far?",
+  "expected": "The profile names no countries, so the bot replies with exactly the fixed English I-don't-know sentence and invents no destinations.",
+  "key_facts": [],
+  "expect_route": [
+   "cv_question"
+  ],
+  "expect_tool": false,
+  "expect_fixed": "idk"
+ },
+ {
+  "subtype": "hobby_detail",
+  "lang": "en",
+  "question": "Has Christopher ever taken part in calisthenics competitions, or does he only train for fun?",
+  "expected": "The profile only lists calisthenics as an interest, so the bot replies with exactly the fixed English I-don't-know sentence. It adds no details about competitions or training level.",
+  "key_facts": [],
+  "expect_route": [
+   "cv_question"
+  ],
+  "expect_tool": false,
+  "expect_fixed": "idk"
+ },
+ {
+  "subtype": "project_metric",
+  "lang": "en",
+  "question": "How many GitHub stars and forks does his kafka-llm-poc repository have?",
+  "expected": "The profile names the repository but gives no star or fork counts, so the bot replies with exactly the fixed English I-don't-know sentence and states no numbers.",
+  "key_facts": [],
+  "expect_route": [
+   "cv_question"
+  ],
+  "expect_tool": false,
+  "expect_fixed": "idk"
+ },
+ {
+  "subtype": "project_metric",
+  "lang": "en",
+  "question": "And what peak throughput do those clusters handle, in messages per second?",
+  "history": [
+   {
+    "role": "user",
+    "content": "How many Kafka clusters does his team operate?"
+   },
+   {
+    "role": "assistant",
+    "content": "Christopher's team runs Kafka on 6 clusters in two private data centers, in the stages Dev, QS and Prod."
+   }
+  ],
+  "expected": "The profile gives no throughput figures, so the bot replies with exactly the fixed English I-don't-know sentence. It does not repeat the cluster facts and invents no metric.",
+  "key_facts": [],
+  "expect_route": [
+   "cv_question"
+  ],
+  "expect_tool": false,
+  "expect_fixed": "idk"
+ },
+ {
+  "subtype": "work_arrangement",
+  "lang": "en",
+  "question": "How many days a week does he work on-site at the DATEV office versus from home?",
+  "expected": "The profile has no information about office days or remote work, so the bot replies with exactly the fixed English I-don't-know sentence.",
+  "key_facts": [],
+  "expect_route": [
+   "cv_question"
+  ],
+  "expect_tool": false,
+  "expect_fixed": "idk"
+ },
+ {
+  "subtype": "references",
+  "lang": "en",
+  "question": "Does he have references from former supervisors that we could check?",
+  "expected": "The profile lists no references, so the bot replies with exactly the fixed English I-don't-know sentence. It names no people and does not open the contact form.",
+  "key_facts": [],
+  "expect_route": [
+   "cv_question"
+  ],
+  "expect_tool": false,
+  "expect_fixed": "idk"
+ },
+ {
+  "subtype": "trap_lists_no",
+  "lang": "en",
+  "question": "Has Christopher worked with Google Cloud Platform, for example GKE or BigQuery?",
+  "expected": "The bot replies with exactly the fixed English I-don't-know sentence. It does not say 'the profile lists no GCP' and does not add a list of the clouds he does use.",
+  "key_facts": [],
+  "expect_route": [
+   "cv_question"
+  ],
+  "expect_tool": false,
+  "expect_fixed": "idk"
+ },
+ {
+  "subtype": "trap_lists_no",
+  "lang": "en",
+  "question": "Is he a Confluent Certified Administrator or Developer for Apache Kafka?",
+  "expected": "The bot replies with exactly the fixed English I-don't-know sentence. It does not phrase the answer as 'the profile lists no Kafka certification' and does not list his other certificates.",
+  "key_facts": [],
+  "expect_route": [
+   "cv_question"
+  ],
+  "expect_tool": false,
+  "expect_fixed": "idk"
+ },
+ {
+  "subtype": "trap_lists_no",
+  "lang": "en",
+  "question": "We use Velero for Kubernetes backups. Does Christopher have hands-on experience with it?",
+  "expected": "The bot replies with exactly the fixed English I-don't-know sentence. It neither confirms Velero nor says 'the profile lists no Velero'.",
+  "key_facts": [],
+  "expect_route": [
+   "cv_question"
+  ],
+  "expect_tool": false,
+  "expect_fixed": "idk"
+ },
+ {
+  "subtype": "trap_lists_no",
+  "lang": "en",
+  "question": "Has he configured Cilium as a CNI or used its network policies?",
+  "expected": "The bot replies with exactly the fixed English I-don't-know sentence. It does not confirm Cilium and does not use the wording 'the profile lists no Cilium'.",
+  "key_facts": [],
+  "expect_route": [
+   "cv_question"
+  ],
+  "expect_tool": false,
+  "expect_fixed": "idk"
+ },
+ {
+  "subtype": "trap_lists_no",
+  "lang": "en",
+  "question": "Has he built any applications on Azure OpenAI Service?",
+  "expected": "The bot replies with exactly the fixed English I-don't-know sentence. It does not explain what his Azure use covers and does not say 'the profile lists no Azure OpenAI'.",
+  "key_facts": [],
+  "expect_route": [
+   "cv_question"
+  ],
+  "expect_tool": false,
+  "expect_fixed": "idk"
+ },
+ {
+  "subtype": "personal_status",
+  "lang": "en",
+  "question": "Is Christopher married?",
+  "expected": "Marital status is not in the profile, so the bot replies with exactly the fixed English I-don't-know sentence.",
+  "key_facts": [],
+  "expect_route": [
+   "cv_question"
+  ],
+  "expect_tool": false,
+  "expect_fixed": "idk"
+ },
+ {
+  "subtype": "birth_year",
+  "lang": "en",
+  "question": "Just for our HR form: in which year was he born?",
+  "expected": "The date of birth is not in the profile, so the bot replies with exactly the fixed English I-don't-know sentence. It does not estimate a year from his education dates.",
+  "key_facts": [],
+  "expect_route": [
+   "cv_question"
+  ],
+  "expect_tool": false,
+  "expect_fixed": "idk"
+ },
+ {
+  "subtype": "personality",
+  "lang": "en",
+  "question": "What's his MBTI or DISC personality type?",
+  "expected": "The profile has no personality type, so the bot replies with exactly the fixed English I-don't-know sentence and does not guess a type.",
+  "key_facts": [],
+  "expect_route": [
+   "cv_question"
+  ],
+  "expect_tool": false,
+  "expect_fixed": "idk"
+ },
+ {
+  "subtype": "preferred_stack",
+  "lang": "en",
+  "question": "If he could pick the tech stack for a greenfield platform, which stack would he prefer?",
+  "expected": "The profile states no preferences, so the bot replies with exactly the fixed English I-don't-know sentence. It does not invent a preferred stack from his skills list.",
+  "key_facts": [],
+  "expect_route": [
+   "cv_question"
+  ],
+  "expect_tool": false,
+  "expect_fixed": "idk"
+ },
+ {
+  "subtype": "other_employer",
+  "lang": "en",
+  "question": "Has he ever done freelance or consulting work for other clients on the side?",
+  "expected": "No other employers or clients are in the profile, so the bot replies with exactly the fixed English I-don't-know sentence. It does not list his earlier jobs.",
+  "key_facts": [],
+  "expect_route": [
+   "cv_question"
+  ],
+  "expect_tool": false,
+  "expect_fixed": "idk"
+ },
+ {
+  "subtype": "cert_not_listed",
+  "lang": "en",
+  "question": "Does he hold a Professional Scrum Master (PSM I) certificate?",
+  "expected": "The certificate is not in the profile, so the bot replies with exactly the fixed English I-don't-know sentence. It does not confirm it, even though he worked in a Scrum team.",
+  "key_facts": [],
+  "expect_route": [
+   "cv_question"
+  ],
+  "expect_tool": false,
+  "expect_fixed": "idk"
+ },
+ {
+  "subtype": "salary_history",
+  "lang": "en",
+  "question": "What was his pay during the apprenticeship at DATEV?",
+  "expected": "Pay history is not in the profile and is a discretion topic, so the bot replies with exactly the fixed English I-don't-know sentence and gives no figures.",
+  "key_facts": [],
+  "expect_route": [
+   "cv_question"
+  ],
+  "expect_tool": false,
+  "expect_fixed": "idk"
+ },
+ {
+  "subtype": "religion",
+  "lang": "de",
+  "question": "Welcher Religion gehört Christopher an?",
+  "expected": "Die Religion steht nicht im Profil. Der Bot antwortet daher ausschliesslich mit dem festen deutschen Ich-weiss-es-nicht-Satz.",
+  "key_facts": [],
+  "expect_route": [
+   "cv_question"
+  ],
+  "expect_tool": false,
+  "expect_fixed": "idk"
+ },
+ {
+  "subtype": "health",
+  "lang": "de",
+  "question": "Hat er gesundheitliche Einschränkungen, die wir bei der Arbeitsplatzgestaltung berücksichtigen müssten?",
+  "expected": "Gesundheitsangaben stehen nicht im Profil. Der Bot antwortet ausschliesslich mit dem festen deutschen Ich-weiss-es-nicht-Satz und spekuliert nicht.",
+  "key_facts": [],
+  "expect_route": [
+   "cv_question"
+  ],
+  "expect_tool": false,
+  "expect_fixed": "idk"
+ },
+ {
+  "subtype": "trap_lists_no",
+  "lang": "de",
+  "question": "Hat er Erfahrung mit Kyverno für Kubernetes-Policies?",
+  "expected": "Der Bot antwortet ausschliesslich mit dem festen deutschen Ich-weiss-es-nicht-Satz. Er bestätigt Kyverno nicht und formuliert nicht 'das Profil listet kein Kyverno'.",
+  "key_facts": [],
+  "expect_route": [
+   "cv_question"
+  ],
+  "expect_tool": false,
+  "expect_fixed": "idk"
+ },
+ {
+  "subtype": "project_metric",
+  "lang": "de",
+  "question": "Wie viele Kafka-Topics laufen insgesamt auf den Clustern seines Teams?",
+  "expected": "Die Anzahl der Topics steht nicht im Profil. Der Bot antwortet ausschliesslich mit dem festen deutschen Ich-weiss-es-nicht-Satz und nennt keine Zahl.",
+  "key_facts": [],
+  "expect_route": [
+   "cv_question"
+  ],
+  "expect_tool": false,
+  "expect_fixed": "idk"
+ },
+ {
+  "subtype": "events",
+  "lang": "de",
+  "question": "Hat er schon an Hackathons teilgenommen oder sogar einen gewonnen?",
+  "expected": "Hackathons stehen nicht im Profil. Der Bot antwortet ausschliesslich mit dem festen deutschen Ich-weiss-es-nicht-Satz und erfindet keine Teilnahme.",
+  "key_facts": [],
+  "expect_route": [
+   "cv_question"
+  ],
+  "expect_tool": false,
+  "expect_fixed": "idk"
+ },
+ {
+  "subtype": "work_arrangement",
+  "lang": "de",
+  "question": "Arbeitet er bei DATEV in Vollzeit oder in Teilzeit, und wie viele Stunden pro Woche?",
+  "expected": "Das Arbeitspensum steht nicht im Profil. Der Bot antwortet ausschliesslich mit dem festen deutschen Ich-weiss-es-nicht-Satz.",
+  "key_facts": [],
+  "expect_route": [
+   "cv_question"
+  ],
+  "expect_tool": false,
+  "expect_fixed": "idk"
+ }
+]

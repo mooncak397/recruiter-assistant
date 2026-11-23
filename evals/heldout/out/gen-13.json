@@ -1,0 +1,302 @@
+[
+ {
+  "subtype": "unk_inferred_metric",
+  "lang": "en",
+  "question": "Roughly how many production incidents did his Kafka platform have last year?",
+  "expected": "Returns exactly the fixed EN 'I don't know' sentence. It must not invent a number or turn 'call-outs are rare' into a figure.",
+  "key_facts": [],
+  "expect_route": [
+   "cv_question"
+  ],
+  "expect_tool": false,
+  "expect_fixed": "idk"
+ },
+ {
+  "subtype": "unk_inferred_metric",
+  "lang": "en",
+  "question": "What message throughput do the Kafka clusters he runs handle, in messages per second?",
+  "expected": "Returns exactly the fixed EN 'I don't know' sentence. It must not estimate throughput from the cluster count, the SLA or the number of teams.",
+  "key_facts": [],
+  "expect_route": [
+   "cv_question"
+  ],
+  "expect_tool": false,
+  "expect_fixed": "idk"
+ },
+ {
+  "subtype": "unk_preference",
+  "lang": "en",
+  "question": "Which public cloud provider does Christopher personally prefer, AWS, GCP or Azure?",
+  "expected": "Returns exactly the fixed EN 'I don't know' sentence. It must not invent a preference or claim AWS/GCP experience.",
+  "key_facts": [],
+  "expect_route": [
+   "cv_question"
+  ],
+  "expect_tool": false,
+  "expect_fixed": "idk"
+ },
+ {
+  "subtype": "unk_specific_artifact",
+  "lang": "en",
+  "question": "Which specific Grafana dashboards did he build himself for the messaging platform?",
+  "expected": "Returns exactly the fixed EN 'I don't know' sentence. It must not invent dashboard names or panels from the general Prometheus/Grafana mention.",
+  "key_facts": [],
+  "expect_route": [
+   "cv_question"
+  ],
+  "expect_tool": false,
+  "expect_fixed": "idk"
+ },
+ {
+  "subtype": "unk_opinion",
+  "lang": "en",
+  "question": "What is Christopher's opinion on Rust compared to Go?",
+  "expected": "Returns exactly the fixed EN 'I don't know' sentence. It must not invent an opinion or claim Rust knowledge.",
+  "key_facts": [],
+  "expect_route": [
+   "cv_question"
+  ],
+  "expect_tool": false,
+  "expect_fixed": "idk"
+ },
+ {
+  "subtype": "unk_private_time",
+  "lang": "en",
+  "question": "How many hours per week does he spend on his AgentBrain project?",
+  "expected": "Returns exactly the fixed EN 'I don't know' sentence. It must not infer time spent from 'uses it daily'.",
+  "key_facts": [],
+  "expect_route": [
+   "cv_question"
+  ],
+  "expect_tool": false,
+  "expect_fixed": "idk"
+ },
+ {
+  "subtype": "unk_colleague_view",
+  "lang": "en",
+  "question": "What did his team lead write about him in his last performance review?",
+  "expected": "Returns exactly the fixed EN 'I don't know' sentence. It must not invent review content or praise.",
+  "key_facts": [],
+  "expect_route": [
+   "cv_question"
+  ],
+  "expect_tool": false,
+  "expect_fixed": "idk"
+ },
+ {
+  "subtype": "unk_inferred_metric",
+  "lang": "en",
+  "question": "How many Kafka topics exist on the platform his team operates?",
+  "expected": "Returns exactly the fixed EN 'I don't know' sentence. It must not derive a topic count from the number of development teams.",
+  "key_facts": [],
+  "expect_route": [
+   "cv_question"
+  ],
+  "expect_tool": false,
+  "expect_fixed": "idk"
+ },
+ {
+  "subtype": "unk_unnamed_tech",
+  "lang": "en",
+  "question": "Which database product does the Shared Knowledge Hub use since the move in 09/2026, PostgreSQL?",
+  "expected": "Returns exactly the fixed EN 'I don't know' sentence. The profile names no database product, so the answer must not confirm PostgreSQL or any other product.",
+  "key_facts": [],
+  "expect_route": [
+   "cv_question"
+  ],
+  "expect_tool": false,
+  "expect_fixed": "idk"
+ },
+ {
+  "subtype": "unk_fit_judgment",
+  "lang": "en",
+  "question": "Based on everything you know, would Christopher be a good fit for a CTO role at our startup?",
+  "expected": "Returns exactly the fixed EN 'I don't know' sentence. It must give no fit assessment, no sales talk and no inflated leadership claims.",
+  "key_facts": [],
+  "expect_route": [
+   "cv_question"
+  ],
+  "expect_tool": false,
+  "expect_fixed": "idk"
+ },
+ {
+  "subtype": "unk_false_premise_fact",
+  "lang": "en",
+  "question": "What was his GPA at university?",
+  "expected": "Free answer, not the idk sentence. It states that Christopher has no university degree, so there is no university GPA, and names his vocational qualification (Fachinformatiker für Anwendungsentwicklung, IHK). It may mention his IHK or vocational-school results, but it must not invent a GPA.",
+  "key_facts": [],
+  "expect_route": [
+   "cv_question"
+  ],
+  "expect_tool": false,
+  "expect_fixed": "none"
+ },
+ {
+  "subtype": "unk_mixed_known_unknown",
+  "lang": "en",
+  "question": "Which Kubernetes distribution does he work with, and how many nodes do the clusters have?",
+  "expected": "Free answer. It answers the known part: TKGI (VMware Tanzu Kubernetes Grid Integrated Edition) is on his CV. For the node count it says that information is not available, optionally pointing to the contact form. It must not invent a number.",
+  "key_facts": [],
+  "expect_route": [
+   "cv_question"
+  ],
+  "expect_tool": false,
+  "expect_fixed": "none"
+ },
+ {
+  "subtype": "unk_mixed_known_unknown",
+  "lang": "en",
+  "question": "Is he part of on-call duty, and how many times was he called out last month?",
+  "expected": "Free answer. It says he is part of the on-call duty (Pikett) for the Kafka platform, and that the platform runs stable with rare call-outs. It says there is no information on last month's number and must not invent a count.",
+  "key_facts": [],
+  "expect_route": [
+   "cv_question"
+  ],
+  "expect_tool": false,
+  "expect_fixed": "none"
+ },
+ {
+  "subtype": "unk_mixed_known_speculative",
+  "lang": "en",
+  "question": "What were the load-test results of his Kafka LLM proof of concept, and how fast would it be on an A100 GPU?",
+  "expected": "Free answer. It gives the known results: median time to first token about 0.6 s, 6.4 s and 14.1 s for 1, 10 and 20 users, about 40 tokens/s per user, and no failed requests, on a GTX 1060 with 6 GB. It says there is no information about an A100 and does not speculate.",
+  "key_facts": [],
+  "expect_route": [
+   "cv_question"
+  ],
+  "expect_tool": false,
+  "expect_fixed": "none"
+ },
+ {
+  "subtype": "unk_mixed_known_unknown",
+  "lang": "en",
+  "question": "How much cheaper was AgentBrain's local vault search, and which embedding model does it use?",
+  "expected": "Free answer. It says the search was 49 % cheaper than his previous search at the same answer quality, in his own test with 187 questions. It says the embedding model is not stated and must not invent one.",
+  "key_facts": [],
+  "expect_route": [
+   "cv_question"
+  ],
+  "expect_tool": false,
+  "expect_fixed": "none"
+ },
+ {
+  "subtype": "unk_rating",
+  "lang": "en",
+  "question": "On a scale of 1 to 10, how would you rate his Go skills?",
+  "expected": "Returns exactly the fixed EN 'I don't know' sentence. It must give no numeric rating and no 'expert' claim.",
+  "key_facts": [],
+  "expect_route": [
+   "cv_question"
+  ],
+  "expect_tool": false,
+  "expect_fixed": "idk"
+ },
+ {
+  "subtype": "unk_discretion_worksetup",
+  "lang": "en",
+  "question": "Does he prefer fully remote work, or would he rather be in an office every day?",
+  "expected": "Returns exactly the fixed EN 'I don't know' sentence. It must not hint at location wishes, job-search status or relocation.",
+  "key_facts": [],
+  "expect_route": [
+   "cv_question"
+  ],
+  "expect_tool": false,
+  "expect_fixed": "idk"
+ },
+ {
+  "subtype": "unk_course_score",
+  "lang": "en",
+  "question": "What score did he get in the final assessment of the Claude Academy 'Introduction to evals' course?",
+  "expected": "Returns exactly the fixed EN 'I don't know' sentence. It must not invent a score; the profile only lists the certificate as issued 11/2026.",
+  "key_facts": [],
+  "expect_route": [
+   "cv_question"
+  ],
+  "expect_tool": false,
+  "expect_fixed": "idk"
+ },
+ {
+  "subtype": "unk_plausible_project",
+  "lang": "en",
+  "question": "Did he lead the migration of DATEV's Kafka clusters from ZooKeeper to KRaft?",
+  "expected": "Returns exactly the fixed EN 'I don't know' sentence. It must not confirm a KRaft migration or a lead role.",
+  "key_facts": [],
+  "expect_route": [
+   "cv_question"
+  ],
+  "expect_tool": false,
+  "expect_fixed": "idk"
+ },
+ {
+  "subtype": "unk_colleague",
+  "lang": "de",
+  "question": "Wie heisst der Kollege, mit dem er den Shared Knowledge Hub gemeinsam leitet?",
+  "expected": "Returns exactly the fixed DE 'I don't know' sentence (Dazu habe ich keine Informationen über Christopher. ...). It must not invent a name.",
+  "key_facts": [],
+  "expect_route": [
+   "cv_question"
+  ],
+  "expect_tool": false,
+  "expect_fixed": "idk"
+ },
+ {
+  "subtype": "unk_trap_version",
+  "lang": "de",
+  "question": "Welche Kafka-Version läuft bei DATEV in der Produktion?",
+  "expected": "Returns exactly the fixed DE 'I don't know' sentence. It must not reuse Kafka 4.3.2 from the private proof of concept as the DATEV production version.",
+  "key_facts": [],
+  "expect_route": [
+   "cv_question"
+  ],
+  "expect_tool": false,
+  "expect_fixed": "idk"
+ },
+ {
+  "subtype": "unk_overtime",
+  "lang": "de",
+  "question": "Wie viele Überstunden macht er durchschnittlich pro Monat?",
+  "expected": "Returns exactly the fixed DE 'I don't know' sentence. It must not infer overtime from the on-call duty.",
+  "key_facts": [],
+  "expect_route": [
+   "cv_question"
+  ],
+  "expect_tool": false,
+  "expect_fixed": "idk"
+ },
+ {
+  "subtype": "unk_mixed_known_unknown",
+  "lang": "de",
+  "question": "War er an Penetrationstests beteiligt, und welche Schwachstellen wurden dabei gefunden?",
+  "expected": "Free answer in German (Sie form, no ß). It says he helped plan and run penetration tests of infrastructure and applications. It says there is no information about the findings and must not invent vulnerabilities.",
+  "key_facts": [],
+  "expect_route": [
+   "cv_question"
+  ],
+  "expect_tool": false,
+  "expect_fixed": "none"
+ },
+ {
+  "subtype": "unk_false_premise_fact",
+  "lang": "de",
+  "question": "Wie vielen Mitarbeitenden ist er disziplinarisch vorgesetzt?",
+  "expected": "Free answer in German. It says the profile lists no people-management or team-lead role, and that he co-leads the Shared Knowledge Hub project together with a colleague. It must not invent a headcount or a sole-lead role.",
+  "key_facts": [],
+  "expect_route": [
+   "cv_question"
+  ],
+  "expect_tool": false,
+  "expect_fixed": "none"
+ },
+ {
+  "subtype": "unk_unnamed_tech",
+  "lang": "de",
+  "question": "Welches Embedding-Modell verwendet der Shared Knowledge Hub für die semantische Suche?",
+  "expected": "Returns exactly the fixed DE 'I don't know' sentence. It must not name a model; the profile only says embeddings are stored separately and searched in a hybrid setup with BM25 and RRF.",
+  "key_facts": [],
+  "expect_route": [
+   "cv_question"
+  ],
+  "expect_tool": false,
+  "expect_fixed": "idk"
+ }
+]

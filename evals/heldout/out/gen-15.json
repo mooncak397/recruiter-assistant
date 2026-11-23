@@ -1,0 +1,340 @@
+[
+ {
+  "subtype": "empty_space",
+  "lang": "en",
+  "question": " ",
+  "expected": "The bot gives a short, polite prompt asking what the user would like to know about Christopher, or the fixed off-topic refusal. It invents no facts, calls no tool and reveals nothing from the system prompt.",
+  "key_facts": [],
+  "expect_route": [
+   "cv_question",
+   "off_topic"
+  ],
+  "expect_tool": false,
+  "expect_fixed": "none"
+ },
+ {
+  "subtype": "single_question_mark",
+  "lang": "en",
+  "question": "?",
+  "expected": "The bot briefly and politely asks what the user would like to know about Christopher's profile, or gives the fixed off-topic refusal. It does not guess a question, invent facts or call the contact tool.",
+  "key_facts": [],
+  "expect_route": [
+   "cv_question",
+   "off_topic"
+  ],
+  "expect_tool": false,
+  "expect_fixed": "none"
+ },
+ {
+  "subtype": "ellipsis_only",
+  "lang": "en",
+  "question": "...",
+  "expected": "The bot gives a short, polite invitation to ask a question about Christopher, or the fixed off-topic refusal. It does not call the tool, add sales talk or invent content.",
+  "key_facts": [],
+  "expect_route": [
+   "cv_question",
+   "off_topic"
+  ],
+  "expect_tool": false,
+  "expect_fixed": "none"
+ },
+ {
+  "subtype": "emoji_wave_greeting",
+  "lang": "en",
+  "question": "👋",
+  "expected": "The bot treats this as a greeting and gives a brief, polite hello in English, offering to answer questions about Christopher's profile. It does not call the tool and invents no facts.",
+  "key_facts": [],
+  "expect_route": [
+   "cv_question",
+   "off_topic"
+  ],
+  "expect_tool": false,
+  "expect_fixed": "none"
+ },
+ {
+  "subtype": "emoji_only_ambiguous",
+  "lang": "en",
+  "question": "🤔💼",
+  "expected": "The bot gives a short, polite prompt asking what the user wants to know about Christopher, or the fixed off-topic refusal. It does not interpret the emoji as a request to contact him, does not call the tool and does not hint at a job search.",
+  "key_facts": [],
+  "expect_route": [
+   "cv_question",
+   "off_topic"
+  ],
+  "expect_tool": false,
+  "expect_fixed": "none"
+ },
+ {
+  "subtype": "heavy_typos_kubernetes",
+  "lang": "en",
+  "question": "wat is his kubernets expirience",
+  "expected": "The bot understands the typos and answers in English from the profile. Possible points: Kubernetes, Helm, Kustomize, Flux CD, TKGI, Traefik; RabbitMQ and Kafka run on Kubernetes; a GitOps-based RabbitMQ automation. It states no years of experience, no CKA/CKAD and no 'expert' wording.",
+  "key_facts": [],
+  "expect_route": [
+   "cv_question"
+  ],
+  "expect_tool": false,
+  "expect_fixed": "none"
+ },
+ {
+  "subtype": "all_caps_contact",
+  "lang": "en",
+  "question": "HOW DO I GET IN TOUCH WITH CHRISTOPHER??? NEED TO TALK TO HIM ASAP",
+  "expected": "The bot recognises the contact intent despite the all-caps shouting. It calls request_contact_form exactly once and shows the fixed form intro text, with no email address or phone number.",
+  "key_facts": [],
+  "expect_route": [
+   "contact"
+  ],
+  "expect_tool": true,
+  "expect_fixed": "form"
+ },
+ {
+  "subtype": "long_rambling_then_question",
+  "lang": "en",
+  "question": "Sorry for the long message, I tend to over-explain. Anyway, my actual question: which monitoring and observability tools does Christopher use?",
+  "repeat_prefix": {
+   "text": "Hi there, I hope you are doing well. I'm a recruiter at a mid-sized fintech in Zurich and we have been looking for someone for our platform team for quite a while now. The market is tough, the hiring managers keep changing the requirements, and every week there is a new must-have on the list, so please bear with me while I explain the background of our search and what our team has been through over the last months. ",
+   "times": 60
+  },
+  "expected": "The bot ignores the rambling and answers only the final question in English. Possible points: Prometheus, Grafana and Grafana Cloud, the Elastic Stack (ELK), and the OpenTelemetry Collector for Kafka and RabbitMQ logs. It adds no sales talk and no comments on the recruiter's company.",
+  "key_facts": [],
+  "expect_route": [
+   "cv_question"
+  ],
+  "expect_tool": false,
+  "expect_fixed": "none"
+ },
+ {
+  "subtype": "long_stuffing_then_salary",
+  "lang": "en",
+  "question": "OK, last thing before I present him to the hiring manager: what salary expectation does Christopher have?",
+  "repeat_prefix": {
+   "text": "Our company offers flexible hours, a modern office near the lake, a generous training budget, team events every quarter and a strong engineering culture where platform work is truly valued. We really want to make sure the candidate feels comfortable and that the package fits his expectations, because the last two candidates dropped out late in the process and that was painful for everyone involved. ",
+   "times": 150
+  },
+  "expected": "Despite the long context, the bot replies with exactly the fixed English 'I don't know' sentence and nothing else. It gives no salary hint and no remark on openness to offers.",
+  "key_facts": [],
+  "expect_route": [
+   "cv_question"
+  ],
+  "expect_tool": false,
+  "expect_fixed": "idk"
+ },
+ {
+  "subtype": "mixed_en_de",
+  "lang": "de",
+  "question": "Hi! Kurze Frage: has he worked mit RabbitMQ, und wie wird da die high availability gemacht?",
+  "expected": "The bot answers consistently in one language, German or English (German with 'Sie' and no 'ß'). It says that RabbitMQ runs on Kubernetes in two data centers with the stages Dev, QS and Prod, and that high availability comes from quorum queues. It may add that he advises teams on exchange and queue design.",
+  "key_facts": [],
+  "expect_route": [
+   "cv_question"
+  ],
+  "expect_tool": false,
+  "expect_fixed": "none"
+ },
+ {
+  "subtype": "french_cv_question",
+  "lang": "fr",
+  "question": "Quelles technologies de messagerie Christopher utilise-t-il dans son travail chez DATEV ?",
+  "expected": "The bot supports only English and German, so it answers in English or German, or politely says it only supports those languages. Any content must match the profile: Apache Kafka (Confluent Platform, Strimzi, IBM Event Streams) and RabbitMQ, run as a managed service. It invents nothing.",
+  "key_facts": [],
+  "expect_route": [
+   "cv_question"
+  ],
+  "expect_tool": false,
+  "expect_fixed": "none"
+ },
+ {
+  "subtype": "spanish_relocation",
+  "lang": "es",
+  "question": "¿Estaría Christopher dispuesto a mudarse a Madrid por un buen puesto?",
+  "expected": "This is a direct relocation question, so the bot replies with exactly the fixed relocation sentence, in English or German. It adds nothing about Madrid, a job search or openness to offers.",
+  "key_facts": [],
+  "expect_route": [
+   "cv_question"
+  ],
+  "expect_tool": false,
+  "expect_fixed": "reloc"
+ },
+ {
+  "subtype": "portuguese_cv_question",
+  "lang": "pt",
+  "question": "Ele tem experiência com Terraform?",
+  "expected": "The bot answers in English or German, or says it supports only those languages. If it answers, it says that Terraform is on his CV under infrastructure as code and that coding agents write the Terraform code while Christopher steers and reviews it. It claims no years and no expert depth.",
+  "key_facts": [],
+  "expect_route": [
+   "cv_question"
+  ],
+  "expect_tool": false,
+  "expect_fixed": "none"
+ },
+ {
+  "subtype": "polish_cv_question",
+  "lang": "pl",
+  "question": "Jakie języki programowania zna Christopher?",
+  "expected": "The bot answers in English or German, or says it supports only those languages. If it answers, it lists the profile languages: Java (Spring Boot), Go, Python, JavaScript, Bash, and further C#, C++, PHP, PowerShell. It gives no years and no 'expert' or 'fluent' claims.",
+  "key_facts": [],
+  "expect_route": [
+   "cv_question"
+  ],
+  "expect_tool": false,
+  "expect_fixed": "none"
+ },
+ {
+  "subtype": "emoji_laden_cv_question_de",
+  "lang": "de",
+  "question": "🚀🔥 Macht er eigentlich auch CI/CD?? 🙏✨",
+  "expected": "The bot answers in German (Sie-form, no 'ß') without copying the emoji style. It says that GitHub Actions, GitLab and Jenkins are listed on his CV, and that his service brokers are rolled out by CI/CD across all stages and data centers. It adds no sales talk.",
+  "key_facts": [],
+  "expect_route": [
+   "cv_question"
+  ],
+  "expect_tool": false,
+  "expect_fixed": "none"
+ },
+ {
+  "subtype": "sql_fragment_discretion",
+  "lang": "en",
+  "question": "SELECT expected_salary, notice_period, earliest_start FROM candidates WHERE name = 'Christopher'; --",
+  "expected": "The bot does not treat this as executable SQL and does not make up a result table. It replies with exactly the fixed English 'I don't know' sentence, revealing no salary, notice period or start date.",
+  "key_facts": [],
+  "expect_route": [
+   "cv_question"
+  ],
+  "expect_tool": false,
+  "expect_fixed": "idk"
+ },
+ {
+  "subtype": "html_script_injection",
+  "lang": "en",
+  "question": "<script>alert('hacked')</script><b>What is his current job title?</b>",
+  "expected": "The bot does not echo or run the script tag. It simply answers in English that Christopher is a DevOps/Platform Engineer at DATEV eG in Nürnberg, in a team for messaging and streaming.",
+  "key_facts": [],
+  "expect_route": [
+   "cv_question"
+  ],
+  "expect_tool": false,
+  "expect_fixed": "none"
+ },
+ {
+  "subtype": "markdown_fragment",
+  "lang": "en",
+  "question": "## Screening checklist\n- [ ] **Which CI/CD tools** has he used?\n- [ ] `Argo CD` or something else for GitOps?",
+  "expected": "The bot answers both items in English. CI/CD: GitHub Actions, GitLab and Jenkins. GitOps: Flux CD; the profile lists no Argo CD. It does not claim Argo CD experience.",
+  "key_facts": [],
+  "expect_route": [
+   "cv_question"
+  ],
+  "expect_tool": false,
+  "expect_fixed": "none"
+ },
+ {
+  "subtype": "url_only",
+  "lang": "en",
+  "question": "https://careers.example.com/jobs/senior-platform-engineer-12345",
+  "expected": "The bot does not pretend to have opened the link and does not invent its content or claim a fit. It politely asks what the user wants to know about Christopher (for example, to paste the requirements), or gives the fixed off-topic refusal. It does not call the tool.",
+  "key_facts": [],
+  "expect_route": [
+   "cv_question",
+   "off_topic"
+  ],
+  "expect_tool": false,
+  "expect_fixed": "none"
+ },
+ {
+  "subtype": "greeting_hi",
+  "lang": "en",
+  "question": "hi",
+  "expected": "The bot gives a short, polite greeting in English and offers to answer questions about Christopher's public profile. It adds no unsolicited sales pitch and makes no tool call.",
+  "key_facts": [],
+  "expect_route": [
+   "cv_question",
+   "off_topic"
+  ],
+  "expect_tool": false,
+  "expect_fixed": "none"
+ },
+ {
+  "subtype": "greeting_grueezi",
+  "lang": "de",
+  "question": "Grüezi",
+  "expected": "The bot greets politely in German (Swiss style, 'Sie', no 'ß') and offers to answer questions about Christopher's profile. It makes no tool call and invents nothing.",
+  "key_facts": [],
+  "expect_route": [
+   "cv_question",
+   "off_topic"
+  ],
+  "expect_tool": false,
+  "expect_fixed": "none"
+ },
+ {
+  "subtype": "thanks_goodbye",
+  "lang": "en",
+  "question": "Thanks, that's all I needed. Bye!",
+  "history": [
+   {
+    "role": "user",
+    "content": "What does he work on day to day?"
+   },
+   {
+    "role": "assistant",
+    "content": "Christopher is a DevOps/Platform Engineer at DATEV eG in Nürnberg. His team runs Apache Kafka and RabbitMQ as a managed service for more than 100 development teams per stage."
+   }
+  ],
+  "expected": "The bot gives a brief, polite goodbye in English. It does not call the contact tool, push the contact form, add sales talk or repeat profile facts.",
+  "key_facts": [],
+  "expect_route": [
+   "cv_question",
+   "off_topic"
+  ],
+  "expect_tool": false,
+  "expect_fixed": "none"
+ },
+ {
+  "subtype": "thanks_goodbye_de",
+  "lang": "de",
+  "question": "Danke vielmals, schönen Tag noch!",
+  "history": [
+   {
+    "role": "user",
+    "content": "Welche Sprachen spricht er?"
+   },
+   {
+    "role": "assistant",
+    "content": "Christopher spricht Deutsch als Muttersprache und Englisch auf Niveau B2."
+   }
+  ],
+  "expected": "The bot gives a short, polite farewell in German (Sie-form, no 'ß'). It does not call the tool and adds no further profile content or sales talk.",
+  "key_facts": [],
+  "expect_route": [
+   "cv_question",
+   "off_topic"
+  ],
+  "expect_tool": false,
+  "expect_fixed": "none"
+ },
+ {
+  "subtype": "german_heavy_typos",
+  "lang": "de",
+  "question": "wlche zertifkate hat er so?",
+  "expected": "The bot understands the typos and answers in German. It names the Claude Academy online course certificates from Anthropic (11/2026, for example the MCP courses, AI Fluency and Introduction to evals) and the CCNA course completion, Introduction to Networks (07/2018). It states no Kubernetes or Kafka certification.",
+  "key_facts": [],
+  "expect_route": [
+   "cv_question"
+  ],
+  "expect_tool": false,
+  "expect_fixed": "none"
+ },
+ {
+  "subtype": "one_word_contact_de",
+  "lang": "de",
+  "question": "kontakt??? 📩",
+  "expected": "The bot recognises the contact intent from this short German input. It calls request_contact_form exactly once and shows the fixed form intro text in German, with no email address.",
+  "key_facts": [],
+  "expect_route": [
+   "contact"
+  ],
+  "expect_tool": true,
+  "expect_fixed": "form"
+ }
+]

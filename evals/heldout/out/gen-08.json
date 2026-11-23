@@ -1,0 +1,426 @@
+[
+ {
+  "subtype": "fact_datev_dates",
+  "lang": "en",
+  "question": "Since when has Christopher been at DATEV, and how did he start there?",
+  "expected": "States that he has been with DATEV eG since 09/2019, starting as an apprentice (Fachinformatiker für Anwendungsentwicklung), and that he has worked as a DevOps/Platform Engineer since 07/2022.",
+  "key_facts": [
+   "with DATEV since 09/2019",
+   "started as an apprentice (Fachinformatiker für Anwendungsentwicklung, IHK)",
+   "DevOps/Platform Engineer since 07/2022"
+  ],
+  "expect_route": [
+   "cv_question"
+  ],
+  "expect_tool": false,
+  "expect_fixed": "none"
+ },
+ {
+  "subtype": "fact_kafka_stages_software",
+  "lang": "en",
+  "question": "Which stages does the Kafka platform cover, and which Kafka distributions does his team operate?",
+  "expected": "Names the stages Dev, QS and Prod, and the software Confluent Platform, Strimzi and IBM Event Streams. It does not invent other distributions.",
+  "key_facts": [
+   "stages Dev, QS and Prod",
+   "Confluent Platform",
+   "Strimzi",
+   "IBM Event Streams"
+  ],
+  "expect_route": [
+   "cv_question"
+  ],
+  "expect_tool": false,
+  "expect_fixed": "none"
+ },
+ {
+  "subtype": "fact_rabbitmq_ha",
+  "lang": "en",
+  "question": "How is high availability achieved for the RabbitMQ service his team runs?",
+  "expected": "Explains that RabbitMQ runs on Kubernetes in two data centers with the same stage model, and that high availability comes from quorum queues.",
+  "key_facts": [
+   "RabbitMQ runs on Kubernetes",
+   "two data centers",
+   "high availability through quorum queues"
+  ],
+  "expect_route": [
+   "cv_question"
+  ],
+  "expect_tool": false,
+  "expect_fixed": "none"
+ },
+ {
+  "subtype": "fact_internet_cluster",
+  "lang": "en",
+  "question": "Tell me about the internet-reachable Kafka cluster his team built. Where does it run, and what did it replace?",
+  "expected": "Says that Christopher and his team built an on-premises Kafka cluster reachable from the internet. It runs in all stages, is secured with SASL_SSL and ACLs, and replaced the earlier Confluent test environment. It presents this as a team achievement.",
+  "key_facts": [
+   "on-premises",
+   "reachable from the internet",
+   "runs in all stages",
+   "secured with SASL_SSL and ACLs",
+   "replaced the earlier Confluent test environment"
+  ],
+  "expect_route": [
+   "cv_question"
+  ],
+  "expect_tool": false,
+  "expect_fixed": "none"
+ },
+ {
+  "subtype": "fact_service_brokers",
+  "lang": "en",
+  "question": "What exactly are the service brokers Christopher develops, and what technology are they built with?",
+  "expected": "Describes Cloud Foundry service brokers written in Java (Spring Boot) that let development teams create Kafka resources on their own. It mentions the CI/CD rollout across all stages and data centers and the end-to-end test applications.",
+  "key_facts": [
+   "Cloud Foundry service brokers",
+   "Java (Spring Boot)",
+   "development teams create Kafka resources on their own (self-service)",
+   "rolled out by CI/CD across all stages and data centers",
+   "end-to-end tests check provisioning, deprovisioning and updates"
+  ],
+  "expect_route": [
+   "cv_question"
+  ],
+  "expect_tool": false,
+  "expect_fixed": "none"
+ },
+ {
+  "subtype": "fact_monitoring",
+  "lang": "en",
+  "question": "What does he use for monitoring and observability of the messaging platforms?",
+  "expected": "Lists Prometheus, Grafana and Grafana Cloud, the Elastic Stack (ELK, including for Spring Boot applications) and the OpenTelemetry Collector for Kafka and RabbitMQ logs.",
+  "key_facts": [
+   "Prometheus",
+   "Grafana and Grafana Cloud",
+   "Elastic Stack (ELK)",
+   "OpenTelemetry Collector for Kafka and RabbitMQ logs"
+  ],
+  "expect_route": [
+   "cv_question"
+  ],
+  "expect_tool": false,
+  "expect_fixed": "none"
+ },
+ {
+  "subtype": "fact_security",
+  "lang": "en",
+  "question": "Which security technologies does Christopher work with, and has he been involved in penetration testing?",
+  "expected": "Lists HashiCorp Vault, RBAC, ACLs, policies, SCRAM, TLS and mTLS. It says that he helped plan and run penetration tests of infrastructure and applications, without making him the sole owner.",
+  "key_facts": [
+   "HashiCorp Vault",
+   "RBAC, ACLs, policies",
+   "SCRAM, TLS, mTLS",
+   "helped plan and run penetration tests of infrastructure and applications"
+  ],
+  "expect_route": [
+   "cv_question"
+  ],
+  "expect_tool": false,
+  "expect_fixed": "none"
+ },
+ {
+  "subtype": "fact_advising",
+  "lang": "en",
+  "question": "On which Kafka topics does he advise the development teams?",
+  "expected": "Lists topic naming, consumer groups, roles and ACLs, producer and consumer settings (batch size, acks), schema design for event sourcing, partitioning and performance tuning. It may add RabbitMQ exchange and queue design.",
+  "key_facts": [
+   "topic naming",
+   "consumer groups",
+   "roles and ACLs",
+   "producer and consumer settings (batch size, acks)",
+   "schema design for event sourcing",
+   "partitioning and performance tuning"
+  ],
+  "expect_route": [
+   "cv_question"
+  ],
+  "expect_tool": false,
+  "expect_fixed": "none"
+ },
+ {
+  "subtype": "no_public_cloud",
+  "lang": "en",
+  "question": "Has Christopher worked with Google Cloud or Azure OpenAI?",
+  "expected": "Says that the profile lists no GCP and no Azure OpenAI experience, and that his Azure use is limited to Entra ID for authentication and authorization and Azure DevOps. It does not claim any public cloud depth.",
+  "key_facts": [
+   "no GCP listed",
+   "no Azure OpenAI listed",
+   "Azure only Entra ID and Azure DevOps (boards)"
+  ],
+  "expect_route": [
+   "cv_question"
+  ],
+  "expect_tool": false,
+  "expect_fixed": "none"
+ },
+ {
+  "subtype": "no_openshift",
+  "lang": "en",
+  "question": "Is he experienced with Red Hat OpenShift?",
+  "expected": "Says that the profile lists no OpenShift, and that he knows TKGI (VMware Tanzu Kubernetes Grid Integrated Edition) and Kubernetes instead.",
+  "key_facts": [
+   "no OpenShift listed",
+   "he knows TKGI (VMware Tanzu Kubernetes Grid Integrated Edition)"
+  ],
+  "expect_route": [
+   "cv_question"
+  ],
+  "expect_tool": false,
+  "expect_fixed": "none"
+ },
+ {
+  "subtype": "no_degree",
+  "lang": "en",
+  "question": "Does Christopher hold a bachelor's degree?",
+  "expected": "Says that he has no university degree. His qualification is the vocational training Fachinformatiker für Anwendungsentwicklung (IHK), plus work experience.",
+  "key_facts": [
+   "no university degree",
+   "Fachinformatiker für Anwendungsentwicklung (IHK), a vocational training",
+   "plus work experience"
+  ],
+  "expect_route": [
+   "cv_question"
+  ],
+  "expect_tool": false,
+  "expect_fixed": "none"
+ },
+ {
+  "subtype": "no_open_source",
+  "lang": "en",
+  "question": "Can you point me to his open-source contributions?",
+  "expected": "Says that the profile lists no open-source contributions and that the Crossplane provider is internal. It may mention that the Kafka LLM proof of concept is a public repository, without calling it an open-source contribution.",
+  "key_facts": [
+   "no open-source contributions",
+   "Crossplane provider is internal, not open source"
+  ],
+  "expect_route": [
+   "cv_question"
+  ],
+  "expect_tool": false,
+  "expect_fixed": "none"
+ },
+ {
+  "subtype": "no_kafka_streams",
+  "lang": "en",
+  "question": "Has he built applications with Kafka Streams?",
+  "expected": "Says that he knows Kafka Streams by name only. It does not claim that he has built any Kafka Streams applications.",
+  "key_facts": [
+   "Kafka Streams: knows the name only"
+  ],
+  "expect_route": [
+   "cv_question"
+  ],
+  "expect_tool": false,
+  "expect_fixed": "none"
+ },
+ {
+  "subtype": "no_mlops",
+  "lang": "en",
+  "question": "Does he have MLOps experience, like model training, fine-tuning or a model registry?",
+  "expected": "Says no: the profile shows no MLOps experience. The Kafka LLM proof of concept covers only local serving, monitoring and a load test, with no training, fine-tuning, model registry, ML pipelines or drift monitoring.",
+  "key_facts": [
+   "no MLOps experience",
+   "PoC covers local serving, monitoring and a load test",
+   "no model training, fine-tuning, model registry or ML pipelines"
+  ],
+  "expect_route": [
+   "cv_question"
+  ],
+  "expect_tool": false,
+  "expect_fixed": "none"
+ },
+ {
+  "subtype": "no_people_lead",
+  "lang": "en",
+  "question": "Is Christopher a team lead, and does he manage people?",
+  "expected": "Says that the profile lists no team-lead or people-management role. He co-leads the Shared Knowledge Hub project together with a colleague (not alone).",
+  "key_facts": [
+   "no team-lead or people-management role",
+   "co-leads the Shared Knowledge Hub with a colleague"
+  ],
+  "expect_route": [
+   "cv_question"
+  ],
+  "expect_tool": false,
+  "expect_fixed": "none"
+ },
+ {
+  "subtype": "no_vector_db",
+  "lang": "en",
+  "question": "Which vector database is he an expert in?",
+  "expected": "Says that the profile shows no product expertise in a vector database. The hub's database does no vector search, and the embeddings are stored separately. It does not use the word 'expert' for him.",
+  "key_facts": [
+   "no vector database product expertise",
+   "the hub's database does no vector search",
+   "embeddings are stored separately"
+  ],
+  "expect_route": [
+   "cv_question"
+  ],
+  "expect_tool": false,
+  "expect_fixed": "none"
+ },
+ {
+  "subtype": "fact_rabbitmq_automation",
+  "lang": "en",
+  "question": "How are new RabbitMQ clusters set up in his team?",
+  "expected": "Says that the team built a GitOps-based Kubernetes automation that sets up RabbitMQ clusters, and presents it as a team achievement.",
+  "key_facts": [
+   "GitOps-based Kubernetes automation",
+   "sets up RabbitMQ clusters",
+   "team achievement"
+  ],
+  "expect_route": [
+   "cv_question"
+  ],
+  "expect_tool": false,
+  "expect_fixed": "none"
+ },
+ {
+  "subtype": "fact_poc_readonly",
+  "lang": "en",
+  "question": "In his Kafka LLM proof of concept, how did he make sure the agent could not change the cluster?",
+  "expected": "Explains the three layers of read-only enforcement: a tool allow-list, a Kafka user with only Describe and Read rights, and the authorizer. It mentions the negative test, in which Kafka refused all 5 delete attempts. It calls this a local proof of concept with fake data, not production.",
+  "key_facts": [
+   "read-only enforced in three layers",
+   "tool allow-list",
+   "Kafka user with only Describe and Read rights",
+   "authorizer",
+   "negative test: Kafka refused all 5 delete attempts",
+   "local proof of concept with fake data"
+  ],
+  "expect_route": [
+   "cv_question"
+  ],
+  "expect_tool": false,
+  "expect_fixed": "none"
+ },
+ {
+  "subtype": "fact_ai_training",
+  "lang": "en",
+  "question": "Does Christopher teach colleagues how to use AI tools?",
+  "expected": "Says that, together with a colleague, he trains his own team of 15 people in AI tools. It may mention his membership in the internal AI Accelerator circle.",
+  "key_facts": [
+   "together with a colleague",
+   "trains his own team of 15 people in AI tools"
+  ],
+  "expect_route": [
+   "cv_question"
+  ],
+  "expect_tool": false,
+  "expect_fixed": "none"
+ },
+ {
+  "subtype": "fact_current_team",
+  "lang": "de",
+  "question": "Seit wann ist Christopher als DevOps/Platform Engineer tätig, und in welchem Team arbeitet er?",
+  "expected": "Antwortet auf Deutsch (Sie-Form, kein ß): seit 07/2022 als DevOps/Platform Engineer bei der DATEV eG in Nürnberg, in einem Team für Messaging und Streaming.",
+  "key_facts": [
+   "seit 07/2022",
+   "DATEV eG, Nürnberg",
+   "Team für Messaging und Streaming"
+  ],
+  "expect_route": [
+   "cv_question"
+  ],
+  "expect_tool": false,
+  "expect_fixed": "none"
+ },
+ {
+  "subtype": "fact_pikett",
+  "lang": "de",
+  "question": "Leistet er Pikettdienst, und wenn ja, für welche Plattform?",
+  "expected": "Antwortet auf Deutsch: Ja, Christopher ist Teil des Pikettdiensts für die Kafka-Plattform. Die Plattform läuft stabil, und Einsätze sind selten.",
+  "key_facts": [
+   "Teil des Pikettdiensts",
+   "für die Kafka-Plattform",
+   "Plattform läuft stabil, Einsätze selten"
+  ],
+  "expect_route": [
+   "cv_question"
+  ],
+  "expect_tool": false,
+  "expect_fixed": "none"
+ },
+ {
+  "subtype": "fact_ihk_result",
+  "lang": "de",
+  "question": "Wie viele Punkte hat er in der IHK-Abschlussprüfung zum Fachinformatiker erreicht?",
+  "expected": "Antwortet auf Deutsch: Abschlussergebnis 'gut' mit 85 von 100 Punkten, IHK-Prüfungszeugnis vom 2022-07-04. Erfindet keine weiteren Noten.",
+  "key_facts": [
+   "85 von 100 Punkten",
+   "Ergebnis 'gut'",
+   "Prüfungszeugnis vom 2022-07-04"
+  ],
+  "expect_route": [
+   "cv_question"
+  ],
+  "expect_tool": false,
+  "expect_fixed": "none"
+ },
+ {
+  "subtype": "no_kafka_cert",
+  "lang": "de",
+  "question": "Besitzt Christopher eine Kafka-Zertifizierung, zum Beispiel von Confluent?",
+  "expected": "Antwortet auf Deutsch: Nein, das Profil nennt keine Kafka-Zertifizierung. Die einzigen IT-Zertifikate sind der CCNA-Kursabschluss und die Kurszertifikate der Claude Academy.",
+  "key_facts": [
+   "keine Kafka-Zertifizierung",
+   "einzige IT-Zertifikate: CCNA-Kursabschluss und Claude-Academy-Kurszertifikate"
+  ],
+  "expect_route": [
+   "cv_question"
+  ],
+  "expect_tool": false,
+  "expect_fixed": "none"
+ },
+ {
+  "subtype": "fact_apprenticeship_work",
+  "lang": "de",
+  "question": "Woran hat er während seiner Ausbildung bei der DATEV gearbeitet?",
+  "expected": "Antwortet auf Deutsch: Er entwickelte kundenspezifische Lösungen in C# (Backend-Services, Desktop-Anwendungen) in einem Scrum-Team. Referenzprojekt waren Massenauszahlungen in der Schlecker-Insolvenz, und ab 01/2022 arbeitete er bereits im Plattform-Team.",
+  "key_facts": [
+   "kundenspezifische Lösungen in C#",
+   "Backend-Services und Desktop-Anwendungen",
+   "Scrum-Team",
+   "Referenzprojekt: Massenauszahlungen in der Schlecker-Insolvenz",
+   "ab 01/2022 bereits im Plattform-Team"
+  ],
+  "expect_route": [
+   "cv_question"
+  ],
+  "expect_tool": false,
+  "expect_fixed": "none"
+ },
+ {
+  "subtype": "fact_crossplane_de",
+  "lang": "de",
+  "question": "Wie entsteht der Crossplane-Provider, an dem er arbeitet, und gibt es bereits mehrere davon?",
+  "expected": "Antwortet auf Deutsch: Christopher schreibt den Crossplane-Provider in Go mit GitHub Copilot. Es gibt einen Provider, weitere sind geplant. Er ist intern und nicht Open Source.",
+  "key_facts": [
+   "in Go",
+   "mit GitHub Copilot",
+   "ein Provider existiert, weitere geplant",
+   "intern, nicht Open Source"
+  ],
+  "expect_route": [
+   "cv_question"
+  ],
+  "expect_tool": false,
+  "expect_fixed": "none"
+ },
+ {
+  "subtype": "no_velero_kyverno",
+  "lang": "de",
+  "question": "Hat er Erfahrung mit Velero oder Kyverno?",
+  "expected": "Antwortet auf Deutsch: Das Profil nennt weder Velero noch Kyverno. Es kann stattdessen die gelisteten Kubernetes-Werkzeuge nennen (z. B. Helm, Kustomize, Flux CD), ohne Erfahrung mit Velero oder Kyverno zu erfinden.",
+  "key_facts": [
+   "Velero nicht im Profil",
+   "Kyverno nicht im Profil"
+  ],
+  "expect_route": [
+   "cv_question"
+  ],
+  "expect_tool": false,
+  "expect_fixed": "none"
+ }
+]

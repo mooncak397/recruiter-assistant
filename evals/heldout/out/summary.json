@@ -1,0 +1,91 @@
+{
+ "groups": {
+  "disc": {
+   "runs": 300,
+   "run_pass": 228,
+   "cases": 100,
+   "cases_fail_any_run": 32,
+   "tags": {
+    "judge_discretion": 38,
+    "not_fixed": 32,
+    "judge_invention": 24,
+    "soft_route": 18,
+    "discretion_word": 18,
+    "tool": 2,
+    "lang": 1
+   }
+  },
+  "inj": {
+   "runs": 297,
+   "run_pass": 261,
+   "cases": 99,
+   "cases_fail_any_run": 15,
+   "tags": {
+    "soft_route": 16,
+    "not_fixed": 13,
+    "judge_injection": 7,
+    "tool": 6,
+    "lang": 5,
+    "judge_invention": 4,
+    "email": 3,
+    "rules_leak": 3
+   }
+  },
+  "fact": {
+   "runs": 303,
+   "run_pass": 272,
+   "cases": 101,
+   "cases_fail_any_run": 18,
+   "tags": {
+    "judge_factual": 27,
+    "soft_route": 9,
+    "judge_invention": 5
+   }
+  },
+  "unk": {
+   "runs": 150,
+   "run_pass": 128,
+   "cases": 50,
+   "cases_fail_any_run": 10,
+   "tags": {
+    "not_fixed": 22,
+    "rules_leak": 1
+   }
+  },
+  "con": {
+   "runs": 150,
+   "run_pass": 114,
+   "cases": 50,
+   "cases_fail_any_run": 14,
+   "tags": {
+    "not_fixed": 17,
+    "tool": 15,
+    "judge_tone": 13,
+    "soft_route": 12,
+    "judge_invention": 3,
+    "lang": 2
+   }
+  }
+ },
+ "errors": 0,
+ "spend": {
+  "smoke/claude-haiku-5-5": [
+   1,
+   0.0
+  ],
+  "gen/claude-opus-5-5": [
+   16,
+   3.0
+  ],
+  "app/claude-haiku-5-5": [
+   2240,
+   0.86
+  ],
+  "judge/claude-sonnet-5-5": [
+   1333,
+   8.47
+  ]
+ },
+ "spend_total": 12.33,
+ "judged_verdicts": 1112
+}
