@@ -1,8 +1,8 @@
 # Deploy
 
-The backend runs as a Hugging Face Docker Space, the chat page runs on GitHub Pages. Do the steps in this order: the Space URL goes into the page config, and the page origin goes into the Space settings.
+The backend runs as a Render web service (Docker, free plan), the chat page runs on GitHub Pages. Do the steps in this order: the Render URL goes into the page config, and the page origin goes into the Render settings.
 
-Replace `<hf-user>` with your Hugging Face user name. The Space URL is `https://<hf-user>-recruiter-assistant.hf.space` (lowercase; dots and underscores in the name become dashes). The page URL is `https://mooncak397.github.io/recruiter-assistant/`.
+The backend URL is `https://recruiter-assistant-asig.onrender.com`. The page URL is `https://mooncak397.github.io/recruiter-assistant/`.
 
 ## 1. Resend (contact form email)
 
@@ -17,38 +17,34 @@ Replace `<hf-user>` with your Hugging Face user name. The Space URL is `https://
 3. Copy the **site key** into `web/config.js` as `TURNSTILE_SITE_KEY`. It is public.
 4. Keep the **secret key** for step 3. It is a secret: never put it in the repo.
 
-## 3. Hugging Face Space (backend)
+## 3. Render (backend)
 
-1. Create an account at https://huggingface.co and go to **New Space**.
-2. Name: `recruiter-assistant`. SDK: **Docker**, template **Blank**. Hardware: **CPU basic (free)**. Visibility: public is fine, the code is public on GitHub anyway.
-3. In the Space, open **Settings → Variables and secrets**. Add these as **secrets**:
+A Hugging Face Space was tried first, but its free CPU tier gave a quota of 0, so the backend moved to Render.
+
+1. Create an account at https://render.com. Click **New → Web Service**.
+2. Choose **Public Git Repository** and enter `https://github.com/mooncak397/recruiter-assistant`. Branch: `main`.
+3. Language: **Docker** (Render builds the `Dockerfile`). Instance type: **Free**.
+4. Under **Environment Variables**, add:
    - `ANTHROPIC_API_KEY` (Claude), or `GEMINI_API_KEY` (Gemini free tier). One is enough.
    - `SESSION_HMAC_KEY`: a random value. Make one with `python3 -c "import secrets; print(secrets.token_hex(32))"`.
    - `RESEND_API_KEY`: from step 1.
    - `TURNSTILE_SECRET`: from step 2.
    - `CONTACT_TO`: the email address that gets the contact messages (see step 1.3).
-4. Add these as **variables** (not secret):
-   - Claude: `PROVIDER_APP=anthropic` and `MODEL_APP=claude-haiku-5-5`.
-   - Gemini: `MODEL_APP=gemini-3.5-flash-lite` (the provider default is Gemini, so no `PROVIDER_APP`).
+   - Claude: `PROVIDER_APP=anthropic` and `MODEL_APP=claude-haiku-5-5`. Gemini: `MODEL_APP=gemini-3.5-flash-lite` (the provider default is Gemini, so no `PROVIDER_APP`).
+   - `PORT=7860` (the port the container listens on).
    - `ALLOWED_ORIGIN=https://mooncak397.github.io` (the origin only: no path, no trailing slash).
-5. Create a Hugging Face access token with **write** permission: **Settings → Access Tokens**.
-6. Push the repo to the Space, from the repo folder:
+   The keys and secrets stay in Render only; never put them in the repo.
+5. Click **Deploy Web Service** and wait for the build (a few minutes, **Logs** tab). Render shows the service URL at the top. Then check:
    ```sh
-   git remote add space https://huggingface.co/spaces/<hf-user>/recruiter-assistant
-   git push --force space main
-   ```
-   Git asks for a user name (your HF user name) and a password (the write token from step 5). `--force` is only for this first push: it replaces the starter README that the new Space has. Later pushes are a normal `git push space main`. The front matter at the top of `README.md` tells the Space to build the `Dockerfile` on port 7860.
-7. Wait for the build (Space page, **Logs** tab, a few minutes). Then check:
-   ```sh
-   curl https://<hf-user>-recruiter-assistant.hf.space/health
+   curl https://recruiter-assistant-asig.onrender.com/health
    ```
    The reply is `{"status":"ok","prompt_version":"..."}`.
 
-A free Space sleeps after 48 hours without traffic. The page calls `/health` on load to wake it; the first answer then takes about a minute.
+A free Render service sleeps after 15 minutes without traffic and needs up to a minute to wake up. The page pings `/health` on load, shows a wake-up note when `/session` takes longer than 4 seconds, and offers a retry button after 90 seconds.
 
 ## 4. GitHub Pages (chat page)
 
-1. In `web/config.js`, set `API_BASE` to `https://<hf-user>-recruiter-assistant.hf.space` (no trailing slash). The `TURNSTILE_SITE_KEY` is set from step 2.3.
+1. In `web/config.js`, set `API_BASE` to the Render URL from step 3 (no trailing slash). The `TURNSTILE_SITE_KEY` is set from step 2.3.
 2. On GitHub, open the repo **Settings → Pages**. Under **Build and deployment → Source**, choose **GitHub Actions**.
 3. Commit and push the `web/config.js` change to `main`. A push that changes `web/` starts the **Pages** workflow. You can also start it by hand: **Actions → Pages → Run workflow**.
 4. Open `https://mooncak397.github.io/recruiter-assistant/`. Ask one question and send one test message with the contact form.

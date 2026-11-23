@@ -32,7 +32,7 @@ the turns-left hint shows at once. In the form, a message with `!503` gives the 
 
 Edit `config.js`. Both values are public by design; never put a secret here.
 
-- `API_BASE`: the backend URL without a trailing slash, for example the Hugging Face Space URL.
+- `API_BASE`: the backend URL without a trailing slash, for example the Render URL `https://recruiter-assistant-asig.onrender.com`.
 - `TURNSTILE_SITE_KEY`: the Cloudflare Turnstile site key. With a key, the page shows a security
   check on load and keeps the chat locked until a session exists. Empty means no widget and no lock,
   which only works while the backend has no `TURNSTILE_SECRET` (local dev).
