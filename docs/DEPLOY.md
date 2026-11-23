@@ -30,7 +30,8 @@ A Hugging Face Space was tried first, but its free CPU tier gave a quota of 0, s
    - `RESEND_API_KEY`: from step 1.
    - `TURNSTILE_SECRET`: from step 2.
    - `CONTACT_TO`: the email address that gets the contact messages (see step 1.3).
-   - Claude: `PROVIDER_APP=anthropic` and `MODEL_APP=claude-haiku-5-5`. Gemini: `MODEL_APP=gemini-3.5-flash-lite` (the provider default is Gemini, so no `PROVIDER_APP`).
+   - Claude: `PROVIDER_APP=anthropic`. Gemini needs no `PROVIDER_APP` (it is the default).
+   - `MODEL_APP` is optional. Without it, the backend uses `claude-haiku-5-5` (Claude) or `gemini-3.5-flash-lite` (Gemini).
    - `PORT=7860` (the port the container listens on).
    - `ALLOWED_ORIGIN=https://mooncak397.github.io` (the origin only: no path, no trailing slash).
    The keys and secrets stay in Render only; never put them in the repo.

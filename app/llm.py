@@ -1,14 +1,17 @@
 """The one place that builds the chat models. Provider, model name and key come from the environment.
-PROVIDER_APP / PROVIDER_JUDGE: "google" (default, free tier) or "anthropic"."""
+PROVIDER_APP / PROVIDER_JUDGE: "google" (default, free tier) or "anthropic".
+MODEL_APP is optional (a cheap default per provider); MODEL_JUDGE must be set, so an eval never runs on a guessed judge."""
 import os
+
+APP_DEFAULTS = {"google": "gemini-3.5-flash-lite", "anthropic": "claude-haiku-5-5"}
 
 from dotenv import load_dotenv
 from langchain.chat_models import init_chat_model
 
 
-def _build(provider: str, name_var: str):
+def _build(provider: str, name_var: str, default: str | None = None):
     load_dotenv()  # reads .env if it exists; real env vars win
-    name = os.environ.get(name_var)
+    name = os.environ.get(name_var) or default
     if not name:
         raise SystemExit(f"{name_var} is not set. Copy .env.example to .env.")
     if provider == "anthropic":
@@ -25,7 +28,8 @@ def _build(provider: str, name_var: str):
 
 def get_model():
     load_dotenv()
-    return _build(os.environ.get("PROVIDER_APP", "google"), "MODEL_APP")
+    provider = os.environ.get("PROVIDER_APP", "google")
+    return _build(provider, "MODEL_APP", APP_DEFAULTS.get(provider))
 
 
 def get_judge():

@@ -88,13 +88,30 @@ def test_get_model_fails_clearly_without_settings(monkeypatch):
     from app import llm
 
     monkeypatch.setattr(llm, "load_dotenv", lambda: None)  # ignore a real .env
-    for v in ("MODEL_APP", "GEMINI_API_KEY", "GOOGLE_API_KEY"):
+    for v in ("MODEL_APP", "MODEL_JUDGE", "PROVIDER_APP", "PROVIDER_JUDGE", "GEMINI_API_KEY", "GOOGLE_API_KEY"):
         monkeypatch.delenv(v, raising=False)
-    with pytest.raises(SystemExit, match="MODEL_APP"):
+    with pytest.raises(SystemExit, match="GEMINI_API_KEY"):  # no MODEL_APP is fine, a missing key is not
         llm.get_model()
-    monkeypatch.setenv("MODEL_APP", "x")
-    with pytest.raises(SystemExit, match="GEMINI_API_KEY"):
-        llm.get_model()
+    with pytest.raises(SystemExit, match="MODEL_JUDGE"):  # the judge has no default
+        llm.get_judge()
+
+
+def test_get_model_defaults_per_provider(monkeypatch):
+    from app import llm
+
+    seen = []
+    monkeypatch.setattr(llm, "load_dotenv", lambda: None)
+    monkeypatch.setattr(llm, "init_chat_model", lambda name, **k: seen.append((name, k["model_provider"])))
+    monkeypatch.delenv("MODEL_APP", raising=False)
+    monkeypatch.setenv("GEMINI_API_KEY", "test")
+    monkeypatch.setenv("ANTHROPIC_API_KEY", "test")
+    monkeypatch.delenv("PROVIDER_APP", raising=False)
+    llm.get_model()
+    monkeypatch.setenv("PROVIDER_APP", "anthropic")
+    llm.get_model()
+    monkeypatch.setenv("MODEL_APP", "claude-x")  # an explicit name still wins
+    llm.get_model()
+    assert seen == [("gemini-3.5-flash-lite", "google_genai"), ("claude-haiku-5-5", "anthropic"), ("claude-x", "anthropic")]
 
 
 # --- ADR-010: entry, _call and finalize ---
