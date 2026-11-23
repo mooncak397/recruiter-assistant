@@ -1,0 +1,51 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:  # also runs evals-fast below
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: astral-sh/setup-uv@v10.4.0
+      - run: uv sync
+      # no keys and no network calls: tests use fake models and fake senders
+      - run: uv run pytest -q
+
+  # Code-check evals (ADR-009 fast mode, no judge). Manual only: it calls the app model and costs money.
+  # Needs the repository secret ANTHROPIC_API_KEY (Claude) or GEMINI_API_KEY (Gemini free tier).
+  evals-fast:
+    if: github.event_name == 'workflow_dispatch'
+    needs: test
+    runs-on: ubuntu-latest
+    env:
+      ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+      GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+      # Claude when its key is set, else Gemini. Repository variables MODEL_APP / MODEL_JUDGE override the model names.
+      PROVIDER_APP: ${{ secrets.ANTHROPIC_API_KEY != '' && 'anthropic' || 'google' }}
+      PROVIDER_JUDGE: ${{ secrets.ANTHROPIC_API_KEY != '' && 'anthropic' || 'google' }}
+      MODEL_APP: ${{ vars.MODEL_APP || (secrets.ANTHROPIC_API_KEY != '' && 'claude-haiku-5-5' || 'gemini-3.5-flash-lite') }}
+      MODEL_JUDGE: ${{ vars.MODEL_JUDGE || (secrets.ANTHROPIC_API_KEY != '' && 'claude-sonnet-5-5' || 'gemma-4-31b-it') }}
+    steps:
+      - name: Check for a model key
+        if: env.ANTHROPIC_API_KEY == '' && env.GEMINI_API_KEY == ''
+        run: echo "::error::Set the repository secret ANTHROPIC_API_KEY or GEMINI_API_KEY" && exit 1
+      - uses: actions/checkout@v7
+      - uses: astral-sh/setup-uv@v10.4.0
+      - uses: actions/setup-node@v7
+        with:
+          node-version: '22'
+      - run: uv sync
+      - run: uv run python evals/run.py fast
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: evals-fast
+          path: evals/results/fast-latest.json
+          if-no-files-found: ignore
