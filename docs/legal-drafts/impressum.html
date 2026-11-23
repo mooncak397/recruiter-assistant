@@ -1,0 +1,56 @@
+<!doctype html>
+<!-- DRAFT. Copy to web/impressum.html only after every [[...]] placeholder is filled (see README.md). -->
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  <title>Legal notice</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="page">
+    <header class="top">
+      <p><a href="./">&larr; <span data-l="en">Back to the chat</span><span data-l="de" lang="de">Zurück zum Chat</span></a></p>
+      <div class="lang" role="group" aria-label="Language / Sprache">
+        <button type="button" data-lang="en" lang="en">EN</button>
+        <button type="button" data-lang="de" lang="de">DE</button>
+      </div>
+    </header>
+
+    <article data-l="de" lang="de">
+      <h1>Impressum</h1>
+      <p>Angaben gemäß § 5 DDG</p>
+      <p>[[NAME]]<br>[[STREET]]<br>[[ZIP CITY]]</p>
+      <h2>Kontakt</h2>
+      <p>E-Mail: [[EMAIL]]</p>
+      <p>Diese Seite ist ein privates Bewerbungsprojekt. Der KI-Assistent beantwortet Fragen nur auf Grundlage von Christophers öffentlichem Lebenslauf. Seine Antworten können Fehler enthalten und sind keine verbindlichen Aussagen.</p>
+      <p><a href="privacy.html#de">Datenschutzerklärung</a></p>
+    </article>
+
+    <article data-l="en" lang="en">
+      <h1>Legal notice</h1>
+      <p>Information under Section 5 DDG (German Digital Services Act)</p>
+      <p>[[NAME]]<br>[[STREET]]<br>[[ZIP CITY]]</p>
+      <h2>Contact</h2>
+      <p>Email: [[EMAIL]]</p>
+      <p>This site is a private job-application project. The AI assistant answers questions only from Christopher's public CV. Its answers can contain mistakes and are not binding statements.</p>
+      <p><a href="privacy.html#en">Privacy notice</a></p>
+    </article>
+  </main>
+  <script>
+    // Same rule as app.js: browser language first, the EN/DE buttons switch. A "#de" or "#en" link wins.
+    (() => {
+      const pick = (l) => {
+        document.documentElement.lang = l;
+        document.title = l === "de" ? "Impressum" : "Legal notice";
+        document.querySelectorAll("[data-l]").forEach((el) => { el.hidden = el.dataset.l !== l; });
+        document.querySelectorAll("[data-lang]").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.lang === l)));
+      };
+      const h = location.hash.slice(1);
+      pick(h === "de" || h === "en" ? h : (navigator.language || "en").toLowerCase().startsWith("de") ? "de" : "en");
+      document.querySelectorAll("[data-lang]").forEach((b) => b.addEventListener("click", () => pick(b.dataset.lang)));
+    })();
+  </script>
+</body>
+</html>
