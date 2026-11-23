@@ -69,10 +69,13 @@ class Limiter:
 
 
 def client_ip(headers, peer: str | None) -> str:
-    # Behind the HF proxy the LAST X-Forwarded-For entry is the one the proxy added;
-    # earlier entries come from the client and can be forged.
+    # TRUST_PROXY (default true: the Space is behind the HF proxy): the LAST X-Forwarded-For entry
+    # is the one the proxy added; earlier entries come from the client and can be forged.
+    # Without a proxy any client can set the header, so TRUST_PROXY=false uses the socket address only.
     xff = headers.get("x-forwarded-for")
-    return xff.split(",")[-1].strip() if xff else (peer or "unknown")
+    if xff and os.environ.get("TRUST_PROXY", "true").lower() not in ("0", "false", "no"):
+        return xff.split(",")[-1].strip()
+    return peer or "unknown"
 
 
 def turnstile_ok(token: str | None, ip: str) -> bool:

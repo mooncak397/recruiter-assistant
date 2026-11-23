@@ -189,7 +189,7 @@ def test_contact_sends_once(env):
     assert len(sent) == 1 and sent[0].email == FORM["email"] and g.inputs == []  # no graph call
 
 
-@pytest.mark.parametrize("bad", [{"email": "nope"}, {"email": "a@b.c\r\nBcc: x@y.z"}, {"email": "a" * 250 + "@b.cc"},
+@pytest.mark.parametrize("bad", [{"email": "nope"}, {"email": "a@b.c\r\nBcc: x@y.z"}, {"email": "a@b.co\x00"}, {"email": "a\tb@c.de"}, {"email": "a" * 250 + "@b.cc"},
                                  {"message": "x" * 2001}, {"message": "  "}, {"to": "x@y.z"}, {"cc": "x@y.z"}])
 def test_contact_validation_422(env, bad):
     c, _, _, sent = make(env)
@@ -262,3 +262,19 @@ def test_contact_module_never_imports_the_graph():
     names = {a.name for n in ast.walk(ast.parse(src)) if isinstance(n, (ast.Import, ast.ImportFrom))
              for a in n.names} | {n.module for n in ast.walk(ast.parse(src)) if isinstance(n, ast.ImportFrom)}
     assert not any(x and ("graph" in x or "llm" in x) for x in names)
+
+
+def test_trust_proxy_false_uses_socket_address(env):
+    c, *_ = make(env, CHAT_PER_IP_HOUR="1", TRUST_PROXY="false")
+    h = token(c)
+    assert c.post("/chat", json={"message": "q"}, headers=h).status_code == 200
+    assert c.post("/chat", json={"message": "q"}, headers={**h, "X-Forwarded-For": "9.9.9.9"}).status_code == 429
+
+
+def test_missing_model_config_gives_503(env, monkeypatch):
+    def boom():
+        raise SystemExit("ANTHROPIC_API_KEY is not set.")
+    monkeypatch.setattr("app.llm.get_model", boom)
+    c = TestClient(create_app(clock=Clock()))  # no fake graph: the real lazy build path
+    r = c.post("/chat", json={"message": "q"}, headers=token(c))
+    assert r.status_code == 503 and r.json()["detail"] == "model_unavailable" and "API_KEY" not in r.text

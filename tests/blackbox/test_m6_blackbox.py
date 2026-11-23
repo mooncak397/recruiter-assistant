@@ -39,7 +39,8 @@ class Server:
         e.pop("CONTACT_TO", None)
         e.update(env)
         self.log = open(f"/tmp/bb-{self.port}.log", "w")
-        self.p = subprocess.Popen([sys.executable, "-m", "uvicorn", "app.main:app", "--port", str(self.port), "--workers", "1"],
+        self.p = subprocess.Popen([sys.executable, "-m", "uvicorn", "app.main:app", "--port", str(self.port), "--workers", "1",
+                                   "--no-proxy-headers"],  # the documented run command (README, Dockerfile)
                                   cwd=ROOT, env=e, stdout=self.log, stderr=subprocess.STDOUT)
         self.url = f"http://127.0.0.1:{self.port}"
         for _ in range(100):
@@ -267,9 +268,8 @@ def test_concurrent_same_session_409():
 
 
 # ---- rate limits (no model call: use /session and failing chats) ----
-@pytest.mark.xfail(strict=True, reason='F2: client_ip trusts last XFF entry; a direct (non-proxy) client rotates it')
 def test_session_rate_limit_and_xff():
-    s = Server(SESSIONS_PER_IP_HOUR="3")
+    s = Server(SESSIONS_PER_IP_HOUR="3", TRUST_PROXY="false")  # direct clients: no proxy in front
     try:
         codes = [httpx.post(s.url + "/session", json={}).status_code for _ in range(5)]
         assert codes == [200, 200, 200, 429, 429], codes
@@ -413,7 +413,6 @@ def test_error_bodies(srv):
     assert not srv.logtext().count("Traceback") or print("TRACEBACK IN LOG")
 
 
-@pytest.mark.xfail(strict=True, reason='F1: missing model key -> SystemExit in the request -> 500 (expected 503)')
 def test_missing_model_key_no_500_no_leak():
     if not REAL:
         pytest.skip("real model")
@@ -421,8 +420,9 @@ def test_missing_model_key_no_500_no_leak():
     try:
         t = s.session()
         r = s.chat(t, {"message": "Which languages does Christopher use?"})
-        assert r.status_code < 500, f"BUG {r.status_code} {r.text[:200]}"
-        clean(r)
+        assert r.status_code == 503 and r.json()["detail"] == "model_unavailable", f"BUG {r.status_code} {r.text[:200]}"
+        for m in SECRET_MARKERS:
+            assert m not in r.text
         assert httpx.get(s.url + "/health").status_code == 200, "server dead after missing key"
     finally:
         s.stop()
@@ -441,7 +441,6 @@ def test_wrong_model_key_no_leak():
         s.stop()
 
 
-@pytest.mark.xfail(strict=True, reason="F3: NUL byte accepted in email (EMAIL regex allows control chars other than CR/LF)")
 def test_contact_email_nul_byte(srv):
     r = contact(srv, srv.session(), {**GOOD, "email": "a@b.co\x00"})
     assert r.status_code == 422

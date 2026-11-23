@@ -1,5 +1,5 @@
 """FastAPI app (plan section 3, ADR-010 decision 1). Run with exactly 1 worker: sessions live in process memory.
-  uv run uvicorn app.main:app --port 7860 --workers 1"""
+  uv run uvicorn app.main:app --port 7860 --workers 1 --no-proxy-headers"""
 import logging
 import os
 import threading
@@ -14,7 +14,7 @@ from app import contact as contact_mod
 from app.guards import Limiter, Tokens, client_ip, turnstile_ok
 from app.prompts import rules_version
 from app.sessions import MAX_TURNS, TTL, SessionStore
-from app.texts import EMPTY, SESSION_LIMIT
+from app.texts import BUSY, EMPTY, SESSION_LIMIT
 
 logging.basicConfig(level=logging.INFO, format="%(levelname)s %(name)s %(message)s")  # Space logs: no message text
 log = logging.getLogger("app.main")
@@ -113,7 +113,12 @@ def create_app(graph=None, clock=time.time, sender=None) -> FastAPI:
             if not lim["chat_day"].hit("global"):
                 raise HTTPException(429, "daily_limit")
             t0 = time.time()
-            out = get_graph().invoke({"messages": [*store.context(s), ("user", text)], "lang": s.lang})
+            try:
+                graph = get_graph()
+            except SystemExit as e:  # app/llm.py: model name or key missing; a config error, not a crash
+                log.error("model_config_missing %s", type(e).__name__)
+                return JSONResponse({"detail": "model_unavailable", "reply": BUSY[s.lang]}, 503)
+            out = graph.invoke({"messages": [*store.context(s), ("user", text)], "lang": s.lang})
             reply, lang = out["reply"], out["lang"]
             log.info("chat route=%s lang=%s form=%s ms=%d", out["route"], lang, out["show_form"],
                      (time.time() - t0) * 1000)

@@ -11,6 +11,7 @@ log = logging.getLogger(__name__)
 RESEND_URL = "https://api.resend.com/emails"
 SUBJECT = "Recruiter assistant: new contact request"  # fixed, so no header injection
 EMAIL = re.compile(r"[^@\s]+@[^@\s]+\.[^@\s]+")
+CONTROL = re.compile(r"[\x00-\x1f\x7f]")  # NUL, CR, LF and every other control character
 
 
 class ContactForm(BaseModel):
@@ -23,7 +24,7 @@ class ContactForm(BaseModel):
     @classmethod
     def _email(cls, v: str) -> str:
         v = v.strip()
-        if "\r" in v or "\n" in v or not EMAIL.fullmatch(v):
+        if CONTROL.search(v) or not EMAIL.fullmatch(v):
             raise ValueError("invalid email")
         return v
 

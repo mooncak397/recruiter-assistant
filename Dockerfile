@@ -11,5 +11,7 @@ COPY --chown=user app ./app
 COPY --chown=user profile ./profile
 COPY --chown=user prompts ./prompts
 EXPOSE 7860
+# TRUST_PROXY defaults to true (HF proxy sets X-Forwarded-For); set TRUST_PROXY=false when no proxy is in front.
+# --no-proxy-headers: app/guards.py reads X-Forwarded-For itself; uvicorn must not rewrite the client address.
 # exactly 1 worker: chat sessions live in process memory (ADR-010)
-CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "7860", "--workers", "1"]
+CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "7860", "--workers", "1", "--no-proxy-headers"]

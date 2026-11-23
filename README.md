@@ -12,7 +12,7 @@ Every prompt version will be scored against a fixed golden set, and the score hi
 
 ## Server (M6)
 
-`uv run uvicorn app.main:app --port 7860 --workers 1` (exactly 1 worker: chat history lives in process memory, ADR-010).
+`uv run uvicorn app.main:app --port 7860 --workers 1 --no-proxy-headers` (exactly 1 worker: chat history lives in process memory, ADR-010).
 
 - `POST /session` with `{}` (or `{"turnstile_token": "..."}` when `TURNSTILE_SECRET` is set) returns `{"token", "expires_in", "turns_left"}`.
 - `POST /chat` with `Authorization: Bearer <token>` and exactly `{"message": "..."}` returns `{"reply", "show_form", "lang", "turns_left"}`. Any other field gives 422, a missing or forged token 401 `invalid_session`, an expired or lost session 401 `session_expired`, more than 1,000 characters 413, a running request for the same session 409.
