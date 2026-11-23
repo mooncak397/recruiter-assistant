@@ -15,6 +15,7 @@
       chatTitle: "Conversation",
       chipsLabel: "Try a question",
       chips: ["What is his current role?", "Which programming languages does he use?", "What projects has he built?", "How can I reach him?"],
+      gateHint: "Please complete the short security check to start the chat.",
       inputLabel: "Your question",
       placeholder: "Type your question",
       send: "Send",
@@ -24,6 +25,7 @@
       turns: (n) => n === 0 ? "No questions left. Reload the page to start a new chat."
         : n === 1 ? "1 question left in this chat." : `${n} questions left in this chat.`,
       newSession: "Your chat session expired, so a new session has started. Earlier messages are no longer known to the assistant.",
+      err403: "The security check failed. Please reload the page and try again.",
       err409: "The assistant is still answering your last message. Please wait a moment.",
       err413: "Your message is too long. Please keep it under 1,000 characters.",
       err429: "Too many messages right now. Please wait a minute and try again.",
@@ -53,6 +55,7 @@
       chatTitle: "Unterhaltung",
       chipsLabel: "Beispielfragen",
       chips: ["Was ist seine aktuelle Rolle?", "Welche Programmiersprachen nutzt er?", "Welche Projekte hat er gebaut?", "Wie kann ich ihn erreichen?"],
+      gateHint: "Bitte schliessen Sie die kurze Sicherheitsprüfung ab, um den Chat zu starten.",
       inputLabel: "Ihre Frage",
       placeholder: "Ihre Frage eingeben",
       send: "Senden",
@@ -62,6 +65,7 @@
       turns: (n) => n === 0 ? "Keine Fragen mehr. Laden Sie die Seite neu, um einen neuen Chat zu starten."
         : n === 1 ? "Noch 1 Frage in diesem Chat." : `Noch ${n} Fragen in diesem Chat.`,
       newSession: "Ihre Chat-Sitzung ist abgelaufen. Eine neue Sitzung wurde gestartet; der Assistent kennt frühere Nachrichten nicht mehr.",
+      err403: "Die Sicherheitsprüfung ist fehlgeschlagen. Bitte laden Sie die Seite neu und versuchen Sie es erneut.",
       err409: "Der Assistent beantwortet noch Ihre letzte Nachricht. Bitte warten Sie einen Moment.",
       err413: "Ihre Nachricht ist zu lang. Bitte schreiben Sie weniger als 1000 Zeichen.",
       err429: "Gerade zu viele Nachrichten. Bitte warten Sie eine Minute und versuchen Sie es erneut.",
@@ -85,13 +89,16 @@
   const $ = (id) => document.getElementById(id);
   const log = $("log"), ask = $("ask"), q = $("q"), sendBtn = ask.querySelector("button");
   const chips = $("chips"), notice = $("notice"), typing = $("typing");
-  const form = $("contact"), cStatus = $("c-status"), cBtn = form.querySelector("button");
+  const gate = $("gate"), form = $("contact"), cStatus = $("c-status"), cBtn = form.querySelector("button");
 
   let lang = (navigator.language || "en").toLowerCase().startsWith("de") ? "de" : "en";
   let token = null;        // session token, kept in memory only, gone on reload
   let turnsLeft = null;
   let noticeKey = null;    // so a language switch re-renders the current notice
-  let widgetId = null;
+  let widgetId = null;     // Turnstile widget in the contact form
+  let gateWidget = null;   // Turnstile widget that guards /session
+  let tsReady = null, tsWaiter = null;
+  let locked = !!SITE_KEY; // no chat until the first session exists
 
   const t = (k) => T[lang][k];
 
@@ -112,9 +119,11 @@
       const b = document.createElement("button");
       b.type = "button";
       b.textContent = text;
+      b.disabled = locked;
       b.addEventListener("click", () => send(text));
       chips.append(b);
     });
+    log.querySelectorAll(".who").forEach((el) => { el.textContent = t(el.dataset.who); });
     if (!$("wake").hidden) $("wake").textContent = t("waking");
     setNotice(noticeKey, notice.classList.contains("error"));
   }
@@ -124,6 +133,7 @@
     li.className = `msg ${who}`;
     const label = document.createElement("span");
     label.className = "who";
+    label.dataset.who = who;   // so a language switch can relabel it
     label.textContent = t(who);
     const body = document.createElement("p");
     body.textContent = text;           // plain text only
@@ -139,9 +149,35 @@
     body: JSON.stringify(body),
   });
 
+  const turnstileReady = () => tsReady ??= new Promise((resolve, reject) => {
+    window.onTurnstileLoad = resolve;
+    const s = document.createElement("script");
+    s.src = "https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit&onload=onTurnstileLoad";
+    s.async = true;
+    s.onerror = reject;
+    document.head.append(s);
+  });
+
+  // A fresh Turnstile token from the gate widget (tokens are single use). No site key (dev): null.
+  function freshToken() {
+    if (!SITE_KEY) return Promise.resolve(null);
+    return new Promise((resolve, reject) => {
+      tsWaiter = resolve;
+      gate.hidden = false;
+      turnstileReady().then(() => {
+        if (gateWidget !== null) return window.turnstile.reset(gateWidget);
+        gateWidget = window.turnstile.render("#ts-start", {
+          sitekey: SITE_KEY, language: lang,
+          callback: (tok) => { if (!tsWaiter) return; gate.hidden = true; tsWaiter(tok); tsWaiter = null; },
+        });
+      }).catch(reject);
+    });
+  }
+
   async function newSession() {
     token = null;
-    const res = await post("/session", {});
+    const ts = await freshToken();
+    const res = await post("/session", ts ? { turnstile_token: ts } : {});
     if (!res.ok) throw res;    // the caller maps the status to a text
     token = (await res.json()).token;
   }
@@ -156,7 +192,7 @@
     return [await post(path, body), true];
   }
 
-  const errorKey = (status) => ({ 409: "err409", 413: "err413", 429: "err429" })[status] || "err5xx";
+  const errorKey = (status) => ({ 403: "err403", 409: "err409", 413: "err413", 429: "err429" })[status] || "err5xx";
 
   async function send(text) {
     text = text.trim();
@@ -181,29 +217,24 @@
     }
   }
 
+  function updateControls(busy = false) {
+    const done = turnsLeft === 0;
+    sendBtn.disabled = busy || done || locked;
+    q.disabled = done || locked;
+    chips.querySelectorAll("button").forEach((b) => { b.disabled = locked; });
+  }
+
   function setBusy(busy) {
     typing.hidden = !busy;
-    const done = turnsLeft === 0;
-    sendBtn.disabled = busy || done;
-    q.disabled = done;
-    if (!busy && !done && !form.contains(document.activeElement)) q.focus();  // keep focus in a just-opened form
+    updateControls(busy);
+    if (!busy && !q.disabled && !form.contains(document.activeElement)) q.focus();  // keep focus in a just-opened form
   }
 
   function showForm() {
     if (!form.hidden) return;
     form.hidden = false;
     $("contact-title").focus();
-    if (SITE_KEY) loadTurnstile();
-  }
-
-  function loadTurnstile() {
-    window.onTurnstileLoad = () => {
-      widgetId = window.turnstile.render("#turnstile", { sitekey: SITE_KEY, language: lang });
-    };
-    const s = document.createElement("script");
-    s.src = "https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit&onload=onTurnstileLoad";
-    s.async = true;
-    document.head.append(s);
+    if (SITE_KEY) turnstileReady().then(() => { widgetId = window.turnstile.render("#ts-form", { sitekey: SITE_KEY, language: lang }); });
   }
 
   form.addEventListener("submit", async (e) => {
@@ -223,7 +254,7 @@
       // a 401 is checked before Turnstile on the server, so the retry inside authed() can reuse tsToken
       const [res] = await authed("/contact", { email: $("c-email").value.trim(), message: $("c-msg").value.trim(), turnstile_token: tsToken });
       if (!res.ok) { fail(({ 429: "formErr429", 503: "formErr503" })[res.status] || "formErr"); return; }
-      form.querySelectorAll("label, input, textarea, button, .hint, #turnstile").forEach((el) => el.remove());
+      form.querySelectorAll("label, input, textarea, button, .hint, #ts-form").forEach((el) => el.remove());
       cStatus.textContent = t("sent");
       cStatus.classList.add("ok");
     } catch (err) {
@@ -244,6 +275,14 @@
   }));
 
   applyLang();
+  updateControls();
+
+  // Production: pass the Turnstile gate and open a session before the first question.
+  if (SITE_KEY) {
+    newSession()
+      .catch((err) => setNotice(err instanceof Response ? errorKey(err.status) : "errNet", true))
+      .finally(() => { locked = false; updateControls(); });  // after a failure the next question retries
+  }
 
   // Wake the sleeping backend early; show a note only if it takes longer than a moment.
   const wake = $("wake");

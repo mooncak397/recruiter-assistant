@@ -42,12 +42,17 @@
         <input id="c-email" name="email" type="email" autocomplete="email" required maxlength="254">
         <label for="c-msg" data-i18n="message"></label>
         <textarea id="c-msg" name="message" rows="4" required maxlength="2000"></textarea>
-        <div id="turnstile"></div>
+        <div id="ts-form"></div>
         <p id="c-status" class="status" role="status"></p>
         <button type="submit" class="primary" data-i18n="submit"></button>
       </form>
 
       <p id="notice" class="notice" role="status"></p>
+
+      <div id="gate" class="gate" hidden>
+        <p data-i18n="gateHint"></p>
+        <div id="ts-start"></div>
+      </div>
 
       <form id="ask" class="ask">
         <label for="q" class="sr-only" data-i18n="inputLabel">Your question</label>

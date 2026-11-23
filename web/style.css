@@ -100,6 +100,9 @@ h2 { font-size: 1.125rem; margin: 0 0 0.25rem; }
 }
 .chips button:hover { border-color: var(--accent); }
 
+.gate { display: flex; flex-direction: column; gap: 0.5rem; }
+.gate p { margin: 0; font-size: 0.9375rem; color: var(--muted); }
+
 .notice { margin: 0; font-size: 0.9375rem; color: var(--muted); }
 .notice:empty { display: none; }
 .notice.error, .status.error { color: var(--error); }
@@ -131,7 +134,7 @@ textarea { resize: vertical; }
   font: inherit; font-weight: 600; padding: 0.5rem 1.125rem; min-height: 2.75rem;
   border: 0; border-radius: var(--radius); background: var(--accent); color: var(--accent-text); cursor: pointer;
 }
-.primary:disabled { opacity: 0.55; cursor: not-allowed; }
+.chips button:disabled, .primary:disabled { opacity: 0.55; cursor: not-allowed; }
 
 @media (max-width: 30rem) {
   .page { padding: 1rem 0.75rem; }

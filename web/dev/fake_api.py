@@ -1,6 +1,7 @@
 """Fake backend for testing web/ locally. Stdlib only, no model calls. Mirrors the contract of app/main.py.
 
-Run: python web/dev/fake_api.py [turns]  (listens on http://localhost:8787, default 20 turns)
+Run: python web/dev/fake_api.py [turns] [--turnstile]  (http://localhost:8787, default 20 turns)
+  --turnstile: /session and /contact need a turnstile_token (like a backend with TURNSTILE_SECRET set)
 
 Test triggers inside a chat message:
   !409 / !429 / !500 -> that status   !401 -> forget the session (next call gets 401 session_expired)
@@ -14,7 +15,8 @@ import sys
 import time
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 
-TURNS = int(sys.argv[1]) if len(sys.argv) > 1 else 20  # e.g. 6 to see the turns-left hint at once
+TURNS = next((int(a) for a in sys.argv[1:] if a.isdigit()), 20)  # e.g. 6 to see the turns-left hint at once
+TURNSTILE = "--turnstile" in sys.argv
 sessions: dict[str, int] = {}  # token -> user turns used
 
 
@@ -43,6 +45,10 @@ class Handler(BaseHTTPRequestHandler):
     def do_POST(self):
         body = json.loads(self.rfile.read(int(self.headers.get("Content-Length", 0))) or b"{}")
         if self.path == "/session":
+            if not set(body) <= {"turnstile_token"}:
+                return self._send(422, {"detail": "extra fields"})
+            if TURNSTILE and not body.get("turnstile_token"):
+                return self._send(403, {"detail": "turnstile_failed"})
             token = secrets.token_urlsafe(16)
             sessions[token] = 0
             return self._send(200, {"token": token, "expires_in": 1800, "turns_left": TURNS})
@@ -92,6 +98,8 @@ class Handler(BaseHTTPRequestHandler):
         time.sleep(0.6)
         if not set(body) <= {"email", "message", "turnstile_token"}:
             return self._send(422, {"detail": "extra fields"})
+        if TURNSTILE and not body.get("turnstile_token"):
+            return self._send(403, {"detail": "turnstile_failed"})
         for code in (500, 503):
             if f"!{code}" in str(body.get("message", "")):
                 return self._send(code, {"detail": "test"})
