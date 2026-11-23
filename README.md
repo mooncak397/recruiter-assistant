@@ -1,3 +1,11 @@
+---
+# Hugging Face Space config (docs/DEPLOY.md). GitHub shows this block as a table.
+title: Recruiter assistant
+sdk: docker
+app_port: 7860
+pinned: false
+---
+
 # Recruiter assistant
 
 A chat assistant that answers recruiters' questions about Christopher, grounded in his public profile, in English or German. Work in progress: only the local command-line chat exists so far.
@@ -19,7 +27,7 @@ Every prompt version will be scored against a fixed golden set, and the score hi
 - `POST /contact` with the token and `{"email", "message", "turnstile_token"}` sends one email through Resend; 503 when `RESEND_API_KEY` or `CONTACT_TO` is missing.
 - `GET /health` returns the prompt version.
 
-Env names are in `.env.example`. The `Dockerfile` is for a Hugging Face Docker Space (port 7860).
+Env names are in `.env.example`. The `Dockerfile` is for a Hugging Face Docker Space (port 7860). Deploy steps: `docs/DEPLOY.md`.
 
 ## Tests
 
