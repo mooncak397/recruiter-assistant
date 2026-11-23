@@ -2,6 +2,8 @@
 
 Status: accepted, 2026-11-22.
 
+Update 2026-11-23: superseded. The project is local-only now; the page is no longer hosted on GitHub Pages (see the README).
+
 Options: plain HTML/CSS/JS with no build; a small Vite + framework app; the Space's own Gradio UI.
 
 Decision: plain HTML, CSS and one `app.js`, deployed by `pages.yml`.

@@ -1,6 +1,6 @@
 # web/ — the chat page
 
-Plain HTML, CSS and JavaScript (ADR-004). No build step; GitHub Pages serves this folder as it is.
+Plain HTML, CSS and JavaScript (ADR-004). No build step. The page is for local use only (no public hosting any more, see the main README); any static file server works.
 
 | File | What it does |
 |---|---|

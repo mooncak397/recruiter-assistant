@@ -1,3 +1,5 @@
+> **Not in use.** The project is local-only since 2026-11-23, because a public bot would need a legal notice and privacy policy and, for EEA users, paid Gemini API terms. This file only documents the earlier public setup. The URLs below are outdated. For local use, see the README.
+
 # Deploy
 
 The backend runs as a Render web service (Docker, free plan), the chat page runs on GitHub Pages. Do the steps in this order: the Render URL goes into the page config, and the page origin goes into the Render settings.
