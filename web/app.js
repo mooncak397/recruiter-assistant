@@ -11,7 +11,9 @@
       langLabel: "Language",
       badge: "AI",
       disclosure: "This is an AI assistant. Its answers come only from Christopher's public CV and can contain mistakes. Please do not type personal details into the chat.",
-      waking: "Waking up the assistant. This can take up to a minute.",
+      waking: "The assistant is waking up, this can take up to a minute.",
+      wakeTimeout: "The assistant did not wake up in time.",
+      retry: "Try again",
       chatTitle: "Conversation",
       chipsLabel: "Try a question",
       chips: ["What is his current role?", "Which programming languages does he use?", "What projects has he built?", "How can I reach him?"],
@@ -51,7 +53,9 @@
       langLabel: "Sprache",
       badge: "KI",
       disclosure: "Dies ist ein KI-Assistent. Die Antworten stammen nur aus Christophers öffentlichem Lebenslauf und können Fehler enthalten. Bitte geben Sie keine persönlichen Daten in den Chat ein.",
-      waking: "Der Assistent wird gestartet. Das kann bis zu einer Minute dauern.",
+      waking: "Der Assistent wird geweckt, das kann bis zu einer Minute dauern.",
+      wakeTimeout: "Der Assistent ist nicht rechtzeitig aufgewacht.",
+      retry: "Erneut versuchen",
       chatTitle: "Unterhaltung",
       chipsLabel: "Beispielfragen",
       chips: ["Was ist seine aktuelle Rolle?", "Welche Programmiersprachen nutzt er?", "Welche Projekte hat er gebaut?", "Wie kann ich ihn erreichen?"],
@@ -89,6 +93,7 @@
   const $ = (id) => document.getElementById(id);
   const log = $("log"), ask = $("ask"), q = $("q"), sendBtn = ask.querySelector("button");
   const chips = $("chips"), notice = $("notice"), typing = $("typing");
+  const wake = $("wake"), retryBtn = $("retry");
   const gate = $("gate"), form = $("contact"), cStatus = $("c-status"), cBtn = form.querySelector("button");
 
   let lang = (navigator.language || "en").toLowerCase().startsWith("de") ? "de" : "en";
@@ -124,7 +129,7 @@
       chips.append(b);
     });
     log.querySelectorAll(".who").forEach((el) => { el.textContent = t(el.dataset.who); });
-    if (!$("wake").hidden) $("wake").textContent = t("waking");
+    if (!wake.hidden) wake.textContent = t("waking");
     setNotice(noticeKey, notice.classList.contains("error"));
   }
 
@@ -143,8 +148,9 @@
     li.scrollIntoView({ block: "end", behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" });
   }
 
-  const post = (path, body) => fetch(`${API}${path}`, {
+  const post = (path, body, signal) => fetch(`${API}${path}`, {
     method: "POST",
+    signal,
     headers: { "Content-Type": "application/json", ...(token && { Authorization: `Bearer ${token}` }) },
     body: JSON.stringify(body),
   });
@@ -177,7 +183,18 @@
   async function newSession() {
     token = null;
     const ts = await freshToken();
-    const res = await post("/session", ts ? { turnstile_token: ts } : {});
+    // a sleeping free-tier backend needs up to a minute to boot: say so after 4 s, give up after 90 s
+    const wakeTimer = setTimeout(() => { wake.textContent = t("waking"); wake.hidden = false; }, 4000);
+    let res;
+    try {
+      res = await post("/session", ts ? { turnstile_token: ts } : {}, AbortSignal.timeout(90000));
+    } catch (err) {
+      if (err.name === "TimeoutError") { setNotice("wakeTimeout", true); retryBtn.hidden = false; }
+      throw err;
+    } finally {
+      clearTimeout(wakeTimer);
+      wake.hidden = true;
+    }
     if (!res.ok) throw res;    // the caller maps the status to a text
     token = (await res.json()).token;
   }
@@ -211,7 +228,7 @@
       setNotice(renewed ? "newSession" : null);
       if (data.show_form) showForm();
     } catch (err) {
-      setNotice(err instanceof Response ? errorKey(err.status) : "errNet", true);
+      if (err.name !== "TimeoutError") setNotice(err instanceof Response ? errorKey(err.status) : "errNet", true);  // a timeout already shows its own note
     } finally {
       setBusy(false);
     }
@@ -278,14 +295,13 @@
   updateControls();
 
   // Production: pass the Turnstile gate and open a session before the first question.
-  if (SITE_KEY) {
-    newSession()
-      .catch((err) => setNotice(err instanceof Response ? errorKey(err.status) : "errNet", true))
-      .finally(() => { locked = false; updateControls(); });  // after a failure the next question retries
-  }
+  const start = () => newSession()
+    .then(() => setNotice(null))
+    .catch((err) => { if (err.name !== "TimeoutError") setNotice(err instanceof Response ? errorKey(err.status) : "errNet", true); })
+    .finally(() => { locked = false; updateControls(); });  // after a failure the next question retries
+  if (SITE_KEY) start();
+  retryBtn.addEventListener("click", () => { retryBtn.hidden = true; setNotice(null); start(); });
 
-  // Wake the sleeping backend early; show a note only if it takes longer than a moment.
-  const wake = $("wake");
-  const wakeTimer = setTimeout(() => { wake.textContent = t("waking"); wake.hidden = false; }, 1500);
-  fetch(`${API}/health`).catch(() => {}).finally(() => { clearTimeout(wakeTimer); wake.hidden = true; });
+  // Start booting a sleeping backend while the visitor passes the security check.
+  fetch(`${API}/health`).catch(() => {});
 })();
