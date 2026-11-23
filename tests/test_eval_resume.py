@@ -92,7 +92,11 @@ def test_gemini_client_has_a_timeout(monkeypatch):
     monkeypatch.setenv("GEMINI_API_KEY", "test")
     monkeypatch.delenv("PROVIDER_APP", raising=False)
     llm.get_model()
-    assert seen["timeout"] == 60
+    assert seen["timeout"] == 60 and seen["max_retries"] == 1  # a 429 fails fast in the chat
+    seen.clear()
+    monkeypatch.setenv("MODEL_JUDGE", "gemini-x")
+    llm.get_judge()
+    assert "max_retries" not in seen  # evals keep the client's retries
 
 
 def test_calls_per_case_line():

@@ -170,6 +170,16 @@ def test_rate_limit_and_5xx_give_busy():
     assert answer(FakeModel(fail={"classify": TimeoutError()})) == BUSY["en"]
 
 
+def test_gemini_daily_quota_gives_busy_at_once():
+    from google.genai.errors import ClientError
+
+    quota = ClientError(429, {"error": {"code": 429, "status": "RESOURCE_EXHAUSTED",
+                                        "message": "Quota exceeded: GenerateRequestsPerDayPerProjectPerModel"}})
+    m = FakeModel(fail={"classify": quota})
+    assert answer(m) == BUSY["en"]
+    assert kinds(m) == ["classify"]  # one call, no retry and no answer step
+
+
 def test_classify_error_skips_the_route_nodes():
     m = FakeModel(fail={"classify": ValueError("bad json")})
     s = build_graph(m).invoke({"messages": [("user", "hi")]})

@@ -9,7 +9,7 @@ from dotenv import load_dotenv
 from langchain.chat_models import init_chat_model
 
 
-def _build(provider: str, name_var: str, default: str | None = None):
+def _build(provider: str, name_var: str, default: str | None = None, fail_fast: bool = False):
     load_dotenv()  # reads .env if it exists; real env vars win
     name = os.environ.get(name_var) or default
     if not name:
@@ -22,14 +22,17 @@ def _build(provider: str, name_var: str, default: str | None = None):
     if not (os.environ.get("GEMINI_API_KEY") or os.environ.get("GOOGLE_API_KEY")):
         raise SystemExit("GEMINI_API_KEY is not set. Put it in .env (see README).")
     # a hung free-tier call must not block an eval run or a chat turn: 60 s, then the graph answers BUSY
+    # fail_fast: the client's own retries held a daily-quota 429 for 40+ s while a visitor waited; one attempt,
+    # then the graph answers BUSY (max_retries is google-genai "attempts", the first request included)
     return init_chat_model(name, model_provider="google_genai", temperature=0,
-                           timeout=float(os.environ.get("MODEL_TIMEOUT", "60")))
+                           timeout=float(os.environ.get("MODEL_TIMEOUT", "60")),
+                           **({"max_retries": 1} if fail_fast else {}))
 
 
 def get_model():
     load_dotenv()
     provider = os.environ.get("PROVIDER_APP", "google")
-    return _build(provider, "MODEL_APP", APP_DEFAULTS.get(provider))
+    return _build(provider, "MODEL_APP", APP_DEFAULTS.get(provider), fail_fast=True)
 
 
 def get_judge():
