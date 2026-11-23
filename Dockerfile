@@ -4,7 +4,8 @@ COPY --from=ghcr.io/astral-sh/uv:0.9 /uv /bin/uv
 RUN useradd -m -u 1000 user
 USER user
 WORKDIR /home/user/app
-ENV UV_COMPILE_BYTECODE=1 UV_LINK_MODE=copy PATH="/home/user/app/.venv/bin:$PATH"
+# UV_NO_CACHE: the uv download cache (about 100 MB) must not stay in the image layer
+ENV UV_COMPILE_BYTECODE=1 UV_LINK_MODE=copy UV_NO_CACHE=1 PATH="/home/user/app/.venv/bin:$PATH"
 COPY --chown=user pyproject.toml uv.lock ./
 RUN uv sync --frozen --no-dev --no-install-project
 COPY --chown=user app ./app
