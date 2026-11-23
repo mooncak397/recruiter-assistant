@@ -1,0 +1,47 @@
+# web/ — the chat page
+
+Plain HTML, CSS and JavaScript (ADR-004). No build step; GitHub Pages serves this folder as it is.
+
+| File | What it does |
+|---|---|
+| `index.html` | Page structure: AI note, chat log, question chips, contact form |
+| `app.js` | EN/DE texts, chat calls, contact form, error texts |
+| `style.css` | Layout, light and dark theme (follows the system setting) |
+| `config.js` | `API_BASE` and `TURNSTILE_SITE_KEY` |
+| `dev/fake_api.py` | Fake backend for local tests (stdlib only) |
+
+## Run locally
+
+```sh
+python web/dev/fake_api.py            # fake backend on http://localhost:8787
+python -m http.server 8000 -d web     # page on http://localhost:8000
+```
+
+Open http://localhost:8000. To test against the real backend instead, start it with
+`uv run uvicorn app.main:app --port 7860 --workers 1` and set `API_BASE` to `http://localhost:7860`.
+The backend must allow the page's origin in `ALLOWED_ORIGIN` (for local use: `http://localhost:8000`).
+
+The fake API reacts to a few test words in the chat: `!401`, `!409`, `!429`, `!500`, and
+"contact" or "erreichen" to open the form. `python web/dev/fake_api.py 6` gives only 6 turns, so
+the turns-left hint shows at once. In the form, a message with `!503` gives the "not set up" error.
+
+## Config
+
+Edit `config.js`. Both values are public by design; never put a secret here.
+
+- `API_BASE`: the backend URL without a trailing slash, for example the Hugging Face Space URL.
+- `TURNSTILE_SITE_KEY`: the Cloudflare Turnstile site key. Empty means no widget, which only works
+  while the backend has no `TURNSTILE_SECRET` (local dev). Cloudflare's always-pass test key is
+  `1x00000000000000000000AA`.
+
+## How it talks to the backend
+
+1. Page load: `GET /health`, which wakes a sleeping Space. A note shows if it takes longer than 1.5 s.
+2. First question: `POST /session` with `{}`, which returns `{token, expires_in, turns_left}`.
+   The token stays in memory only.
+3. `POST /chat` with `Authorization: Bearer <token>` and `{"message": "..."}`. A 401 gets a new
+   session, one retry, and a note to the user.
+4. When a reply has `show_form: true`, the form shows. It posts `{email, message, turnstile_token}`
+   to `/contact` with the same token.
+
+Model replies are set with `textContent` only, never as HTML.

@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  <title>Ask about Christopher</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <a class="skip" href="#q" data-i18n="skip">Skip to the question field</a>
+  <main class="page">
+    <header class="top">
+      <div>
+        <h1 data-i18n="title">Ask about Christopher</h1>
+        <p class="intro" data-i18n="intro"></p>
+      </div>
+      <div class="lang" role="group" aria-labelledby="lang-label">
+        <span id="lang-label" class="sr-only" data-i18n="langLabel">Language</span>
+        <button type="button" data-lang="en" lang="en">EN</button>
+        <button type="button" data-lang="de" lang="de">DE</button>
+      </div>
+    </header>
+
+    <p class="disclosure"><span class="badge" data-i18n="badge">AI</span> <span data-i18n="disclosure"></span></p>
+
+    <p id="wake" class="wake" role="status" hidden></p>
+
+    <section class="chat" aria-labelledby="chat-title">
+      <h2 id="chat-title" class="sr-only" data-i18n="chatTitle">Conversation</h2>
+      <ol id="log" class="log" role="log" aria-live="polite"></ol>
+      <p id="typing" class="typing" hidden data-i18n="thinking"></p>
+
+      <div id="chips" class="chips" role="group" aria-labelledby="chips-label">
+        <span id="chips-label" class="chips-label" data-i18n="chipsLabel">Try a question</span>
+      </div>
+
+      <form id="contact" class="contact" hidden novalidate>
+        <h2 id="contact-title" tabindex="-1" data-i18n="formTitle"></h2>
+        <p class="hint" data-i18n="formHint"></p>
+        <label for="c-email" data-i18n="email"></label>
+        <input id="c-email" name="email" type="email" autocomplete="email" required maxlength="254">
+        <label for="c-msg" data-i18n="message"></label>
+        <textarea id="c-msg" name="message" rows="4" required maxlength="2000"></textarea>
+        <div id="turnstile"></div>
+        <p id="c-status" class="status" role="status"></p>
+        <button type="submit" class="primary" data-i18n="submit"></button>
+      </form>
+
+      <p id="notice" class="notice" role="status"></p>
+
+      <form id="ask" class="ask">
+        <label for="q" class="sr-only" data-i18n="inputLabel">Your question</label>
+        <textarea id="q" rows="1" maxlength="1000" required></textarea>
+        <button type="submit" class="primary" data-i18n="send">Send</button>
+      </form>
+    </section>
+  </main>
+  <script src="config.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
