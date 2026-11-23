@@ -10,6 +10,17 @@ Every prompt version will be scored against a fixed golden set, and the score hi
 2. `cp .env.example .env`, then put your Gemini API key (from Google AI Studio) in `.env`.
 3. `uv run python -m app.cli "Where does Christopher work?"`
 
+## Server (M6)
+
+`uv run uvicorn app.main:app --port 7860 --workers 1` (exactly 1 worker: chat history lives in process memory, ADR-010).
+
+- `POST /session` with `{}` (or `{"turnstile_token": "..."}` when `TURNSTILE_SECRET` is set) returns `{"token", "expires_in", "turns_left"}`.
+- `POST /chat` with `Authorization: Bearer <token>` and exactly `{"message": "..."}` returns `{"reply", "show_form", "lang", "turns_left"}`. Any other field gives 422, a missing or forged token 401 `invalid_session`, an expired or lost session 401 `session_expired`, more than 1,000 characters 413, a running request for the same session 409.
+- `POST /contact` with the token and `{"email", "message", "turnstile_token"}` sends one email through Resend; 503 when `RESEND_API_KEY` or `CONTACT_TO` is missing.
+- `GET /health` returns the prompt version.
+
+Env names are in `.env.example`. The `Dockerfile` is for a Hugging Face Docker Space (port 7860).
+
 ## Tests
 
 `uv run pytest` runs without a key and without network access.
