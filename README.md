@@ -31,7 +31,7 @@ Env names are in `.env.example`. The `Dockerfile` is for a Hugging Face Docker S
 
 ## Tests
 
-`uv run pytest` runs without a key and without network access.
+`uv run pytest` makes no model calls and needs no key. The real-model cases of the blackbox tests run only with `BB_REAL=1 uv run pytest tests/blackbox` (about 24 Claude calls, reads the key from `.env`).
 
 ## Evals
 

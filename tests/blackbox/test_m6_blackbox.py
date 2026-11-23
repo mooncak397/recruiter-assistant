@@ -1,5 +1,5 @@
 """Blackbox attack tests for the M6 API. They start real uvicorn processes and use HTTP only.
-Run: uv run pytest tests/blackbox -q   (about 24 real model calls; set BB_REAL=0 to skip those)"""
+Run: BB_REAL=1 uv run pytest tests/blackbox -q   (about 24 real model calls; without BB_REAL=1 those cases are skipped)"""
 import base64
 import hashlib
 import hmac
@@ -16,7 +16,7 @@ import pytest
 
 ROOT = Path(__file__).resolve().parents[2]
 KEY = "bb-test-key-0123456789"
-REAL = os.environ.get("BB_REAL", "1") == "1"
+REAL = os.environ.get("BB_REAL", "0") == "1"  # opt-in: real calls cost money
 CALLS = {"n": 0}  # real model calls made by this suite
 SECRET_MARKERS = ["Traceback", "sk-ant", "ANTHROPIC_API_KEY", "File \"/", "SESSION_HMAC_KEY", KEY]
 
